@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leapath — Module Hero Headers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   NOTE FOR INTEGRATION
+   Each <section class="hero-mod" data-module="..."> block below is
+   self-contained and can be lifted directly into the top of any
+   page — it only needs this <style> block's .hero-mod* rules (and
+   Lucide + the Sora/Inter font links) to render identically.
+   Nothing here touches sidebar, nav, tables, or page logic.
+   ============================================================ */
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:#f4f1fb;
+  color:#1f1235;
+  -webkit-font-smoothing:antialiased;
+  padding:40px 32px 120px;
+}
+h1,h2,.font-display{font-family:'Sora',sans-serif;}
+
+.hero-gallery-label{
+  max-width:1360px;margin:0 auto 14px;
+  font:700 12px 'Sora',sans-serif;letter-spacing:.6px;text-transform:uppercase;
+  color:#7c6a99;
+}
+.hero-gallery-label:not(:first-of-type){margin-top:56px;}
+
+/* ============================================================
+   SHARED HERO CARD SYSTEM
+   ============================================================ */
+.hero-mod{
+  max-width:1360px;
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(400px,.9fr);
+  min-height:460px;
+  border-radius:30px;
+  border:1px solid rgba(167,139,250,.30);
+  background:
+    radial-gradient(circle at 82% 30%, rgba(139,92,246,.30) 0%, rgba(139,92,246,0) 45%),
+    linear-gradient(108deg,#150c30 0%,#1e1148 28%,#341c74 58%,#5a35c8 100%);
+  box-shadow:0 28px 70px rgba(20,8,50,.35), 0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.hero-mod::before{
+  content:"";
+  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.10;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1.25px);
+  background-size:30px 30px;
+  mask-image:linear-gradient(90deg,black 0%,black 62%,transparent 100%);
+}
+
+/* left column */
+.hero-mod-left{
+  position:relative;z-index:2;
+  padding:54px 56px;
+  display:flex;flex-direction:column;justify-content:center;gap:18px;
+  color:#fff;
+}
+.hero-mod-badge{
+  display:inline-flex;align-self:flex-start;align-items:center;gap:9px;
+  padding:9px 13px 9px 15px;border-radius:999px;
+  border:1px solid rgba(221,214,254,.26);
+  background:rgba(255,255,255,.075);
+  color:#ddd6fe;font-size:12px;font-weight:750;letter-spacing:.2px;
+  backdrop-filter:blur(10px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.hero-mod-badge .status-dot{
+  width:8px;height:8px;border-radius:50%;background:#a78bfa;
+  box-shadow:0 0 0 4px rgba(167,139,250,.13),0 0 14px rgba(167,139,250,.75);
+}
+.hero-mod-badge .live-chip{
+  margin-left:2px;padding:2px 8px;border-radius:999px;
+  border:1px solid rgba(74,222,128,.35);
+  color:#86efac;background:rgba(74,222,128,.09);
+  font-size:9.5px;font-weight:800;letter-spacing:.7px;
+}
+.hero-mod-heading{
+  font-size:clamp(34px,3.4vw,54px);
+  font-weight:800;
+  line-height:1.08;letter-spacing:-1.6px;
+  margin-top:4px;max-width:720px;
+  text-shadow:0 2px 18px rgba(0,0,0,.16);
+}
+@media (min-width:901px){
+  .hero-mod-heading{white-space:nowrap;}
+}
+.hero-mod-heading .accent{color:#c4b5fd;}
+.hero-mod-desc{
+  max-width:610px;font-size:15.5px;line-height:1.65;
+  color:rgba(255,255,255,.72);
+}
+.hero-mod-actions{display:flex;align-items:center;gap:12px;margin-top:6px;flex-wrap:wrap;}
+.hero-mod-btn-primary{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:15px 22px;border-radius:14px;border:0;
+  background:#fff;color:#35147a;
+  font:750 14.5px 'Inter',sans-serif;cursor:pointer;
+  box-shadow:0 16px 32px rgba(7,2,25,.24),inset 0 1px 0 rgba(255,255,255,.9);
+  transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .2s;
+}
+.hero-mod-btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(7,2,25,.3),inset 0 1px 0 rgba(255,255,255,.9);}
+.hero-mod-btn-primary svg{width:17px;height:17px;}
+.hero-mod-btn-secondary{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 21px;border-radius:14px;cursor:pointer;
+  border:1px solid rgba(221,214,254,.28);
+  background:rgba(255,255,255,.06);
+  color:#f5f3ff;font:750 14.5px 'Inter',sans-serif;
+  backdrop-filter:blur(10px);
+  transition:all .2s;
+}
+.hero-mod-btn-secondary:hover{background:rgba(255,255,255,.11);border-color:rgba(221,214,254,.42);}
+.hero-mod-btn-secondary svg{width:16px;height:16px;}
+.hero-mod-meta{
+  display:flex;align-items:center;gap:32px;flex-wrap:wrap;
+  margin-top:8px;color:rgba(255,255,255,.56);font-size:13px;font-weight:500;
+}
+.hero-mod-meta span{display:inline-flex;align-items:center;}
+.hero-mod-meta span b{color:#e9e0ff;font-weight:750;margin-left:4px;}
+.hero-mod-meta i{display:none;}
+
+/* right column */
+.hero-mod-right{
+  position:relative;z-index:1;
+  min-height:460px;
+  display:flex;align-items:center;justify-content:center;padding:40px;
+  overflow:hidden;
+}
+.hero-mod-orbit{position:absolute;top:38%;left:50%;border-radius:50%;pointer-events:none;border:1px solid rgba(221,214,254,.32);}
+.hero-mod-orbit.orbit-a{width:400px;height:400px;transform:translate(-62%,-30%);}
+.hero-mod-orbit.orbit-b{width:320px;height:320px;transform:translate(-32%,-45%);}
+.hero-mod-card{
+  position:relative;z-index:4;
+  width:250px;padding:30px 22px;border-radius:24px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,rgba(167,139,250,.26),rgba(109,40,217,.16));
+  border:1px solid rgba(196,181,253,.22);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 70px rgba(9,3,28,.4), inset 0 1px 0 rgba(255,255,255,.10);
+}
+.hero-mod-card-icon{
+  width:60px;height:60px;margin:0 auto 16px;border-radius:16px;
+  display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,#8b5cf6 0%,#6d28d9 55%,#4c1d95 100%);
+  box-shadow:0 16px 32px rgba(20,7,58,.42), 0 0 30px rgba(139,92,246,.28), inset 0 1px 0 rgba(255,255,255,.32);
+}
+.hero-mod-card-icon svg{width:28px;height:28px;stroke-width:1.7;}
+.hero-mod-card-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:1.6px;color:#c9b7ff;}
+.hero-mod-card-title{margin-top:9px;font:700 18px 'Sora',sans-serif;color:#fff;letter-spacing:-.3px;}
+.hero-mod-card-sub{margin-top:5px;font-size:12px;color:rgba(255,255,255,.62);}
+
+.hero-mod-floating{
+  position:absolute;z-index:5;display:flex;align-items:center;gap:9px;
+  padding:9px 13px;border-radius:13px;
+  background:rgba(16,9,38,.92);
+  border:1px solid rgba(196,181,253,.24);
+  color:#fff;font-size:11.5px;font-weight:750;
+  box-shadow:0 14px 32px rgba(6,2,25,.3);
+  backdrop-filter:blur(12px);
+  white-space:nowrap;
+}
+.hero-mod-floating .fic{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  display:grid;place-items:center;background:rgba(139,92,246,.32);color:#c4b5fd;
+}
+.hero-mod-floating .fic svg{width:12px;height:12px;}
+.hero-mod-floating .flabel{color:rgba(255,255,255,.5);font-weight:600;font-size:9px;display:block;}
+.hero-mod-floating .fvalue{display:block;margin-top:1px;}
+.hero-mod-floating.float-top{top:-20px;right:-26px;}
+.hero-mod-floating.float-bottom{left:-26px;bottom:-20px;}
+
+@media (max-width:1180px){
+  .hero-mod{min-height:0;}
+}
+@media (max-width:900px){
+  .hero-mod{grid-template-columns:1fr;}
+  .hero-mod-left{padding:44px 34px 30px;}
+  .hero-mod-right{min-height:320px;}
+  .hero-mod-floating{display:none;}
+}
+@media (max-width:560px){
+  .hero-mod-left{padding:36px 22px 26px;}
+  .hero-mod-heading{font-size:32px;letter-spacing:-1.2px;}
+  .hero-mod-actions{flex-direction:column;align-items:stretch;}
+  .hero-mod-meta{gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     DEPARTMENT — copy this whole <section> into the Department page
+     ================================================================ -->
+<div class="hero-gallery-label">Department</div>
+<section class="hero-mod" data-module="department">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Department center online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Organize departments.<br><span class="accent">Structure that scales.</span></h1>
+    <p class="hero-mod-desc">Create academic departments, assign heads, and keep your institution's structure clear and up to date.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Add department <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">View all departments</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Departments <b>12</b></span>
+      <span><i></i>Active heads <b>10</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /><path d="M10 6h4" /><path d="M10 10h4" /><path d="M10 14h4" /><path d="M10 18h4" /></svg></div>
+      <div class="hero-mod-card-eyebrow">DEPARTMENT PULSE</div>
+      <div class="hero-mod-card-title">12 departments</div>
+      <div class="hero-mod-card-sub">Structure verified</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335" /><path d="m9 11 3 3L22 4" /></svg></span>
+      <span><span class="flabel">Structure</span><span class="fvalue">Fully mapped</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M8 12h8" /><path d="M12 8v8" /></svg></span>
+      <span><span class="flabel">New</span><span class="fvalue">Design dept. added</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     STAFF MANAGEMENT
+     ================================================================ -->
+<div class="hero-gallery-label">Staff Management</div>
+<section class="hero-mod" data-module="staff">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Staff center online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Manage your staff.<br><span class="accent">Empower your team.</span></h1>
+    <p class="hero-mod-desc">Onboard faculty, assign roles, and keep your institution's workforce organized in one place.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Add staff member <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">View all staff</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Total staff <b>48</b></span>
+      <span><i></i>Active roles <b>6</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0" /><circle cx="10" cy="8" r="5" /><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3" /></svg></div>
+      <div class="hero-mod-card-eyebrow">STAFF PULSE</div>
+      <div class="hero-mod-card-title">48 staff active</div>
+      <div class="hero-mod-card-sub">All roles assigned</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg></span>
+      <span><span class="flabel">Roles</span><span class="fvalue">All assigned</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><line x1="19" x2="19" y1="8" y2="14" /><line x1="22" x2="16" y1="11" y2="11" /></svg></span>
+      <span><span class="flabel">New hire</span><span class="fvalue">This week</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     ANNOUNCEMENTS
+     ================================================================ -->
+<div class="hero-gallery-label">Announcements</div>
+<section class="hero-mod" data-module="announcements">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Broadcast center online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Share what matters.<br><span class="accent">Reach everyone instantly.</span></h1>
+    <p class="hero-mod-desc">Send announcements to students, staff, or specific departments — and track who's seen them.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">New announcement <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">View all announcements</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Sent this month <b>24</b></span>
+      <span><i></i>Avg. reach <b>92%</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></svg></div>
+      <div class="hero-mod-card-eyebrow">BROADCAST PULSE</div>
+      <div class="hero-mod-card-title">Ready to send</div>
+      <div class="hero-mod-card-sub">All channels live</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 7 17l-5-5" /><path d="m22 10-7.5 7.5L13 16" /></svg></span>
+      <span><span class="flabel">Delivered</span><span class="fvalue">1.2k students</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
+      <span><span class="flabel">Scheduled</span><span class="fvalue">3 pending</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     RECRUITERS
+     ================================================================ -->
+<div class="hero-gallery-label">Recruiters</div>
+<section class="hero-mod" data-module="recruiters">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Recruiter network online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Connect with recruiters.<br><span class="accent">Open more doors.</span></h1>
+    <p class="hero-mod-desc">Manage recruiter relationships, track hiring interest, and keep your placement pipeline moving.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Invite recruiter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">View all recruiters</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Active recruiters <b>36</b></span>
+      <span><i></i>Open roles <b>58</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3" /><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" /><path d="m21 3 1 11h-2" /><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" /><path d="M3 4h8" /></svg></div>
+      <div class="hero-mod-card-eyebrow">RECRUITER PULSE</div>
+      <div class="hero-mod-card-title">36 recruiters</div>
+      <div class="hero-mod-card-sub">Network healthy</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /><path d="M10 6h4" /><path d="M10 10h4" /><path d="M10 14h4" /><path d="M10 18h4" /></svg></span>
+      <span><span class="flabel">New</span><span class="fvalue">Recruiter joined</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /><rect width="20" height="14" x="2" y="6" rx="2" /></svg></span>
+      <span><span class="flabel">Interest</span><span class="fvalue">12 companies</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     DRIVES
+     ================================================================ -->
+<div class="hero-gallery-label">Drives</div>
+<section class="hero-mod" data-module="drives">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Drive scheduler online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Plan hiring drives.<br><span class="accent">Stay ahead of every date.</span></h1>
+    <p class="hero-mod-desc">Schedule, manage, and track placement drives from application to offer — all in one calendar.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Schedule a drive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">View all drives</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Upcoming drives <b>7</b></span>
+      <span><i></i>This month <b>14</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4" /><path d="M16 2v4" /><rect width="18" height="18" x="3" y="4" rx="2" /><path d="M3 10h18" /><path d="m9 16 2 2 4-4" /></svg></div>
+      <div class="hero-mod-card-eyebrow">DRIVE PULSE</div>
+      <div class="hero-mod-card-title">7 upcoming</div>
+      <div class="hero-mod-card-sub">On schedule</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
+      <span><span class="flabel">Next drive</span><span class="fvalue">In 2 days</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
+      <span><span class="flabel">Confirmed</span><span class="fvalue">5 companies</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     PLACEMENTS
+     ================================================================ -->
+<div class="hero-gallery-label">Placements</div>
+<section class="hero-mod" data-module="placements">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Placement analytics online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Track every placement.<br><span class="accent">Celebrate every win.</span></h1>
+    <p class="hero-mod-desc">Monitor offers, packages, and placement rates across departments with real-time analytics.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">View analytics <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">Export report</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Students placed <b>312</b></span>
+      <span><i></i>Placement rate <b>87%</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></svg></div>
+      <div class="hero-mod-card-eyebrow">PLACEMENT PULSE</div>
+      <div class="hero-mod-card-title">87% placed</div>
+      <div class="hero-mod-card-sub">Trending up</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" /><circle cx="12" cy="8" r="6" /></svg></span>
+      <span><span class="flabel">Highest package</span><span class="fvalue">₹42 LPA</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" /></svg></span>
+      <span><span class="flabel">This week</span><span class="fvalue">18 offers</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     STUDENT MESSAGES
+     ================================================================ -->
+<div class="hero-gallery-label">Student Messages</div>
+<section class="hero-mod" data-module="messages">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Messaging center online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Stay in touch.<br><span class="accent">Every message, sorted.</span></h1>
+    <p class="hero-mod-desc">Respond to student queries, broadcast updates, and keep every conversation organized in one inbox.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Compose message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">View conversations</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Unread <b>9</b></span>
+      <span><i></i>Response time <b>&lt;2 hrs</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" /><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" /></svg></div>
+      <div class="hero-mod-card-eyebrow">MESSAGE PULSE</div>
+      <div class="hero-mod-card-title">9 unread</div>
+      <div class="hero-mod-card-sub">Inbox healthy</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
+      <span><span class="flabel">New</span><span class="fvalue">3 messages</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 7 17l-5-5" /><path d="m22 10-7.5 7.5L13 16" /></svg></span>
+      <span><span class="flabel">Resolved</span><span class="fvalue">42 today</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SETTINGS
+     ================================================================ -->
+<div class="hero-gallery-label">Settings</div>
+<section class="hero-mod" data-module="settings">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      System preferences online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Configure Leapath.<br><span class="accent">Make it yours.</span></h1>
+    <p class="hero-mod-desc">Manage institution branding, permissions, integrations, and workspace preferences from one place.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Update settings <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">View activity log</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Integrations <b>5 active</b></span>
+      <span><i></i>Last updated <b>Today</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9" /><path d="M14 17H5" /><circle cx="17" cy="17" r="3" /><circle cx="7" cy="7" r="3" /></svg></div>
+      <div class="hero-mod-card-eyebrow">SYSTEM PULSE</div>
+      <div class="hero-mod-card-title">All synced</div>
+      <div class="hero-mod-card-sub">Configuration healthy</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5V19A9 3 0 0 0 21 19V5" /><path d="M3 12A9 3 0 0 0 21 12" /></svg></span>
+      <span><span class="flabel">Backup</span><span class="fvalue">Up to date</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg></span>
+      <span><span class="flabel">Security</span><span class="fvalue">Verified</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SUPPORT
+     ================================================================ -->
+<div class="hero-gallery-label">Support</div>
+<section class="hero-mod" data-module="support">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Help center online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Get help fast.<br><span class="accent">We're here for you.</span></h1>
+    <p class="hero-mod-desc">Browse guides, raise a ticket, or chat with our team — support is always a click away.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Contact support <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">Browse help center</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Avg. reply time <b>&lt;1 hr</b></span>
+      <span><i></i>Satisfaction <b>98%</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="m4.93 4.93 4.24 4.24" /><path d="m14.83 9.17 4.24-4.24" /><path d="m14.83 14.83 4.24 4.24" /><path d="m9.17 14.83-4.24 4.24" /><circle cx="12" cy="12" r="4" /></svg></div>
+      <div class="hero-mod-card-eyebrow">SUPPORT PULSE</div>
+      <div class="hero-mod-card-title">Team online</div>
+      <div class="hero-mod-card-sub">Ready to help</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" /><path d="M13 5v2" /><path d="M13 17v2" /><path d="M13 11v2" /></svg></span>
+      <span><span class="flabel">Ticket</span><span class="fvalue">#4521 resolved</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" /></svg></span>
+      <span><span class="flabel">Live chat</span><span class="fvalue">Available</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
