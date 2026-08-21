@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Leapath — Student Messages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#20243d;--muted:#70758a;--line:#e8e7f0;--bg:#f7f7fb;
+  --purple:#6d4aff;--purple2:#8b6cff;--lav:#c8bcff;
+  --nav:#1b1236;--nav2:#25184b;--card:#fff;
+  --open:#dc665e;--progress:#c48727;--resolved:#2f9d78;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.app{min-height:100vh;display:flex}
+.sidebar{width:220px;position:fixed;inset:0 auto 0 0;background:linear-gradient(180deg,#21133f,#170e30);color:#c7c2d7;padding:22px 10px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)}
+.brand{height:52px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:13px;color:white;font-weight:700;font-size:22px}.mark{font-size:42px;font-weight:300;line-height:0}.workspace{font-size:9px;letter-spacing:1px;background:#21474b;color:#85d9c3;padding:4px 8px;border-radius:8px;margin-top:4px;width:max-content}
+.nav{padding:16px 0}.nav-label{font-size:9px;letter-spacing:1.5px;color:#827a99;font-weight:800;padding:0 10px;margin:0 0 7px}.nav a{display:flex;align-items:center;gap:10px;color:#bbb6c9;text-decoration:none;font-size:13px;padding:10px;border-radius:9px;margin:2px 0}.nav a.active{background:linear-gradient(90deg,rgba(109,74,255,.35),rgba(109,74,255,.15));border:1px solid rgba(139,108,255,.28);color:#fff}.nav a span:first-child{font-size:17px;opacity:.85}
+.user{margin-top:auto;border-top:1px solid rgba(255,255,255,.07);padding:18px 5px;display:flex;align-items:center;gap:9px}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7b57ff,#3b238d);color:#fff;font-size:12px;font-weight:700}.user strong{font-size:12px;color:#eee}.user small{display:block;font-size:10px;margin-top:4px}.collapse{font-size:10px;font-weight:800;letter-spacing:1.2px;margin-top:18px;color:#8f88a2}
+.main{margin-left:220px;width:calc(100% - 220px);min-height:100vh}
+.topbar{height:64px;background:rgba(255,255,255,.82);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end;padding:0 28px;gap:22px;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}.bell{font-size:19px}.profile{display:flex;gap:10px;align-items:center}.profile .avatar{width:34px;height:34px;background:#f0eef7;color:#544e70}.profile strong{font-size:12px}.profile small{font-size:9px;color:var(--muted);display:block;margin-top:3px}
+.content{max-width:1450px;margin:auto;padding:28px 34px 55px}
+.hero{position:relative;overflow:hidden;min-height:500px;border-radius:36px;padding:52px 62px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;background:radial-gradient(circle at 77% 17%,rgba(104,67,205,.48) 0%,transparent 25%),radial-gradient(circle at 95% 72%,rgba(84,42,182,.55) 0%,transparent 34%),linear-gradient(115deg,#180d2d 0%,#241542 56%,#38206d 100%);box-shadow:0 28px 58px rgba(35,17,73,.17)}
+.hero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) .8px,transparent .9px);background-size:48px 48px;opacity:.14}.hero>*{position:relative;z-index:1}
+.live{display:flex;align-items:center;gap:11px;border:1px solid rgba(215,205,255,.48);width:max-content;padding:12px 16px;border-radius:999px;color:#e4dff1;font-size:13px;font-weight:800;letter-spacing:.2px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),0 0 18px rgba(149,118,255,.08)}.live i{width:10px;height:10px;border-radius:50%;background:#9276ff;box-shadow:0 0 16px #8b6cff}.live b{color:#7fe3c3;background:rgba(31,139,106,.2);padding:6px 10px;border-radius:999px;font-size:10px;letter-spacing:.8px}
+.hero h1{font-size:clamp(50px,5vw,72px);line-height:.96;letter-spacing:-4px;margin:30px 0 20px;color:#fff}.hero h1 span{display:block;background:linear-gradient(105deg,#fff 10%,#e6e0ff 52%,#c8bcff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:660px;font-size:18px;line-height:1.5;color:#c8c1d4;margin:0}.actions{display:flex;gap:15px;margin-top:28px}.btn{border:1px solid rgba(255,255,255,.18);border-radius:17px;padding:15px 24px;font-weight:800;font-size:15px;cursor:pointer;transition:.25s;display:inline-flex;align-items:center;gap:16px}.btn:hover{transform:translateY(-2px)}.btn.primary{background:#fff;color:#292441}.btn.ghost{background:rgba(255,255,255,.025);color:#f0ecfb}.meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:27px;color:#aaa3ba;font-size:14px}.meta b{color:#fff;margin-left:7px;font-size:17px}
+.visual{height:360px;position:relative}.orb{position:absolute;border:1px solid rgba(215,203,255,.48);border-radius:50%;width:390px;height:390px;right:24px;top:-5px}.orb.two{width:270px;height:270px;right:135px;top:30px}.pulse{position:absolute;right:70px;top:42px;width:360px;height:315px;border:1px solid rgba(222,215,255,.2);background:linear-gradient(135deg,rgba(152,116,255,.37),rgba(255,255,255,.045));backdrop-filter:blur(17px);border-radius:38px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 25px 58px rgba(0,0,0,.24)}.pulse .icon{width:72px;height:72px;border-radius:23px;background:linear-gradient(135deg,#4c2fc1,#8564ee);display:grid;place-items:center;box-shadow:0 14px 30px rgba(58,31,169,.38)}.pulse .icon svg{width:33px;height:33px;stroke:#fff;stroke-width:2;fill:none}.pulse label{letter-spacing:4px;color:#d9d1ee;font-size:12px;font-weight:800;margin-top:35px}.pulse h3{font-size:28px;line-height:1.1;margin:18px 0 0}.pulse p{font-size:15px;margin:11px 0 0;color:#d7cfe9}
+.float{position:absolute;background:rgba(24,17,52,.84);border:1px solid rgba(218,211,246,.54);backdrop-filter:blur(14px);border-radius:18px;padding:14px 17px;color:#fff;min-width:205px;box-shadow:0 18px 30px rgba(0,0,0,.2);display:flex;gap:14px;align-items:center}.float .dot{width:13px;height:13px;border-radius:50%;background:#64d8b3;box-shadow:0 0 15px #64d8b3}.float b{display:block;font-size:16px}.float small{display:block;color:#b4aec2;margin-top:6px;font-size:13px}.f1{right:-4px;top:0}.f2{left:0;bottom:0}.f3{right:8px;bottom:-3px}.f2 .dot{background:#8b6cff;box-shadow:0 0 15px #8b6cff}.f3 .dot{background:#e0a449;box-shadow:0 0 14px #e0a449}
+.section{margin-top:28px}.stats{display:grid;grid-template-columns: repeat(3, minmax(0, 1fr));gap:18px}.stat{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;align-items:center;gap:16px;transition:.25s;box-shadow:0 6px 20px rgba(44,37,78,.04)}.stat:hover,.message:hover{transform:translateY(-2px);box-shadow:0 15px 35px rgba(57,43,104,.1)}.stat-icon{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;font-size:22px}.open .stat-icon{background:#fff2f0;color:var(--open)}.progress .stat-icon{background:#fff8e9;color:var(--progress)}.resolved .stat-icon{background:#eefaf6;color:var(--resolved)}.stat label{display:block;font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--muted)}.stat strong{font-size:28px;margin:4px 0;display:block}.stat small{color:#7d8190;font-size:12px}
+.toolbar{margin:28px 0 16px;display:flex;gap:14px;align-items:center}.search{background:#fff;border:1px solid var(--line);height:48px;border-radius:13px;display:flex;align-items:center;gap:10px;padding:0 15px;flex:1;max-width:390px}.search input{border:0;outline:0;width:100%;font:inherit;font-size:13px}.segments{display:flex;background:#efeff5;border:1px solid #e3e2eb;border-radius:13px;padding:4px;gap:3px}.segments button{border:0;background:transparent;border-radius:9px;padding:9px 13px;font:600 12px Inter;color:#74778b;cursor:pointer}.segments button.active{background:#fff;color:#4b398d;box-shadow:0 2px 7px rgba(55,40,115,.12);border:1px solid #d7ceff}.count{background:#eceaf3;border-radius:8px;padding:2px 6px;margin-left:4px;font-size:10px}.refresh{margin-left:auto;height:46px;padding:0 15px;background:#fff;border:1px solid var(--line);border-radius:12px;font:700 12px Inter;color:#49445f;cursor:pointer}
+.messages{display:grid;gap:12px}.message{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:18px;padding:19px 21px;display:grid;grid-template-columns:52px 1fr auto 25px;gap:15px;align-items:center;cursor:pointer;transition:.25s}.message:hover{border-color:#cfc3ff}.student-avatar{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,#eee9ff,#c8baff);display:grid;place-items:center;color:#5941a8;font-weight:800}.message h3{margin:0;font-size:14px}.details{font-size:11px;color:#83879a;margin:5px 0}.preview{font-size:12px;color:#5f6477;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:700px}.badge{font-size:10px;font-weight:800;padding:7px 10px;border-radius:999px;white-space:nowrap}.badge.open{color:#bd5048;background:#fff4f2;border:1px solid #ffd6d2}.badge.progress{color:#a8711f;background:#fff9ed;border:1px solid #f5dfae}.badge.resolved{color:#287b61;background:#effaf6;border:1px solid #c8ebdf}.arrow{font-size:23px;color:#aaa5b8;transition:.25s}.message:hover .arrow{transform:translateX(4px);color:#6d4aff}.info{margin-top:16px;border:1px solid #dfddeb;background:rgba(255,255,255,.55);border-radius:15px;padding:15px 18px;color:#70758a;font-size:12px;display:flex;gap:12px;align-items:center}.info b{color:#6547d6}
+.chat{position:fixed;right:26px;bottom:26px;width:55px;height:55px;border-radius:50%;border:0;background:linear-gradient(135deg,#7351ee,#3e25a5);color:#fff;font-size:23px;box-shadow:0 12px 28px rgba(76,49,190,.35)}
+@media(max-width:1050px){.hero{grid-template-columns:1fr;padding:54px;min-height:auto}.visual{display:none}.stats{grid-template-columns: repeat(3, minmax(0, 1fr));flex-basis:100%}}
+@media(max-width:760px){.sidebar{width:70px}.brand>div,.nav a span:last-child,.nav-label,.user div,.collapse{display:none}.brand{padding:0;justify-content:center}.nav a{justify-content:center}.user{justify-content:center}.main{margin-left:70px;width:calc(100% - 70px)}.content{padding:16px}.hero{padding:34px 25px;min-height:520px;border-radius:28px}.hero h1{font-size:56px;line-height:.96}.hero p{font-size:17px}.hero h1{letter-spacing:-2px}.actions{flex-direction:column;align-items:flex-start}.toolbar{align-items:stretch}.segments{overflow:auto}.refresh{margin-left:0}.message{grid-template-columns:46px 1fr 20px}.message .badge{display:none}.preview{max-width:190px}.topbar{padding:0 15px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<style id="compact-hero-override">
+.hero{min-height:390px!important;padding:34px 48px!important;border-radius:30px!important}.hero h1{font-size:clamp(42px,4.1vw,58px)!important;margin:20px 0 14px!important;letter-spacing:-3px!important}.hero p{font-size:16px!important;line-height:1.42!important}.live{padding:9px 13px!important;font-size:11px!important}.live i{width:8px!important;height:8px!important}.live b{padding:5px 8px!important;font-size:9px!important}.actions{margin-top:20px!important;gap:12px!important}.btn{padding:12px 19px!important;border-radius:14px!important;font-size:13px!important}.meta{margin-top:20px!important;gap:20px!important;font-size:12px!important}.meta b{font-size:15px!important}.visual{height:285px!important}.orb{width:320px!important;height:320px!important;right:18px!important;top:-2px!important}.orb.two{width:220px!important;height:220px!important;right:110px!important;top:28px!important}.pulse{width:300px!important;height:255px!important;right:55px!important;top:32px!important;border-radius:30px!important}.pulse label{margin-top:22px!important;font-size:10px!important;letter-spacing:3px!important}.pulse h3{font-size:23px!important;margin-top:12px!important}.pulse p{font-size:13px!important;margin-top:8px!important}.float{min-width:175px!important;padding:11px 14px!important;border-radius:15px!important;gap:11px!important}.float .dot{width:11px!important;height:11px!important}.float b{font-size:14px!important}.float small{font-size:11px!important;margin-top:4px!important}.f1{right:0!important;top:0!important}.f2{bottom:0!important}
+@media(max-width:760px){.hero{min-height:430px!important;padding:28px 22px!important}.hero h1{font-size:46px!important}.visual{display:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="mark">L</div><div>Leapath.<div class="workspace">TO WORKSPACE</div></div></div>
+  <nav class="nav">
+    <div class="nav-label">OVERVIEW</div><a href="#"><span>⊞</span><span>Dashboard</span></a>
+    <div class="nav-label" style="margin-top:16px">DEPARTMENTS</div><a href="#"><span>▥</span><span>Departments</span></a><a href="#"><span>♧</span><span>Staff Management</span></a><a href="#"><span>➤</span><span>Announcements</span></a>
+    <div class="nav-label" style="margin-top:16px">RECRUITERS</div><a href="#"><span>▥</span><span>Recruiters</span></a><a href="#"><span>◴</span><span>Drives</span></a><a href="#"><span>♙</span><span>Placements</span></a>
+    <div class="nav-label" style="margin-top:16px">COMMUNICATION</div><a class="active" href="#"><span>▢</span><span>Student Messages</span></a><a href="#"><span>⚙</span><span>Settings</span></a><a href="#"><span>?</span><span>Support</span></a>
+  </nav>
+  <div class="user"><div class="avatar">AK</div><div><strong>Arun Kumar</strong><small>Training & Placement</small></div></div><div class="collapse">‹‹ &nbsp; COLLAPSE</div>
+</aside>
+<main class="main">
+  <header class="topbar"><span class="bell">♧</span><div class="profile"><div class="avatar">AK</div><div><strong>Arun Kumar</strong><small>Training & Placement</small></div></div></header>
+  <div class="content">
+    <section class="hero">
+      <div>
+        <div class="live"><i></i> COMMUNICATION CENTER <b>LIVE</b></div>
+        <h1>Student<br>messages.<span>Stay connected.</span></h1>
+        <p>Manage student queries, track conversations, and respond quickly — all from one unified communication center.</p>
+        <div class="actions"><button class="btn primary" onclick="filterMessages('open')">View open messages <span>→</span></button><button class="btn ghost">Message insights <span>↗</span></button></div>
+        <div class="meta"><span>Open conversations <b id="openMeta">6</b></span><span>In progress <b id="progressMeta">1</b></span><span>Resolved <b id="resolvedMeta">4</b></span></div>
+      </div>
+      <div class="visual">
+        <div class="orb"></div><div class="orb two"></div>
+        <div class="pulse"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="3"></rect><path d="M8 9h8M8 13h5"></path></svg></div><label>MESSAGE PULSE</label><h3>Inbox under control</h3><p>Track. Respond. Resolve.</p></div>
+        <div class="float f1"><div class="dot"></div><div><b>Resolved</b><small>Conversations completed</small></div></div>
+        <div class="float f2"><div class="dot"></div><div><b>6 Open</b><small>Needs your attention</small></div></div>
+        
+      </div>
+    </section>
+    <section class="section stats">
+      <div class="stat open"><div class="stat-icon">◌</div><div><label>OPEN</label><strong id="openCount">6</strong><small>Needs attention</small></div></div>
+      <div class="stat progress"><div class="stat-icon">◷</div><div><label>IN PROGRESS</label><strong id="progressCount">1</strong><small>Currently being handled</small></div></div>
+      <div class="stat resolved"><div class="stat-icon">✓</div><div><label>RESOLVED</label><strong id="resolvedCount">4</strong><small>Successfully completed</small></div></div>
+    </section>
+    <section class="section">
+      <div class="toolbar">
+        <label class="search">⌕ <input id="search" placeholder="Search messages..." oninput="renderMessages()"></label>
+        <div class="segments">
+          <button class="active" data-filter="all" onclick="filterMessages('all')">All <span class="count">11</span></button>
+          <button data-filter="open" onclick="filterMessages('open')">Open <span class="count">6</span></button>
+          <button data-filter="progress" onclick="filterMessages('progress')">In Progress <span class="count">1</span></button>
+          <button data-filter="resolved" onclick="filterMessages('resolved')">Resolved <span class="count">4</span></button>
+        </div>
+        <button class="refresh" onclick="renderMessages()">↻ &nbsp; Refresh</button>
+      </div>
+      <div id="messages" class="messages"></div>
+      <div id="empty" style="display:none;text-align:center;padding:65px 20px;background:#fff;border:1px solid var(--line);border-radius:20px"><div style="font-size:38px">▢</div><h3>No messages here</h3><p style="color:#777c8f;font-size:13px">You're all caught up. New student messages will appear here.</p><button class="btn primary" style="margin-top:8px" onclick="filterMessages('all')">View all messages</button></div>
+      <div class="info"><b>▢</b> Students send messages from their workspace support page. Reply directly via email — responses go to the student's registered address.</div>
+    </section>
+  </div>
+</main>
+<button class="chat">◯</button>
+<script>
+const messages=[
+ {title:"Just checking for function",name:"LeapathStudent",email:"leapathstudent@gmail.com",time:"15h ago",text:"Is it working fine?",status:"open"},
+ {title:"Help",name:"LeapathStudent",email:"leapathstudent@gmail.com",time:"1d ago",text:"I need help regarding my workspace access.",status:"open"},
+ {title:"New try",name:"Mahitha",email:"rmahi8602@gmail.com",time:"1d ago",text:"Couldn't send this message earlier.",status:"open"},
+ {title:"Check",name:"Mahitha",email:"rmahi8602@gmail.com",time:"31d ago",text:"scscdcs",status:"open"},
+ {title:"oiuytryiu",name:"Mahitha",email:"rmahi8602@gmail.com",time:"34d ago",text:"dfghjk",status:"open"},
+ {title:"hgvhscwdk",name:"Mahitha",email:"rmahi8602@gmail.com",time:"34d ago",text:"wel",status:"open"},
+ {title:"Query",name:"Mahitha",email:"rmahi8602@gmail.com",time:"43d ago",text:"Checking",status:"progress"},
+ {title:"Working?",name:"LeapathStudent",email:"leapathstudent@gmail.com",time:"15h ago",text:"Working",status:"resolved"},
+ {title:"To verify my certificate",name:"Aisha Verma",email:"431a@web-library.net",time:"29d ago",text:"Verify the certificate",status:"resolved"},
+ {title:"please update me about my progress",name:"Aisha Verma",email:"431a@web-library.net",time:"30d ago",text:"i want an update regarding my progress",status:"resolved"},
+ {title:"Check",name:"Mahitha",email:"rmahi8602@gmail.com",time:"37d ago",text:"Yes, do it",status:"resolved"}
+];
+let active='all';
+const labels={open:'OPEN',progress:'IN PROGRESS',resolved:'RESOLVED'};
+function initials(n){return n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase()}
+function filterMessages(f){active=f;document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));renderMessages()}
+function renderMessages(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const list=messages.filter(m=>(active==='all'||m.status===active)&&(`${m.title} ${m.name} ${m.email} ${m.text}`).toLowerCase().includes(q));
+ document.getElementById('messages').innerHTML=list.map(m=>`<article class="message" tabindex="0">
+ <div class="student-avatar">${initials(m.name)}</div><div><h3>${m.title}</h3><div class="details">${m.name} &nbsp;•&nbsp; ${m.email} &nbsp;•&nbsp; ${m.time}</div><p class="preview">${m.text}</p></div>
+ <span class="badge ${m.status}">${m.status==='open'?'◌ ':m.status==='progress'?'◷ ':'✓ '}${labels[m.status]}</span><div class="arrow">→</div></article>`).join('');
+ document.getElementById('empty').style.display=list.length?'none':'block';
+}
+renderMessages();
+</script>
+</body>
+</html>
+<style>
+@media (min-width: 900px) {
+  .stats-grid,
+  .summary-grid,
+  .metrics-grid,
+  .status-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+}
+</style>
+
+<style>
+/* Smaller top-right header notification icon */
+.topbar .header-action,
+.topbar .notification-btn,
+.topbar .icon-button,
+.header-right .header-action,
+.header-right .notification-btn,
+.header-right .icon-button,
+.topbar > div:last-child > button,
+.header-right > button {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+}
+
+.topbar .header-action svg,
+.topbar .notification-btn svg,
+.topbar .icon-button svg,
+.header-right .header-action svg,
+.header-right .notification-btn svg,
+.header-right .icon-button svg,
+.topbar > div:last-child > button svg,
+.header-right > button svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+</style>
