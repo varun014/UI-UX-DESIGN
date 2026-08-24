@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leapath — New Page Hero Headers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   NOTE FOR INTEGRATION
+   Each <section class="hero-mod" data-module="..."> block below is
+   self-contained and can be lifted directly into the top of any
+   page — it only needs this <style> block's .hero-mod* rules (and
+   Lucide + the Sora/Inter font links) to render identically.
+   Nothing here touches sidebar, nav, tables, or page logic.
+   ============================================================ */
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:#f4f1fb;
+  color:#1f1235;
+  -webkit-font-smoothing:antialiased;
+  padding:40px 32px 120px;
+}
+h1,h2,.font-display{font-family:'Sora',sans-serif;}
+
+.hero-gallery-label{
+  max-width:1360px;margin:0 auto 14px;
+  font:700 12px 'Sora',sans-serif;letter-spacing:.6px;text-transform:uppercase;
+  color:#7c6a99;
+}
+.hero-gallery-label:not(:first-of-type){margin-top:56px;}
+
+/* ============================================================
+   SHARED HERO CARD SYSTEM
+   ============================================================ */
+.hero-mod{
+  max-width:1360px;
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(400px,.9fr);
+  min-height:460px;
+  border-radius:30px;
+  border:1px solid rgba(167,139,250,.30);
+  background:
+    radial-gradient(circle at 82% 30%, rgba(139,92,246,.30) 0%, rgba(139,92,246,0) 45%),
+    linear-gradient(108deg,#150c30 0%,#1e1148 28%,#341c74 58%,#5a35c8 100%);
+  box-shadow:0 28px 70px rgba(20,8,50,.35), 0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.hero-mod::before{
+  content:"";
+  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.10;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1.25px);
+  background-size:30px 30px;
+  mask-image:linear-gradient(90deg,black 0%,black 62%,transparent 100%);
+}
+
+/* left column */
+.hero-mod-left{
+  position:relative;z-index:2;
+  padding:54px 56px;
+  display:flex;flex-direction:column;justify-content:center;gap:18px;
+  color:#fff;
+}
+.hero-mod-badge{
+  display:inline-flex;align-self:flex-start;align-items:center;gap:9px;
+  padding:9px 13px 9px 15px;border-radius:999px;
+  border:1px solid rgba(221,214,254,.26);
+  background:rgba(255,255,255,.075);
+  color:#ddd6fe;font-size:12px;font-weight:750;letter-spacing:.2px;
+  backdrop-filter:blur(10px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.hero-mod-badge .status-dot{
+  width:8px;height:8px;border-radius:50%;background:#a78bfa;
+  box-shadow:0 0 0 4px rgba(167,139,250,.13),0 0 14px rgba(167,139,250,.75);
+}
+.hero-mod-badge .live-chip{
+  margin-left:2px;padding:2px 8px;border-radius:999px;
+  border:1px solid rgba(74,222,128,.35);
+  color:#86efac;background:rgba(74,222,128,.09);
+  font-size:9.5px;font-weight:800;letter-spacing:.7px;
+}
+.hero-mod-heading{
+  font-size:clamp(34px,3.4vw,54px);
+  font-weight:800;
+  line-height:1.08;letter-spacing:-1.6px;
+  margin-top:4px;max-width:720px;
+  text-shadow:0 2px 18px rgba(0,0,0,.16);
+}
+@media (min-width:901px){
+  .hero-mod-heading{white-space:nowrap;}
+}
+.hero-mod-heading .accent{color:#c4b5fd;}
+.hero-mod-heading.heading-wrap{white-space:normal;max-width:600px;}
+.hero-mod-desc{
+  max-width:610px;font-size:15.5px;line-height:1.65;
+  color:rgba(255,255,255,.72);
+}
+.hero-mod-actions{display:flex;align-items:center;gap:12px;margin-top:6px;flex-wrap:wrap;}
+.hero-mod-btn-primary{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:15px 22px;border-radius:14px;border:0;
+  background:#fff;color:#35147a;
+  font:750 14.5px 'Inter',sans-serif;cursor:pointer;
+  box-shadow:0 16px 32px rgba(7,2,25,.24),inset 0 1px 0 rgba(255,255,255,.9);
+  transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .2s;
+}
+.hero-mod-btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(7,2,25,.3),inset 0 1px 0 rgba(255,255,255,.9);}
+.hero-mod-btn-primary svg{width:17px;height:17px;}
+.hero-mod-btn-secondary{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 21px;border-radius:14px;cursor:pointer;
+  border:1px solid rgba(221,214,254,.28);
+  background:rgba(255,255,255,.06);
+  color:#f5f3ff;font:750 14.5px 'Inter',sans-serif;
+  backdrop-filter:blur(10px);
+  transition:all .2s;
+}
+.hero-mod-btn-secondary:hover{background:rgba(255,255,255,.11);border-color:rgba(221,214,254,.42);}
+.hero-mod-btn-secondary svg{width:16px;height:16px;}
+.hero-mod-meta{
+  display:flex;align-items:center;gap:32px;flex-wrap:wrap;
+  margin-top:8px;color:rgba(255,255,255,.56);font-size:13px;font-weight:500;
+}
+.hero-mod-meta span{display:inline-flex;align-items:center;}
+.hero-mod-meta span b{color:#e9e0ff;font-weight:750;margin-left:4px;}
+.hero-mod-meta i{display:none;}
+
+/* right column */
+.hero-mod-right{
+  position:relative;z-index:1;
+  min-height:460px;
+  display:flex;align-items:center;justify-content:center;padding:40px;
+  overflow:hidden;
+}
+.hero-mod-orbit{position:absolute;top:38%;left:50%;border-radius:50%;pointer-events:none;border:1px solid rgba(221,214,254,.32);}
+.hero-mod-orbit.orbit-a{width:400px;height:400px;transform:translate(-62%,-30%);}
+.hero-mod-orbit.orbit-b{width:320px;height:320px;transform:translate(-32%,-45%);}
+.hero-mod-card{
+  position:relative;z-index:4;
+  width:250px;padding:30px 22px;border-radius:24px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,rgba(167,139,250,.26),rgba(109,40,217,.16));
+  border:1px solid rgba(196,181,253,.22);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 70px rgba(9,3,28,.4), inset 0 1px 0 rgba(255,255,255,.10);
+}
+.hero-mod-card-icon{
+  width:60px;height:60px;margin:0 auto 16px;border-radius:16px;
+  display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,#8b5cf6 0%,#6d28d9 55%,#4c1d95 100%);
+  box-shadow:0 16px 32px rgba(20,7,58,.42), 0 0 30px rgba(139,92,246,.28), inset 0 1px 0 rgba(255,255,255,.32);
+}
+.hero-mod-card-icon svg{width:28px;height:28px;stroke-width:1.7;}
+.hero-mod-card-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:1.6px;color:#c9b7ff;}
+.hero-mod-card-title{margin-top:9px;font:700 18px 'Sora',sans-serif;color:#fff;letter-spacing:-.3px;}
+.hero-mod-card-sub{margin-top:5px;font-size:12px;color:rgba(255,255,255,.62);}
+
+.hero-mod-floating{
+  position:absolute;z-index:5;display:flex;align-items:center;gap:9px;
+  padding:9px 13px;border-radius:13px;
+  background:rgba(16,9,38,.92);
+  border:1px solid rgba(196,181,253,.24);
+  color:#fff;font-size:11.5px;font-weight:750;
+  box-shadow:0 14px 32px rgba(6,2,25,.3);
+  backdrop-filter:blur(12px);
+  white-space:nowrap;
+}
+.hero-mod-floating .fic{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  display:grid;place-items:center;background:rgba(139,92,246,.32);color:#c4b5fd;
+}
+.hero-mod-floating .fic svg{width:12px;height:12px;}
+.hero-mod-floating .flabel{color:rgba(255,255,255,.5);font-weight:600;font-size:9px;display:block;}
+.hero-mod-floating .fvalue{display:block;margin-top:1px;}
+.hero-mod-floating.float-top{top:-20px;right:-26px;}
+.hero-mod-floating.float-bottom{left:-26px;bottom:-20px;}
+
+@media (max-width:1180px){
+  .hero-mod{min-height:0;}
+}
+@media (max-width:900px){
+  .hero-mod{grid-template-columns:1fr;}
+  .hero-mod-left{padding:44px 34px 30px;}
+  .hero-mod-right{min-height:320px;}
+  .hero-mod-floating{display:none;}
+}
+@media (max-width:560px){
+  .hero-mod-left{padding:36px 22px 26px;}
+  .hero-mod-heading{font-size:32px;letter-spacing:-1.2px;}
+  .hero-mod-actions{flex-direction:column;align-items:stretch;}
+  .hero-mod-meta{gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     COURSE DETAILS — copy this whole <section> into the Course Details page
+     ================================================================ -->
+<div class="hero-gallery-label">Course Details</div>
+<section class="hero-mod" data-module="course-details">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Course workspace online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading heading-wrap">Bachelor of Engineering.<br><span class="accent">Departments, grouped and mapped.</span></h1>
+    <p class="hero-mod-desc">See every department grouped under this course, assign heads of department, and track students and classes at a glance.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Add department <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">Back to departments</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Departments <b>2</b></span>
+      <span><i></i>HODs assigned <b>1</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /><path d="M10 6h4" /><path d="M10 10h4" /><path d="M10 14h4" /><path d="M10 18h4" /></svg></div>
+      <div class="hero-mod-card-eyebrow">COURSE PULSE</div>
+      <div class="hero-mod-card-title">2 departments</div>
+      <div class="hero-mod-card-sub">1 needs a HOD</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0" /><circle cx="10" cy="8" r="5" /><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3" /></svg></span>
+      <span><span class="flabel">Marine Eng.</span><span class="fvalue">HOD active</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M12 17h.01" /><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /></svg></span>
+      <span><span class="flabel">JVHJ</span><span class="fvalue">No HOD yet</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     MY ACCOUNT — copy this whole <section> into the My Account page
+     ================================================================ -->
+<div class="hero-gallery-label">My Account</div>
+<section class="hero-mod" data-module="my-account">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Account identity online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">Your account.<br><span class="accent">Identity, access, and security.</span></h1>
+    <p class="hero-mod-desc">Review your profile details, keep track of workspace access, and manage the security of your Leapath account.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Request profile update <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">Sign out</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Profile readiness <b>67%</b></span>
+      <span><i></i>Account status <b>Active</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5" /><path d="M20 21a8 8 0 0 0-16 0" /></svg></div>
+      <div class="hero-mod-card-eyebrow">ACCOUNT PULSE</div>
+      <div class="hero-mod-card-title">67% ready</div>
+      <div class="hero-mod-card-sub">1 step left to verify</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /><path d="M10 6h4" /><path d="M10 10h4" /><path d="M10 14h4" /><path d="M10 18h4" /></svg></span>
+      <span><span class="flabel">Institution</span><span class="fvalue">IIIT Hyderabad</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg></span>
+      <span><span class="flabel">Access</span><span class="fvalue">Verified workspace</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     DEPARTMENT DETAILS — copy this whole <section> into the Department Details page
+     ================================================================ -->
+<div class="hero-gallery-label">Department Details</div>
+<section class="hero-mod" data-module="department-details">
+  <div class="hero-mod-left">
+    <div class="hero-mod-badge">
+      <span class="status-dot"></span>
+      Department workspace online
+      <span class="live-chip">LIVE</span>
+    </div>
+    <h1 class="hero-mod-heading">JVHJ department.<br><span class="accent">Years, sections, and staff.</span></h1>
+    <p class="hero-mod-desc">Add years and sections, assign a head of department and class incharges, and track every student in one place.</p>
+    <div class="hero-mod-actions">
+      <button class="hero-mod-btn-primary" type="button">Add year &amp; section <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button>
+      <button class="hero-mod-btn-secondary" type="button">Assign HOD</button>
+    </div>
+    <div class="hero-mod-meta">
+      <span><i></i>Total students <b>0</b></span>
+      <span><i></i>Total classes <b>0</b></span>
+    </div>
+  </div>
+  <div class="hero-mod-right">
+    <div class="hero-mod-orbit orbit-a"></div>
+    <div class="hero-mod-orbit orbit-b"></div>
+    <div class="hero-mod-card">
+      <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /><path d="M10 6h4" /><path d="M10 10h4" /><path d="M10 14h4" /><path d="M10 18h4" /></svg></div>
+      <div class="hero-mod-card-eyebrow">DEPARTMENT PULSE</div>
+      <div class="hero-mod-card-title">HJJHV dept.</div>
+      <div class="hero-mod-card-sub">Setup just getting started</div>
+      <div class="hero-mod-floating float-top">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M12 17h.01" /><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /></svg></span>
+      <span><span class="flabel">HOD</span><span class="fvalue">Not assigned</span></span>
+      </div>
+      <div class="hero-mod-floating float-bottom">
+        <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0" /><circle cx="10" cy="8" r="5" /><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3" /></svg></span>
+      <span><span class="flabel">Staff</span><span class="fvalue">0 assigned</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
