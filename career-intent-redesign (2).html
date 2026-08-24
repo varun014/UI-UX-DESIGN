@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leapath — Career Intent (Redesign)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1f1235;
+  --muted:#7c6a99;
+  --muted-2:#a396c0;
+  --bg:#f4f1fb;
+  --card:#ffffff;
+  --line:rgba(109,40,217,.12);
+  --violet:#8b5cf6;
+  --violet-deep:#6d28d9;
+  --violet-ink:#4c1d95;
+  --lilac:#ede9fe;
+  --success:#16a34a;
+  --success-bg:#e9f9ef;
+  --amber:#b45309;
+  --amber-bg:#fef3c7;
+}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(circle,rgba(139,92,246,.09) 1px,transparent 1.3px) 0 0/26px 26px,
+    var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  padding:40px 32px 120px;
+}
+h1,h2,h3,.font-display{font-family:'Sora',sans-serif;}
+.wrap{max-width:1360px;margin:0 auto;}
+a{color:inherit;}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:grid;grid-template-columns:minmax(0,1.55fr) minmax(400px,.9fr);
+  min-height:440px;border-radius:30px;
+  border:1px solid rgba(167,139,250,.30);
+  background:
+    radial-gradient(circle at 82% 30%, rgba(139,92,246,.30) 0%, rgba(139,92,246,0) 45%),
+    linear-gradient(108deg,#150c30 0%,#1e1148 28%,#341c74 58%,#5a35c8 100%);
+  box-shadow:0 28px 70px rgba(20,8,50,.35), 0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.10;
+  background-image:radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1.25px);
+  background-size:30px 30px;
+  mask-image:linear-gradient(90deg,black 0%,black 62%,transparent 100%);
+}
+.hero-left{position:relative;z-index:2;padding:52px 56px;display:flex;flex-direction:column;justify-content:center;gap:16px;color:#fff;}
+.hero-badge{
+  display:inline-flex;align-self:flex-start;align-items:center;gap:9px;
+  padding:9px 13px 9px 15px;border-radius:999px;border:1px solid rgba(221,214,254,.26);
+  background:rgba(255,255,255,.075);color:#ddd6fe;font-size:12px;font-weight:750;
+  backdrop-filter:blur(10px);
+}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:#a78bfa;box-shadow:0 0 0 4px rgba(167,139,250,.13),0 0 14px rgba(167,139,250,.75);}
+.hero-badge .live{margin-left:2px;padding:2px 8px;border-radius:999px;border:1px solid rgba(74,222,128,.35);color:#86efac;background:rgba(74,222,128,.09);font-size:9.5px;font-weight:800;letter-spacing:.7px;}
+.hero-heading{font-size:clamp(32px,3.2vw,50px);font-weight:800;line-height:1.1;letter-spacing:-1.4px;max-width:600px;}
+.hero-heading .accent{color:#c4b5fd;}
+.hero-desc{max-width:580px;font-size:15px;line-height:1.65;color:rgba(255,255,255,.72);}
+.hero-actions{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;}
+.btn-primary{
+  position:relative;display:inline-flex;align-items:center;gap:10px;padding:15px 22px 15px 24px;
+  border-radius:999px;border:0;background:#fff;color:var(--violet-ink);
+  font:800 14.5px 'Inter',sans-serif;letter-spacing:-.1px;cursor:pointer;
+  box-shadow:0 18px 34px rgba(7,2,25,.30), 0 2px 0 rgba(140,90,255,.10) inset;
+  transition:transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s;
+}
+.btn-primary .arrow-dot{width:26px;height:26px;border-radius:50%;background:linear-gradient(145deg,#8b5cf6,#6d28d9);color:#fff;display:grid;place-items:center;flex-shrink:0;transition:transform .22s;}
+.btn-primary .arrow-dot svg{width:13px;height:13px;stroke-width:2.4;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 22px 42px rgba(7,2,25,.36), 0 2px 0 rgba(140,90,255,.10) inset;}
+.btn-primary:hover .arrow-dot{transform:translateX(3px);}
+.btn-primary:active{transform:translateY(-1px);}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:9px;padding:14px 21px;
+  border-radius:999px;cursor:pointer;border:1.5px solid rgba(221,214,254,.40);
+  background:rgba(255,255,255,.09);color:#fff;
+  font:750 14.5px 'Inter',sans-serif;letter-spacing:-.1px;backdrop-filter:blur(10px);
+  transition:background .2s, border-color .2s, transform .22s cubic-bezier(.22,1,.36,1);
+}
+.btn-secondary svg{width:15px;height:15px;stroke-width:2.2;color:#c9b7ff;}
+.btn-secondary:hover{background:rgba(255,255,255,.16);border-color:rgba(221,214,254,.62);transform:translateY(-3px);}
+.btn-secondary:active{transform:translateY(-1px);}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:6px;color:rgba(255,255,255,.56);font-size:13px;}
+.hero-meta b{color:#e9e0ff;font-weight:750;margin-left:4px;}
+.hero-right{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;padding:40px;overflow:hidden;}
+.orbit{position:absolute;top:38%;left:50%;border-radius:50%;pointer-events:none;border:1px solid rgba(221,214,254,.32);}
+.orbit-a{width:380px;height:380px;transform:translate(-62%,-30%);}
+.orbit-b{width:300px;height:300px;transform:translate(-32%,-45%);}
+.hero-card{
+  position:relative;z-index:4;width:240px;padding:28px 20px;border-radius:24px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,rgba(167,139,250,.26),rgba(109,40,217,.16));
+  border:1px solid rgba(196,181,253,.22);backdrop-filter:blur(18px);
+  box-shadow:0 30px 70px rgba(9,3,28,.4), inset 0 1px 0 rgba(255,255,255,.10);
+}
+.gicon{width:56px;height:56px;margin:0 auto 14px;border-radius:16px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#8b5cf6 0%,#6d28d9 55%,#4c1d95 100%);box-shadow:0 16px 32px rgba(20,7,58,.42), 0 0 30px rgba(139,92,246,.28);}
+.gicon svg{width:26px;height:26px;stroke-width:1.7;}
+.hero-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:1.6px;color:#c9b7ff;}
+.hero-card-title{margin-top:8px;font:700 17px 'Sora',sans-serif;color:#fff;}
+.hero-card-sub{margin-top:4px;font-size:12px;color:rgba(255,255,255,.62);}
+.floating{position:absolute;z-index:5;display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:13px;background:rgba(16,9,38,.92);border:1px solid rgba(196,181,253,.24);color:#fff;font-size:11px;font-weight:750;box-shadow:0 14px 32px rgba(6,2,25,.3);backdrop-filter:blur(12px);white-space:nowrap;}
+.floating .fic{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;background:rgba(139,92,246,.32);color:#c4b5fd;}
+.floating .fic svg{width:12px;height:12px;}
+.floating .flabel{color:rgba(255,255,255,.5);font-weight:600;font-size:9px;display:block;}
+.floating .fvalue{display:block;margin-top:1px;}
+.floating.top{top:-18px;right:-24px;}
+.floating.bottom{left:-24px;bottom:-18px;}
+
+/* ============================================================
+   PAGE BODY LAYOUT
+   ============================================================ */
+.page-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;margin-top:24px;align-items:start;}
+.main-col{display:flex;flex-direction:column;gap:24px;min-width:0;}
+.side-col{position:sticky;top:24px;display:flex;flex-direction:column;gap:16px;}
+
+/* ============================================================
+   ROLE SUMMARY CARD
+   ============================================================ */
+.summary-card{
+  background:var(--card);border:1px solid var(--line);border-radius:24px;padding:32px;
+  box-shadow:0 18px 44px rgba(90,53,200,.07);
+}
+.summary-top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;font:700 12.5px 'Inter',sans-serif;}
+.pill-violet{background:var(--lilac);color:var(--violet-deep);}
+.pill-muted{background:#f1eefb;color:var(--muted);}
+.pill svg{width:14px;height:14px;}
+.summary-role{display:flex;gap:18px;align-items:flex-start;}
+.summary-role .gicon{width:60px;height:60px;flex-shrink:0;margin:0;}
+.summary-role .gicon svg{width:28px;height:28px;}
+.role-label{font-size:11px;font-weight:800;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase;}
+.role-title{font:800 30px 'Sora',sans-serif;letter-spacing:-.6px;margin-top:4px;}
+.role-tag{color:var(--muted);font-size:14px;font-style:italic;margin-top:4px;}
+.exploring{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.exploring-label{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.chip-arrow{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--lilac);color:var(--violet-deep);font:700 13px 'Inter',sans-serif;}
+.chip-arrow svg{width:13px;height:13px;}
+.skills-block{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);}
+.skills-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
+.skills-head svg{width:15px;height:15px;color:var(--violet);}
+.skill-chip{display:inline-flex;padding:8px 14px;border-radius:999px;background:#f7f5fd;border:1px solid var(--line);color:var(--ink);font:600 12.5px 'Inter',sans-serif;margin:0 8px 8px 0;}
+.skill-chip.more{background:transparent;color:var(--muted);border-style:dashed;}
+
+/* ============================================================
+   SEGMENTED TABS
+   ============================================================ */
+.tabs{display:inline-flex;padding:6px;border-radius:16px;background:#ece7fa;gap:4px;}
+.tab-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:12px;border:0;background:transparent;color:var(--muted);font:700 13.5px 'Inter',sans-serif;cursor:pointer;transition:all .18s;}
+.tab-btn svg{width:15px;height:15px;}
+.tab-btn.active{background:#fff;color:var(--violet-ink);box-shadow:0 6px 16px rgba(90,53,200,.14);}
+
+/* ============================================================
+   SECTION SHELL
+   ============================================================ */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 18px 44px rgba(90,53,200,.06);transition:box-shadow .25s, border-color .25s;}
+.panel:hover{box-shadow:0 22px 54px rgba(90,53,200,.10);border-color:rgba(109,40,217,.18);}
+.panel-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.panel-head svg{width:18px;height:18px;color:var(--violet);}
+.panel-title{font:700 19px 'Sora',sans-serif;letter-spacing:-.2px;}
+.panel-desc{color:var(--muted);font-size:14px;margin-top:6px;margin-bottom:24px;line-height:1.6;}
+
+/* subsection (used inside Career Preferences) */
+.subsection{padding:26px 0;border-bottom:1px solid var(--line);}
+.subsection:last-child{border-bottom:0;padding-bottom:4px;}
+.subsection:first-child{padding-top:2px;}
+.sub-head{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.sub-icon{width:34px;height:34px;border-radius:10px;background:var(--lilac);color:var(--violet-deep);display:grid;place-items:center;flex-shrink:0;}
+.sub-icon svg{width:17px;height:17px;}
+.sub-title{font:700 15.5px 'Sora',sans-serif;letter-spacing:-.1px;}
+.sub-desc{color:var(--muted);font-size:13px;margin:4px 0 18px 46px;line-height:1.6;}
+
+/* option pill selector (work model / shift) */
+.option-row{display:flex;gap:10px;flex-wrap:wrap;margin-left:46px;}
+.option-pill{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  padding:11px 18px;border-radius:12px;border:1.5px solid var(--line);
+  background:#fff;color:var(--ink);font:700 13px 'Inter',sans-serif;cursor:pointer;
+  transition:all .18s cubic-bezier(.22,1,.36,1);
+}
+.option-pill:hover{border-color:#c9b7ff;background:#faf9ff;}
+.option-pill svg{width:14px;height:14px;opacity:0;width:0;transition:all .18s;}
+.option-pill.selected{
+  border-color:transparent;color:#fff;
+  background:linear-gradient(135deg,#8b5cf6,#6d28d9);
+  box-shadow:0 10px 24px rgba(109,40,217,.28);
+}
+.option-pill.selected svg{opacity:1;width:14px;}
+
+/* skills tab */
+.search-box{position:relative;}
+.search-box svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--muted-2);}
+.search-box input{width:100%;padding:15px 16px 15px 44px;border-radius:14px;border:1px solid var(--line);background:#f8f6fd;font:500 14px 'Inter',sans-serif;color:var(--ink);}
+.search-box input:focus{outline:2px solid var(--violet);outline-offset:1px;background:#fff;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:44px 20px;border-radius:16px;border:1.5px dashed var(--line);margin:22px 0;text-align:center;}
+.empty-state .e-icon{width:44px;height:44px;border-radius:12px;background:var(--lilac);color:var(--violet-deep);display:grid;place-items:center;}
+.empty-state .e-icon svg{width:20px;height:20px;}
+.empty-state p{color:var(--muted);font-size:13.5px;}
+.catalog-row{display:flex;gap:10px;}
+.catalog-row .select-box{width:160px;flex-shrink:0;}
+.catalog-row .text-box{flex:1;}
+.catalog-row .btn-add{flex-shrink:0;}
+
+/* target role cards */
+.role-config{border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;}
+.role-config:last-child{margin-bottom:0;}
+.role-config.primary{border-left:3px solid var(--violet);}
+.role-config.secondary{border-left:3px dashed #b9a6f2;}
+.role-config.tertiary{border-left:3px dotted #d2c4fb;}
+.rc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.rc-tag{display:inline-flex;align-items:center;gap:8px;}
+.rc-tag .badge{padding:5px 11px;border-radius:8px;font:800 10.5px 'Sora',sans-serif;letter-spacing:.6px;}
+.badge-primary{background:var(--violet-ink);color:#fff;}
+.badge-optional{background:#f1eefb;color:var(--muted);}
+.rc-tag .note{color:var(--muted-2);font-size:12.5px;}
+.rc-close{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--muted);display:grid;place-items:center;cursor:pointer;}
+.rc-close svg{width:14px;height:14px;}
+.rc-role{display:flex;gap:16px;align-items:center;padding:18px 20px;border-radius:14px;background:linear-gradient(135deg,#f8f6fd,#f1ecfb);border:1px solid rgba(139,92,246,.14);margin-bottom:18px;}
+.rc-role .gicon{width:48px;height:48px;flex-shrink:0;margin:0;}
+.rc-role .gicon svg{width:22px;height:22px;}
+.rc-role-title{font:700 16.5px 'Sora',sans-serif;letter-spacing:-.2px;}
+.rc-role-sub{color:var(--muted);font-size:12.5px;margin-top:3px;}
+.rc-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.field-label{font-size:10.5px;font-weight:800;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;display:block;}
+.select-box, .text-box{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:#fff;font:600 14px 'Inter',sans-serif;color:var(--ink);}
+.custom-role-row{margin-top:18px;}
+.custom-role-input{display:flex;gap:10px;}
+.custom-role-input .text-box{flex:1;}
+.icon-add{width:46px;height:46px;flex-shrink:0;border-radius:12px;border:0;background:var(--violet);color:#fff;display:grid;place-items:center;cursor:pointer;}
+.icon-add svg{width:18px;height:18px;}
+
+/* role fit ranking */
+.fit-list{display:flex;flex-direction:column;gap:12px;}
+.fit-row{
+  position:relative;display:flex;align-items:flex-start;gap:18px;
+  padding:20px 22px;border-radius:18px;border:1px solid var(--line);background:#fdfcff;
+  transition:border-color .2s, box-shadow .2s, transform .2s;
+}
+.fit-row:hover{border-color:rgba(139,92,246,.35);box-shadow:0 14px 30px rgba(90,53,200,.10);transform:translateY(-2px);}
+.fit-row.best{
+  border-color:rgba(139,92,246,.35);
+  background:linear-gradient(135deg,#faf8ff,#f3edff);
+  box-shadow:0 16px 34px rgba(90,53,200,.14);
+}
+.fit-row.best::before{
+  content:"Best match";position:absolute;top:-10px;left:20px;padding:4px 11px;border-radius:999px;
+  background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font:800 10px 'Sora',sans-serif;
+  letter-spacing:.5px;box-shadow:0 6px 14px rgba(109,40,217,.32);
+}
+.rank-badge{width:36px;height:36px;border-radius:11px;background:#efeafc;color:var(--violet-ink);font:800 14px 'Sora',sans-serif;display:grid;place-items:center;flex-shrink:0;border:1px solid rgba(139,92,246,.14);}
+.rank-badge.top{background:linear-gradient(145deg,#8b5cf6,#6d28d9);color:#fff;border:none;box-shadow:0 8px 18px rgba(109,40,217,.35);}
+.fit-body{flex:1;min-width:0;}
+.fit-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.fit-name{font:700 16.5px 'Sora',sans-serif;letter-spacing:-.2px;}
+.fit-pct{font:800 17px 'Sora',sans-serif;color:var(--violet-ink);}
+.fit-row.best .fit-pct{color:var(--violet-deep);}
+.bar-track{height:9px;border-radius:99px;background:#eee9fb;overflow:hidden;margin-bottom:12px;box-shadow:inset 0 1px 2px rgba(90,53,200,.06);}
+.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#a78bfa,#6d28d9);transition:width .5s cubic-bezier(.22,1,.36,1);}
+.fit-skills{display:flex;flex-wrap:wrap;gap:7px;}
+.fit-skills .skill-chip{padding:5.5px 12px;font-size:11.5px;margin:0;background:#f4f1fb;border-color:rgba(109,40,217,.10);}
+.fit-row.best .fit-skills .skill-chip{background:#fff;}
+
+/* coursework */
+.course-form{display:flex;gap:10px;margin-bottom:12px;}
+.course-form .text-box{flex:1;}
+.course-form .select-box{width:170px;flex-shrink:0;}
+.btn-add{display:inline-flex;align-items:center;gap:7px;padding:13px 18px;border-radius:12px;border:0;background:var(--violet);color:#fff;font:700 13.5px 'Inter',sans-serif;cursor:pointer;flex-shrink:0;}
+.btn-add svg{width:15px;height:15px;}
+.helper-note{display:flex;align-items:center;gap:8px;color:var(--muted-2);font-size:12.5px;margin-bottom:22px;}
+.helper-note svg{width:14px;height:14px;flex-shrink:0;}
+.course-list-label{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
+.course-chip{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#f8f6fd;border:1px solid var(--line);font:700 13px 'Inter',sans-serif;margin:0 10px 10px 0;}
+.course-chip .sem{color:var(--muted);font-weight:500;}
+.course-chip .del{width:18px;height:18px;color:var(--muted-2);cursor:pointer;}
+.paths-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.8px;color:var(--violet-deep);text-transform:uppercase;margin:26px 0 14px;}
+.paths-label svg{width:15px;height:15px;}
+
+/* sidebar */
+.side-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;transition:box-shadow .25s;}
+.side-card:hover{box-shadow:0 16px 36px rgba(90,53,200,.09);}
+.side-title{font:700 13.5px 'Sora',sans-serif;letter-spacing:.2px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.side-title svg{width:15px;height:15px;color:var(--violet);}
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);}
+.stat-row:last-child{border-bottom:0;}
+.stat-row .k{color:var(--muted);font-size:13px;}
+.stat-row .v{font:800 14px 'Sora',sans-serif;}
+.notice{display:flex;gap:10px;padding:14px;border-radius:14px;background:var(--amber-bg);border:1px solid rgba(180,83,9,.16);}
+.notice svg{width:16px;height:16px;color:var(--amber);flex-shrink:0;margin-top:1px;}
+.notice p{font-size:12.5px;color:#7c4a06;line-height:1.5;}
+.side-cta{display:block;text-align:center;padding:13px;border-radius:12px;background:var(--violet-ink);color:#fff;font:700 13.5px 'Inter',sans-serif;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 10px 24px rgba(76,29,149,.2);}
+.side-cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(76,29,149,.26);}
+.ring-row{display:flex;align-items:center;gap:16px;padding-bottom:16px;margin-bottom:4px;border-bottom:1px solid var(--line);}
+.ring{width:56px;height:56px;flex-shrink:0;}
+.ring-label{font-size:11px;color:var(--muted);font-weight:600;}
+.ring-value{font:800 20px 'Sora',sans-serif;margin-top:2px;}
+
+@media (max-width:1180px){.page-grid{grid-template-columns:1fr;}.side-col{position:static;}}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;min-height:0;}
+  .hero-left{padding:40px 30px 26px;}
+  .hero-right{min-height:280px;}
+  .floating{display:none;}
+  .rc-fields{grid-template-columns:1fr;}
+  .summary-role{flex-direction:column;}
+  .course-form{flex-direction:column;}
+  .course-form .select-box{width:100%;}
+}
+@media (max-width:560px){
+  body{padding:24px 16px 90px;}
+  .hero-heading{font-size:30px;}
+  .hero-actions{flex-direction:column;align-items:stretch;}
+  .summary-card,.panel{padding:22px;}
+  .tabs{width:100%;}
+  .tab-btn{flex:1;justify-content:center;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><span class="dot"></span>Career readiness online<span class="live">LIVE</span></div>
+    <h1 class="hero-heading">Define your intent.<br><span class="accent">Know exactly where you're headed.</span></h1>
+    <p class="hero-desc">Set the roles you're working toward, track skill gaps against real requirements, and see which career paths your coursework already leads to.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" type="button">Set target role <span class="arrow-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
+      <button class="btn-secondary" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>View role fit</button>
+    </div>
+    <div class="hero-meta"><span>Target roles<b>3</b></span><span>Top match<b>43%</b></span></div>
+  </div>
+  <div class="hero-right">
+    <div class="orbit orbit-a"></div>
+    <div class="orbit orbit-b"></div>
+    <div class="hero-card">
+      <div class="gicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+      <div class="hero-eyebrow">CAREER PULSE</div>
+      <div class="hero-card-title">UI/UX Designer</div>
+      <div class="hero-card-sub">Primary target role</div>
+      <div class="floating top"><span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></span><span><span class="flabel">Role fit</span><span class="fvalue">43% match</span></span></div>
+      <div class="floating bottom"><span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span><span><span class="flabel">Coursework</span><span class="fvalue">5 tracked</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE GRID ================= -->
+<div class="page-grid">
+  <div class="main-col">
+
+    <!-- ROLE SUMMARY -->
+    <div class="summary-card">
+      <div class="summary-top">
+        <span class="pill pill-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Career direction</span>
+        <span class="pill pill-muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>Not set</span>
+      </div>
+      <div class="summary-role">
+        <div class="gicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l1-1h3l9-9"/><path d="M18 2l4 4-9 9-4-4z"/></svg></div>
+        <div>
+          <div class="role-label">Primary target role</div>
+          <div class="role-title">UI/UX Designer</div>
+          <div class="role-tag">Craft beautiful, usable interfaces</div>
+        </div>
+      </div>
+      <div class="exploring">
+        <span class="exploring-label">Also exploring</span>
+        <span class="chip-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>ML Engineer</span>
+        <span class="chip-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>DevOps Engineer</span>
+      </div>
+      <div class="skills-block">
+        <div class="skills-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>Role-required skills (auto)</div>
+        <span class="skill-chip">Figma</span><span class="skill-chip">UI Design</span><span class="skill-chip">Typography</span><span class="skill-chip">Color Theory</span><span class="skill-chip">Prototyping</span><span class="skill-chip">Python</span><span class="skill-chip more">+8 more</span>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" type="button" onclick="showTab('roles',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Roles</button>
+      <button class="tab-btn" type="button" onclick="showTab('skills',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>Skills</button>
+      <button class="tab-btn" type="button" onclick="showTab('prefs',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 4.5-4.9.4 3.7 3.2L7.8 16 12 13.4 16.2 16l-1.1-4.9 3.7-3.2-4.9-.4Z"/></svg>Career Preferences</button>
+    </div>
+
+    <div id="tab-roles">
+      <!-- TARGET ROLES -->
+      <div class="panel">
+        <div class="panel-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="panel-title">Target roles</span></div>
+        <p class="panel-desc">Set up to three roles you're working toward. Your primary role drives all personalization — secondary and tertiary add breadth. Each engine weights them independently.</p>
+
+        <div class="role-config primary">
+          <div class="rc-top"><span class="rc-tag"><span class="badge badge-primary">PRIMARY</span><span class="note">drives skill gaps, assessments, recruiter visibility</span></span><button class="rc-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+          <div class="rc-role"><div class="gicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l1-1h3l9-9"/><path d="M18 2l4 4-9 9-4-4z"/></svg></div><div><div class="rc-role-title">UI/UX Designer</div><div class="rc-role-sub">Craft beautiful, usable interfaces</div></div></div>
+          <div class="rc-fields">
+            <div><span class="field-label">Field</span><select class="select-box"><option>Design</option></select></div>
+            <div><span class="field-label">Role</span><select class="select-box"><option>UI/UX Designer</option></select></div>
+          </div>
+          <div class="custom-role-row">
+            <span class="field-label" style="color:var(--violet-deep)">Custom role</span>
+            <div class="custom-role-input"><input class="text-box" placeholder='e.g. "Robotics Engineer" or "Social Worker"'><button class="icon-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div>
+          </div>
+        </div>
+
+        <div class="role-config secondary">
+          <div class="rc-top"><span class="rc-tag"><span class="badge badge-optional">SECONDARY</span><span class="note">optional</span></span><button class="rc-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+          <div class="rc-role"><div class="gicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><path d="m8 21 4-6 4 6"/><path d="M9 15h6"/></svg></div><div><div class="rc-role-title">ML Engineer</div><div class="rc-role-sub">Ship machine learning systems to production</div></div></div>
+          <div class="rc-fields">
+            <div><span class="field-label">Field</span><select class="select-box"><option>Data &amp; AI</option></select></div>
+            <div><span class="field-label">Role</span><select class="select-box"><option>ML Engineer</option></select></div>
+          </div>
+        </div>
+
+        <div class="role-config tertiary">
+          <div class="rc-top"><span class="rc-tag"><span class="badge badge-optional">TERTIARY</span><span class="note">optional</span></span><button class="rc-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+          <div class="rc-role"><div class="gicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></div><div><div class="rc-role-title">DevOps Engineer</div><div class="rc-role-sub">Automate, deploy, and run resilient systems</div></div></div>
+          <div class="rc-fields">
+            <div><span class="field-label">Field</span><select class="select-box"><option>Software &amp; Tech</option></select></div>
+            <div><span class="field-label">Role</span><select class="select-box"><option>DevOps Engineer</option></select></div>
+          </div>
+          <div class="custom-role-row">
+            <span class="field-label" style="color:var(--violet-deep)">Don't see your role? Add a custom one</span>
+            <div class="custom-role-input"><input class="text-box" placeholder='e.g. "Robotics Engineer" or "Social Worker"'><button class="icon-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROLE FIT -->
+      <div class="panel" style="margin-top:24px;">
+        <div class="panel-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><span class="panel-title">Your role fit</span></div>
+        <p class="panel-desc">Ranked across every role, based on your verified skills. Pin the ones you're actually considering.</p>
+
+        <div class="fit-list">
+          <div class="fit-row best">
+            <div class="rank-badge top">1</div>
+            <div class="fit-body">
+              <div class="fit-top"><span class="fit-name">Software Engineer</span><span class="fit-pct">43%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:43%"></div></div>
+              <div class="fit-skills"><span class="skill-chip">Data Structures</span><span class="skill-chip">Algorithms</span><span class="skill-chip">Problem Solving</span><span class="skill-chip">SQL &amp; Databases</span></div>
+            </div>
+          </div>
+          <div class="fit-row">
+            <div class="rank-badge">2</div>
+            <div class="fit-body">
+              <div class="fit-top"><span class="fit-name">ML Engineer</span><span class="fit-pct">39%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:39%"></div></div>
+              <div class="fit-skills"><span class="skill-chip">Python</span><span class="skill-chip">Machine Learning</span><span class="skill-chip">Statistics</span><span class="skill-chip">Linear Algebra</span></div>
+            </div>
+          </div>
+          <div class="fit-row">
+            <div class="rank-badge">3</div>
+            <div class="fit-body">
+              <div class="fit-top"><span class="fit-name">Data Analyst</span><span class="fit-pct">29%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:29%"></div></div>
+              <div class="fit-skills"><span class="skill-chip">SQL &amp; Databases</span><span class="skill-chip">Python</span><span class="skill-chip">Statistics</span></div>
+            </div>
+          </div>
+          <div class="fit-row">
+            <div class="rank-badge">4</div>
+            <div class="fit-body">
+              <div class="fit-top"><span class="fit-name">DevOps Engineer</span><span class="fit-pct">22%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:22%"></div></div>
+              <div class="fit-skills"><span class="skill-chip">Networking</span><span class="skill-chip">Linux</span></div>
+            </div>
+          </div>
+          <div class="fit-row">
+            <div class="rank-badge">5</div>
+            <div class="fit-body">
+              <div class="fit-top"><span class="fit-name">Cybersecurity Analyst</span><span class="fit-pct">18%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:18%"></div></div>
+              <div class="fit-skills"><span class="skill-chip">Networking</span><span class="skill-chip">Security Fundamentals</span><span class="skill-chip">Linux</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COURSEWORK -->
+      <div class="panel" style="margin-top:24px;">
+        <div class="panel-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span class="panel-title">What are you studying?</span></div>
+        <p class="panel-desc">Add your current courses and see which career paths your academics naturally lead to.</p>
+        <div class="course-form">
+          <input class="text-box" placeholder="e.g. Machine Learning, Operating Systems, DBMS...">
+          <select class="select-box"><option>Current semester</option></select>
+          <button class="btn-add" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add</button>
+        </div>
+        <div class="helper-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Type any course name — we recognise 60+ standard subjects. Unknown courses are saved as custom.</div>
+        <div class="course-list-label">Your courses (5)</div>
+        <div style="margin-bottom:6px;">
+          <span class="course-chip">Data Structures &amp; Algorithms <span class="sem">· Current sem</span> <svg class="del" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span>
+          <span class="course-chip">Database Management Systems <span class="sem">· Current sem</span> <svg class="del" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span>
+          <span class="course-chip">Computer Networks <span class="sem">· Sem 7</span> <svg class="del" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span>
+          <span class="course-chip">Machine Learning <span class="sem">· Current sem</span> <svg class="del" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span>
+          <span class="course-chip">AI <span class="sem">· Sem 6</span> <svg class="del" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></span>
+        </div>
+        <div class="paths-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>Career paths your coursework leads to</div>
+
+        <div class="fit-list">
+          <div class="fit-row best">
+            <div class="rank-badge top">1</div>
+            <div class="fit-body">
+              <div class="fit-top"><span class="fit-name">Software Engineer</span><span class="fit-pct">43%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:43%"></div></div>
+              <div class="fit-skills"><span class="skill-chip">Data Structures</span><span class="skill-chip">Algorithms</span><span class="skill-chip">Problem Solving</span><span class="skill-chip">SQL &amp; Databases</span></div>
+            </div>
+          </div>
+          <div class="fit-row">
+            <div class="rank-badge">2</div>
+            <div class="fit-body">
+              <div class="fit-top"><span class="fit-name">ML Engineer</span><span class="fit-pct">39%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:39%"></div></div>
+              <div class="fit-skills"><span class="skill-chip">Python</span><span class="skill-chip">Machine Learning</span><span class="skill-chip">Statistics</span><span class="skill-chip">Linear Algebra</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-skills" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg><span class="panel-title">Skills</span></div>
+        <p class="panel-desc">Add skills recruiters can filter by.</p>
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search your skills...">
+        </div>
+        <div class="empty-state">
+          <div class="e-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg></div>
+          <p>No skills added yet — search the catalog below to add your first one.</p>
+        </div>
+        <div class="catalog-row">
+          <select class="select-box"><option>Technical</option><option>Design</option><option>Soft skills</option><option>Tools</option></select>
+          <input class="text-box" placeholder="Search skills from the catalog...">
+          <button class="btn-add" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-prefs" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 4.5-4.9.4 3.7 3.2L7.8 16 12 13.4 16.2 16l-1.1-4.9 3.7-3.2-4.9-.4Z"/></svg><span class="panel-title">Career preferences</span></div>
+        <p class="panel-desc">Industries that draw you, how you want to work, and the places that excite you.</p>
+
+        <div class="subsection">
+          <div class="sub-head"><div class="sub-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg></div><span class="sub-title">Preferred work model</span></div>
+          <p class="sub-desc">One main engagement model · you can change this any time</p>
+          <div class="option-row">
+            <button class="option-pill selected" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full-time</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Internship</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Contract / Freelance</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Research / Graduate Studies</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Startup / Founding Team</button>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="sub-head"><div class="sub-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="sub-title">Preferred shift</span></div>
+          <p class="sub-desc">When you'd rather work · you can change this any time</p>
+          <div class="option-row">
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Day shift</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Night shift</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Rotational</button>
+            <button class="option-pill selected" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Flexible / No preference</button>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="sub-head"><div class="sub-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><span class="sub-title">Preferred locations</span></div>
+          <p class="sub-desc">Cities or regions you'd relocate to or already work near</p>
+          <div class="option-row">
+            <button class="option-pill selected" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Hyderabad</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Bengaluru</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Remote only</button>
+            <button class="option-pill" type="button" onclick="selectPill(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Open to relocate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="side-col">
+    <div class="side-card">
+      <div class="side-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>At a glance</div>
+      <div class="ring-row">
+        <svg class="ring" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24" fill="none" stroke="#ece7fa" stroke-width="6"/>
+          <circle cx="28" cy="28" r="24" fill="none" stroke="url(#ringGrad)" stroke-width="6" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="52.7" transform="rotate(-90 28 28)"/>
+          <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="56" y2="56"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient></defs>
+        </svg>
+        <div><div class="ring-label">Profile completeness</div><div class="ring-value">65%</div></div>
+      </div>
+      <div class="stat-row"><span class="k">Target roles</span><span class="v">3 / 3</span></div>
+      <div class="stat-row"><span class="k">Top match</span><span class="v">43%</span></div>
+      <div class="stat-row"><span class="k">Courses tracked</span><span class="v">5</span></div>
+      <div class="stat-row"><span class="k">Career direction</span><span class="v" style="color:var(--amber)">Not set</span></div>
+    </div>
+    <div class="side-card">
+      <div class="side-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Fit still calculating</div>
+      <div class="notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
+        <p>We're still linking your student record to a verified profile ID. Role fit scores below are from your last sync and may be a few hours stale.</p>
+      </div>
+    </div>
+    <a href="#" class="side-cta">Complete career direction</a>
+  </div>
+</div>
+
+</div>
+<script>
+function selectPill(el){
+  var row = el.closest('.option-row');
+  row.querySelectorAll('.option-pill').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function showTab(name, btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-roles').style.display = name==='roles' ? 'block':'none';
+  document.getElementById('tab-skills').style.display = name==='skills' ? 'block':'none';
+  document.getElementById('tab-prefs').style.display = name==='prefs' ? 'block':'none';
+}
+</script>
+</body>
+</html>
