@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Leapath — Student Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14132B;
+    --navy-light:#201D42;
+    --navy-line:#332F5C;
+    --paper:#F7F6F0;
+    --paper-alt:#EFECE2;
+    --card:#FFFFFF;
+    --ink:#1D1B2E;
+    --ink-soft:#6E6B82;
+    --ink-faint:#9A97AC;
+    --violet:#5B46E0;
+    --violet-soft:#EEEAFE;
+    --green:#2E7A58;
+    --green-soft:#E3F3EA;
+    --amber:#C7811C;
+    --amber-soft:#FBEED6;
+    --coral:#C4553F;
+    --coral-soft:#FBE7E1;
+    --line:#E4E0D3;
+    --radius:16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .display{ font-family:'Fraunces', serif; }
+
+  .app{ display:flex; min-height:100vh; }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar{
+    width:264px; flex-shrink:0;
+    background:var(--navy);
+    color:#EDEBFA;
+    display:flex; flex-direction:column;
+    padding:28px 20px;
+    position:sticky; top:0; height:100vh;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; padding:0 4px 26px; }
+  .brand-mark{
+    width:34px; height:34px; border-radius:9px;
+    background:linear-gradient(155deg, var(--violet), #8A7CF0);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; color:#fff; font-size:17px;
+    flex-shrink:0;
+  }
+  .brand-name{ font-family:'Fraunces', serif; font-size:20px; font-weight:600; letter-spacing:0.2px; }
+  .brand-tag{ font-size:10px; letter-spacing:1.5px; color:#A8A3C9; text-transform:uppercase; margin-top:1px; }
+
+  .side-user{
+    display:flex; align-items:center; gap:11px;
+    padding:12px; border-radius:12px;
+    background:var(--navy-light);
+    border:1px solid var(--navy-line);
+    margin-bottom:22px;
+  }
+  .side-avatar{
+    width:36px; height:36px; border-radius:50%;
+    background:linear-gradient(155deg,#8A7CF0,#5B46E0);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:600; font-size:14px; color:#fff;
+    flex-shrink:0;
+  }
+  .side-user-name{ font-size:13.5px; font-weight:600; line-height:1.2; }
+  .side-user-role{ font-size:11px; color:#A8A3C9; margin-top:1px; }
+
+  .nav-group{ margin-bottom:22px; }
+  .nav-label{
+    font-size:10.5px; letter-spacing:1.6px; color:#79749E;
+    text-transform:uppercase; padding:0 10px 8px; font-weight:600;
+  }
+  .nav-btn{
+    width:100%; display:flex; align-items:center; gap:11px;
+    padding:9.5px 10px; border-radius:10px; border:none;
+    background:transparent; color:#C9C6E3;
+    font-family:'Inter', sans-serif; font-size:13.6px; font-weight:500;
+    text-align:left; cursor:pointer; margin-bottom:2px;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-btn svg{ width:17px; height:17px; flex-shrink:0; opacity:0.85; }
+  .nav-btn:hover{ background:var(--navy-light); color:#fff; }
+  .nav-btn.active{ background:var(--violet); color:#fff; }
+  .nav-btn.active svg{ opacity:1; }
+  .nav-badge{
+    margin-left:auto; font-family:'IBM Plex Mono', monospace; font-size:10.5px;
+    background:rgba(255,255,255,0.14); padding:1px 6px; border-radius:20px;
+  }
+
+  .sidebar-foot{ margin-top:auto; }
+  .readiness-mini{
+    border:1px dashed var(--navy-line); border-radius:12px; padding:14px;
+  }
+  .readiness-mini-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .readiness-mini-label{ font-size:11px; color:#A8A3C9; letter-spacing:0.4px; }
+  .readiness-mini-val{ font-family:'IBM Plex Mono', monospace; font-size:15px; font-weight:600; color:#fff; }
+  .readiness-mini-bar{ height:5px; border-radius:4px; background:var(--navy-line); overflow:hidden; }
+  .readiness-mini-fill{ height:100%; width:25%; background:linear-gradient(90deg,#8A7CF0,#C9C6E3); border-radius:4px; }
+
+  /* ============ MAIN ============ */
+  .main{ flex:1; min-width:0; }
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 40px; border-bottom:1px solid var(--line);
+    background:var(--paper);
+  }
+  .topbar-title{ font-family:'Fraunces', serif; font-size:24px; font-weight:600; }
+  .topbar-sub{ font-size:13px; color:var(--ink-soft); margin-top:2px; }
+  .topbar-right{ display:flex; align-items:center; gap:14px; }
+  .search-box{
+    display:flex; align-items:center; gap:8px;
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:8px 12px; font-size:13px; color:var(--ink-faint); width:220px;
+  }
+  .search-box svg{ width:15px; height:15px; flex-shrink:0; }
+  .icon-btn{
+    width:38px; height:38px; border-radius:10px; border:1px solid var(--line);
+    background:var(--card); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; position:relative;
+  }
+  .icon-btn svg{ width:17px; height:17px; color:var(--ink-soft); }
+  .dot{ position:absolute; top:8px; right:9px; width:6px; height:6px; border-radius:50%; background:var(--coral); }
+  .top-avatar{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(155deg,#8A7CF0,#5B46E0);
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    font-family:'Fraunces', serif; font-weight:600; font-size:14px;
+  }
+
+  .content{ padding:32px 40px 60px; }
+  .view{ display:none; }
+  .view.active{ display:block; animation:fade .25s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  /* section helpers */
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:16px; }
+  .section-title{ font-family:'Fraunces', serif; font-size:19px; font-weight:600; }
+  .section-link{ font-size:12.5px; color:var(--violet); font-weight:600; text-decoration:none; cursor:pointer; }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px;
+  }
+  .grid-2{ display:grid; grid-template-columns: 1.15fr 0.85fr; gap:20px; }
+  .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+
+  /* stat cards */
+  .stat-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  }
+  .stat-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .stat-icon{ width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; }
+  .stat-icon svg{ width:16px; height:16px; }
+  .stat-trend{ font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; }
+  .stat-val{ font-family:'Fraunces', serif; font-size:28px; font-weight:600; line-height:1; margin-bottom:4px; }
+  .stat-label{ font-size:12.5px; color:var(--ink-soft); }
+
+  /* readiness dial - signature element */
+  /* ============ HERO MODULE SYSTEM ============ */
+  .hero-mod{
+    position:relative; overflow:hidden; isolation:isolate;
+    display:grid; grid-template-columns:minmax(0,1.55fr) minmax(340px,.9fr);
+    min-height:400px; border-radius:26px;
+    border:1px solid rgba(167,139,250,.30);
+    background:
+      radial-gradient(circle at 82% 30%, rgba(139,92,246,.30) 0%, rgba(139,92,246,0) 45%),
+      linear-gradient(108deg,#150c30 0%,#1e1148 28%,#341c74 58%,#5a35c8 100%);
+    box-shadow:0 28px 70px rgba(20,8,50,.35), 0 0 0 1px rgba(255,255,255,.04) inset;
+  }
+  .hero-mod::before{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.10;
+    background-image:radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1.25px);
+    background-size:26px 26px;
+    mask-image:linear-gradient(90deg,black 0%,black 62%,transparent 100%);
+  }
+  .hero-mod-left{
+    position:relative; z-index:2; padding:44px 44px;
+    display:flex; flex-direction:column; justify-content:center; gap:16px; color:#fff;
+  }
+  .hero-mod-badge{
+    display:inline-flex; align-self:flex-start; align-items:center; gap:9px;
+    padding:9px 13px 9px 15px; border-radius:999px;
+    border:1px solid rgba(221,214,254,.26); background:rgba(255,255,255,.075);
+    color:#ddd6fe; font-size:12px; font-weight:750; letter-spacing:.2px;
+    backdrop-filter:blur(10px); box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  .hero-mod-badge .status-dot{
+    width:8px; height:8px; border-radius:50%; background:#a78bfa;
+    box-shadow:0 0 0 4px rgba(167,139,250,.13), 0 0 14px rgba(167,139,250,.75);
+  }
+  .hero-mod-badge .live-chip{
+    margin-left:2px; padding:2px 8px; border-radius:999px;
+    border:1px solid rgba(74,222,128,.35); color:#86efac; background:rgba(74,222,128,.09);
+    font-size:9.5px; font-weight:800; letter-spacing:.7px;
+  }
+  .hero-mod-heading{
+    font-family:'Sora', sans-serif; font-size:clamp(30px,3vw,44px); font-weight:800;
+    line-height:1.1; letter-spacing:-1.4px; margin-top:2px; max-width:640px;
+    text-shadow:0 2px 18px rgba(0,0,0,.16);
+  }
+  .hero-mod-heading .accent{ color:#c4b5fd; }
+  .hero-mod-desc{ max-width:560px; font-size:15px; line-height:1.65; color:rgba(255,255,255,.72); }
+  .hero-mod-actions{ display:flex; align-items:center; gap:12px; margin-top:4px; flex-wrap:wrap; }
+  .hero-mod-btn-primary{
+    display:inline-flex; align-items:center; gap:9px; padding:14px 20px; border-radius:13px; border:0;
+    background:#fff; color:#35147a; font:750 14px 'Inter', sans-serif; cursor:pointer;
+    box-shadow:0 16px 32px rgba(7,2,25,.24), inset 0 1px 0 rgba(255,255,255,.9);
+    transition:transform .2s cubic-bezier(.22,1,.36,1), box-shadow .2s;
+  }
+  .hero-mod-btn-primary:hover{ transform:translateY(-2px); box-shadow:0 20px 40px rgba(7,2,25,.3), inset 0 1px 0 rgba(255,255,255,.9); }
+  .hero-mod-btn-primary svg{ width:16px; height:16px; }
+  .hero-mod-btn-secondary{
+    display:inline-flex; align-items:center; gap:9px; padding:13px 19px; border-radius:13px; cursor:pointer;
+    border:1px solid rgba(221,214,254,.28); background:rgba(255,255,255,.06);
+    color:#f5f3ff; font:750 14px 'Inter', sans-serif; backdrop-filter:blur(10px); transition:all .2s;
+  }
+  .hero-mod-btn-secondary:hover{ background:rgba(255,255,255,.11); border-color:rgba(221,214,254,.42); }
+  .hero-mod-btn-secondary svg{ width:15px; height:15px; }
+  .hero-mod-meta{
+    display:flex; align-items:center; gap:28px; flex-wrap:wrap;
+    margin-top:6px; color:rgba(255,255,255,.56); font-size:12.8px; font-weight:500;
+  }
+  .hero-mod-meta span b{ color:#e9e0ff; font-weight:750; margin-left:4px; }
+
+  .hero-mod-right{
+    position:relative; z-index:1; min-height:400px;
+    display:flex; align-items:center; justify-content:center; padding:36px; overflow:hidden;
+  }
+  .hero-mod-orbit{ position:absolute; top:38%; left:50%; border-radius:50%; pointer-events:none; border:1px solid rgba(221,214,254,.32); }
+  .hero-mod-orbit.orbit-a{ width:380px; height:380px; transform:translate(-62%,-30%); }
+  .hero-mod-orbit.orbit-b{ width:300px; height:300px; transform:translate(-32%,-45%); }
+  .hero-mod-card{
+    position:relative; z-index:4; width:220px; padding:26px 20px; border-radius:22px; text-align:left;
+    display:flex; flex-direction:column;
+    background:linear-gradient(160deg,rgba(167,139,250,.26),rgba(109,40,217,.16));
+    border:1px solid rgba(196,181,253,.22); backdrop-filter:blur(18px);
+    box-shadow:0 30px 70px rgba(9,3,28,.4), inset 0 1px 0 rgba(255,255,255,.10);
+  }
+  .hero-mod-card-icon{
+    width:52px; height:52px; margin-bottom:14px; border-radius:14px;
+    display:grid; place-items:center; color:#fff;
+    background:linear-gradient(145deg,#8b5cf6 0%,#6d28d9 55%,#4c1d95 100%);
+    box-shadow:0 16px 32px rgba(20,7,58,.42), 0 0 30px rgba(139,92,246,.28), inset 0 1px 0 rgba(255,255,255,.32);
+  }
+  .hero-mod-card-icon svg{ width:24px; height:24px; stroke-width:1.7; }
+  .hero-mod-card-eyebrow{ font-size:9.5px; font-weight:800; letter-spacing:1.6px; color:#c9b7ff; }
+  .hero-mod-card-title{ margin-top:8px; font:700 18px 'Sora', sans-serif; color:#fff; letter-spacing:-.3px; line-height:1.25; }
+  .hero-mod-card-sub{ margin-top:5px; font-size:11.5px; color:rgba(255,255,255,.62); }
+  .hero-mod-floating{
+    position:absolute; z-index:5; display:flex; align-items:center; gap:9px;
+    padding:9px 13px; border-radius:13px; background:rgba(16,9,38,.92);
+    border:1px solid rgba(196,181,253,.24); color:#fff; font-size:11.5px; font-weight:750;
+    box-shadow:0 14px 32px rgba(6,2,25,.3); backdrop-filter:blur(12px); white-space:nowrap;
+  }
+  .hero-mod-floating .fic{
+    width:22px; height:22px; border-radius:50%; flex-shrink:0;
+    display:grid; place-items:center; background:rgba(139,92,246,.32); color:#c4b5fd;
+  }
+  .hero-mod-floating .fic svg{ width:12px; height:12px; }
+  .hero-mod-floating .flabel{ color:rgba(255,255,255,.5); font-weight:600; font-size:9px; display:block; }
+  .hero-mod-floating .fvalue{ display:block; margin-top:1px; }
+  .hero-mod-floating.float-top{ top:-18px; right:-22px; }
+  .hero-mod-floating.float-bottom{ left:-34px; bottom:-16px; }
+
+  @media (max-width:900px){
+    .hero-mod{ grid-template-columns:1fr; }
+    .hero-mod-left{ padding:38px 30px 26px; }
+    .hero-mod-right{ min-height:280px; }
+    .hero-mod-floating{ display:none; }
+  }
+  @media (max-width:560px){
+    .hero-mod-left{ padding:30px 20px 22px; }
+    .hero-mod-heading{ font-size:28px; letter-spacing:-1.1px; }
+    .hero-mod-actions{ flex-direction:column; align-items:stretch; }
+    .hero-mod-meta{ gap:12px; }
+  }
+  .btn{
+    border:none; border-radius:9px; padding:9px 16px; font-size:13px; font-weight:600;
+    cursor:pointer; font-family:'Inter', sans-serif;
+  }
+  .btn-primary{ background:var(--violet); color:#fff; }
+  .btn-ghost{ background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.25); }
+  .btn-outline{ background:transparent; border:1px solid var(--line); color:var(--ink); }
+  .btn-outline-violet{ background:var(--violet-soft); border:1px solid transparent; color:var(--violet); }
+
+  /* checklist */
+  .check-row{ display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--line); }
+  .check-row:last-child{ border-bottom:none; }
+  .check-icon{ width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .check-icon svg{ width:13px; height:13px; }
+  .check-name{ font-size:13.5px; font-weight:600; flex:1; }
+  .check-sub{ font-size:11.5px; color:var(--ink-soft); margin-top:1px; }
+  .check-pct{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-soft); }
+
+  /* announcement card */
+  .ann-card{ display:flex; gap:14px; padding:16px; border:1px solid var(--line); border-radius:14px; background:var(--card); margin-bottom:12px; }
+  .ann-date{
+    width:52px; flex-shrink:0; text-align:center; background:var(--paper-alt); border-radius:10px; padding:8px 0;
+  }
+  .ann-date .d{ font-family:'Fraunces', serif; font-size:19px; font-weight:600; line-height:1; }
+  .ann-date .m{ font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft); margin-top:2px; }
+  .tag{ font-size:10.5px; font-weight:600; padding:3px 9px; border-radius:20px; letter-spacing:0.3px; }
+  .ann-title{ font-size:14.5px; font-weight:600; margin:6px 0 4px; }
+  .ann-desc{ font-size:12.8px; color:var(--ink-soft); line-height:1.5; }
+  .ann-pinned{ border-color:var(--violet); box-shadow:0 0 0 1px var(--violet) inset; }
+
+  .stat-clickable{ cursor:pointer; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+  .stat-clickable:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(20,19,43,0.08); border-color:#D6D2C4; }
+  .stat-view{ font-size:11.5px; font-weight:600; color:var(--violet); margin-top:10px; opacity:0; transition:opacity .15s ease; }
+  .stat-clickable:hover .stat-view{ opacity:1; }
+
+  /* roadmap */
+  .roadmap-track{ position:relative; display:flex; justify-content:space-between; padding:0 4px; }
+  .roadmap-line{ position:absolute; top:16px; left:24px; right:24px; height:2px; background:var(--line); z-index:0; }
+  .roadmap-step{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:9px; width:70px; }
+  .roadmap-dot{
+    width:32px; height:32px; border-radius:50%; background:var(--card); border:2px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono', monospace;
+    font-size:12px; font-weight:600; color:var(--ink-faint);
+  }
+  .roadmap-dot svg{ width:14px; height:14px; }
+  .roadmap-step.done .roadmap-dot{ background:var(--green); border-color:var(--green); }
+  .roadmap-step.current .roadmap-dot{ background:var(--violet); border-color:var(--violet); color:#fff; }
+  .roadmap-label{ font-size:11px; font-weight:600; color:var(--ink-soft); text-align:center; line-height:1.3; }
+  .roadmap-step.done .roadmap-label, .roadmap-step.current .roadmap-label{ color:var(--ink); }
+  .clickable-step{ cursor:pointer; }
+  .clickable-step:hover .roadmap-dot{ box-shadow:0 0 0 4px var(--green-soft); }
+  .clickable-step:hover .roadmap-label{ color:var(--violet); }
+  .roadmap-note{ font-size:12.3px; color:var(--ink-soft); background:var(--paper-alt); border-radius:10px; padding:11px 14px; margin-top:22px; line-height:1.5; }
+
+  /* week-by-week roadmap */
+  .weekmap-head{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:22px; }
+  .weekmap-title{ font-family:'Fraunces', serif; font-size:16px; font-weight:600; }
+  .weekmap-sub{ font-size:12px; color:var(--ink-soft); margin-top:3px; }
+  .weekmap-total{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-soft); flex-shrink:0; white-space:nowrap; }
+  .weekmap-total svg{ width:14px; height:14px; }
+  .week-block{ display:flex; gap:16px; }
+  .week-block + .week-block{ margin-top:6px; }
+  .week-rail{ display:flex; flex-direction:column; align-items:center; flex-shrink:0; width:32px; }
+  .week-marker{
+    width:32px; height:32px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600;
+    background:var(--card); border:2px solid var(--violet); color:var(--violet);
+  }
+  .week-marker.is-done{ background:var(--green); border-color:var(--green); color:#fff; }
+  .week-marker.is-done svg{ width:15px; height:15px; }
+  .week-marker.is-locked{ background:var(--paper-alt); border-color:var(--line); color:var(--ink-faint); }
+  .week-marker.is-locked svg{ width:14px; height:14px; }
+  .week-rail-line{ width:2px; flex:1; background:var(--line); margin:4px 0; min-height:16px; }
+  .week-body{ flex:1; min-width:0; padding-bottom:26px; }
+  .week-block:last-child .week-body{ padding-bottom:0; }
+  .week-info-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; cursor:pointer; user-select:none; }
+  .week-name{ font-size:14.5px; font-weight:700; }
+  .week-name span{ font-weight:500; color:var(--ink-soft); }
+  .week-progress-line{ font-size:12px; color:var(--ink-soft); margin-top:2px; }
+  .week-progress-bar{ width:100%; max-width:220px; height:5px; border-radius:4px; background:var(--paper-alt); margin-top:8px; overflow:hidden; }
+  .week-progress-fill{ height:100%; border-radius:4px; background:var(--violet); transition:width .2s ease; }
+  .week-block.is-done-week .week-progress-fill{ background:var(--green); }
+  .week-chevron{ flex-shrink:0; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--ink-soft); transition:transform .18s ease, background .15s ease; margin-top:1px; }
+  .week-chevron svg{ width:14px; height:14px; }
+  .week-info-row:hover .week-chevron{ background:var(--paper-alt); }
+  .week-block.is-open .week-chevron{ transform:rotate(180deg); }
+  .week-tasks{ display:none; margin-top:14px; }
+  .week-block.is-open .week-tasks{ display:block; }
+  .week-lock-pill{
+    font-size:11px; font-weight:700; color:var(--ink-soft); background:var(--paper-alt);
+    border-radius:20px; padding:4px 11px; flex-shrink:0; display:flex; align-items:center; gap:5px;
+  }
+  .week-lock-pill svg{ width:11px; height:11px; }
+  .task-card{ border:1px solid var(--line); border-radius:14px; padding:16px 18px; background:var(--card); }
+  .task-card + .task-card{ margin-top:10px; }
+  .task-card.is-locked{ background:var(--paper-alt); opacity:0.75; }
+  .task-top{ display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .task-toggle{
+    width:22px; height:22px; border-radius:50%; flex-shrink:0; cursor:pointer;
+    border:2px solid var(--violet); background:transparent; display:flex; align-items:center; justify-content:center;
+  }
+  .task-toggle svg{ width:11px; height:11px; color:#fff; display:none; }
+  .task-toggle.tt-progress{ background:var(--violet); }
+  .task-toggle.tt-done{ background:var(--green); border-color:var(--green); }
+  .task-toggle.tt-done svg{ display:block; }
+  .task-card.is-locked .task-toggle{ cursor:not-allowed; border-color:var(--ink-faint); }
+  .task-type{ font-size:10.5px; font-weight:700; letter-spacing:0.4px; padding:3px 9px; border-radius:6px; background:var(--violet-soft); color:var(--violet); }
+  .task-type.type-assess{ background:var(--coral-soft); color:var(--coral); }
+  .task-meta-mini{ display:flex; align-items:center; gap:5px; font-size:11.5px; color:var(--ink-soft); }
+  .task-meta-mini svg{ width:12px; height:12px; }
+  .task-pts{ font-size:11.5px; font-weight:700; color:var(--amber); }
+  .status-group{ display:flex; gap:6px; margin-left:auto; }
+  .status-btn{
+    font-size:11px; font-weight:600; padding:5px 11px; border-radius:20px; border:1px solid var(--line);
+    background:var(--card); color:var(--ink-soft); cursor:pointer;
+  }
+  .status-btn.sb-pending.is-active{ border-color:var(--ink-faint); color:var(--ink); background:var(--paper-alt); }
+  .status-btn.sb-progress.is-active{ background:var(--violet); border-color:var(--violet); color:#fff; }
+  .status-btn.sb-done.is-active{ background:var(--green); border-color:var(--green); color:#fff; }
+  .task-card.is-locked .status-btn{ cursor:not-allowed; opacity:0.6; }
+  .task-title{ font-size:13.8px; font-weight:700; margin-bottom:4px; }
+  .task-title.is-struck{ text-decoration:line-through; color:var(--ink-soft); }
+  .task-desc{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-bottom:10px; }
+  .task-chips{ margin-bottom:8px; }
+  .task-link{ display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:700; color:var(--violet); }
+  .task-link svg{ width:12px; height:12px; }
+  .task-internal{ display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:var(--ink-faint); }
+  .task-internal svg{ width:12px; height:12px; }
+
+  /* assessment bars */
+  .assess-row{ display:flex; align-items:center; gap:12px; padding:9px 0; }
+  .assess-name{ font-size:12.8px; font-weight:600; width:130px; flex-shrink:0; }
+  .assess-bar{ flex:1; height:7px; border-radius:4px; background:var(--paper-alt); overflow:hidden; }
+  .assess-fill{ height:100%; border-radius:4px; }
+  .assess-score{ width:26px; text-align:right; font-size:12.5px; color:var(--ink-soft); flex-shrink:0; }
+
+  /* modal */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(20,19,43,0.5);
+    align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--paper); border-radius:18px; width:100%; max-width:560px; max-height:82vh;
+    display:flex; flex-direction:column; overflow:hidden; animation:modalIn .18s ease;
+  }
+  @keyframes modalIn{ from{opacity:0; transform:translateY(10px) scale(0.98);} to{opacity:1; transform:none;} }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--line); background:var(--card); }
+  .modal-title{ font-family:'Fraunces', serif; font-size:18px; font-weight:600; }
+  .modal-close{ width:32px; height:32px; border-radius:9px; border:1px solid var(--line); background:var(--card); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .modal-close svg{ width:15px; height:15px; color:var(--ink-soft); }
+  .modal-body{ padding:18px 24px 24px; overflow-y:auto; }
+  .mrow{ display:flex; align-items:center; gap:13px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .mrow:last-child{ border-bottom:none; }
+  .mrow-logo{ width:38px; height:38px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; font-family:'Fraunces', serif; }
+  .mrow-title{ font-size:13.6px; font-weight:600; }
+  .mrow-sub{ font-size:11.8px; color:var(--ink-soft); margin-top:2px; }
+  .mrow-right{ margin-left:auto; text-align:right; flex-shrink:0; }
+  .jd-meta{ font-size:12.6px; color:var(--ink-soft); margin-bottom:16px; }
+  .jd-match-wrap{ display:flex; align-items:center; gap:12px; background:var(--paper-alt); border-radius:12px; padding:12px 14px; margin-bottom:18px; }
+  .jd-match-bar{ flex:1; height:7px; border-radius:4px; background:var(--line); overflow:hidden; }
+  .jd-match-fill{ height:100%; border-radius:4px; background:var(--green); }
+  .jd-match-pct{ font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; color:var(--green); flex-shrink:0; }
+  .jd-section-label{ font-size:11.5px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--ink-soft); margin:18px 0 8px; }
+  .jd-body p{ font-size:13px; color:var(--ink); line-height:1.6; }
+  .jd-list{ padding-left:18px; margin-top:2px; }
+  .jd-list li{ font-size:13px; color:var(--ink); line-height:1.7; }
+  .jd-chips{ margin-top:4px; }
+  .jd-footer{ display:flex; gap:10px; margin-top:20px; padding-top:18px; border-top:1px solid var(--line); }
+  .job-clickable{ cursor:pointer; border-radius:10px; transition:background .15s ease; }
+  .job-clickable:hover{ background:var(--paper-alt); margin:0 -10px; padding-left:10px; padding-right:10px; width:calc(100% + 20px); }
+  .job-match{ font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; color:var(--green); background:var(--green-soft); padding:3px 9px; border-radius:20px; flex-shrink:0; }
+
+  /* skill gap */
+  .skill-row{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .skill-row:last-child{ border-bottom:none; }
+  .skill-name{ font-size:12.8px; font-weight:600; width:120px; flex-shrink:0; }
+  .skill-bars{ flex:1; height:7px; border-radius:4px; background:var(--paper-alt); position:relative; overflow:hidden; }
+  .skill-bar-req{ position:absolute; left:80%; top:-3px; bottom:-3px; width:2px; background:var(--ink-faint); }
+  .skill-bar-you{ height:100%; border-radius:4px; }
+  .skill-note{ font-size:12.3px; color:var(--ink-soft); background:var(--paper-alt); border-radius:10px; padding:11px 14px; margin-top:14px; line-height:1.5; }
+  .job-row{ display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .job-row:last-child{ border-bottom:none; }
+  .job-logo{ width:38px; height:38px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; font-family:'Fraunces', serif; }
+  .job-title{ font-size:13.5px; font-weight:600; }
+  .job-sub{ font-size:12px; color:var(--ink-soft); margin-top:2px; }
+
+  /* ================= PROFILE VIEW ================= */
+  .profile-hero{ background:linear-gradient(120deg, var(--violet), #8A7CF0); border-radius:20px; height:120px; position:relative; margin-bottom:56px; }
+  .profile-avatar{
+    width:88px; height:88px; border-radius:50%; background:var(--card); border:4px solid var(--card);
+    position:absolute; left:28px; top:76px; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-size:30px; font-weight:600; color:var(--violet);
+    box-shadow:0 4px 14px rgba(20,19,43,0.12);
+  }
+  .profile-headbar{ display:flex; justify-content:space-between; align-items:flex-end; padding:0 28px; margin-top:-40px; }
+  .profile-name{ font-family:'Fraunces', serif; font-size:24px; font-weight:600; }
+  .profile-meta{ font-size:13px; color:var(--ink-soft); margin-top:3px; }
+  .verified-pill{ display:inline-flex; align-items:center; gap:5px; background:var(--green-soft); color:var(--green); font-size:11.5px; font-weight:700; padding:5px 11px; border-radius:20px; }
+  .verified-pill svg{ width:12px; height:12px; }
+
+  .subtabs{ display:flex; gap:6px; padding:20px 0 22px; border-bottom:1px solid var(--line); margin-bottom:24px; flex-wrap:wrap; }
+  .subtab{ font-size:12.8px; font-weight:600; padding:8px 14px; border-radius:9px; background:var(--paper-alt); color:var(--ink-soft); cursor:pointer; }
+  .subtab.active{ background:var(--navy); color:#fff; }
+
+  .field{ margin-bottom:18px; }
+  .field-label{ font-size:11.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:5px; }
+  .field-val{ font-size:14.5px; font-weight:600; }
+
+  /* resume view */
+  .resume-preview{
+    background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px; height:420px;
+    display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden;
+  }
+  .resume-preview::after{
+    content:"PDF"; position:absolute; top:16px; right:16px; font-family:'IBM Plex Mono',monospace;
+    font-size:10px; background:var(--coral-soft); color:var(--coral); padding:3px 8px; border-radius:6px; letter-spacing:1px;
+  }
+  .resume-line{ height:8px; border-radius:4px; background:var(--paper-alt); }
+
+  .gauge-ring{ position:relative; width:120px; height:120px; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; }
+  .gauge-ring svg{ display:block; }
+  .dial-center{ position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; pointer-events:none; }
+  .dial-val{ font-family:'Fraunces', serif; font-weight:700; font-size:26px; line-height:1; }
+  .dial-cap{ font-size:10.5px; margin-top:3px; }
+
+  /* portfolio */
+  .proj-card{ border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--card); }
+  .proj-cover{ height:110px; }
+  .proj-body{ padding:15px; }
+  .proj-title{ font-size:14px; font-weight:700; margin-bottom:4px; }
+  .proj-desc{ font-size:12.3px; color:var(--ink-soft); line-height:1.5; margin-bottom:10px; }
+  .chip{ display:inline-block; font-size:10.5px; font-weight:600; background:var(--paper-alt); color:var(--ink-soft); padding:3px 8px; border-radius:20px; margin:0 5px 5px 0; }
+
+  /* career intent */
+  .intent-card{ border:1px solid var(--line); border-radius:16px; padding:20px; background:var(--card); }
+  .intent-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .intent-icon{ width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; }
+  .intent-icon svg{ width:16px; height:16px; }
+
+  /* settings */
+  .setting-row{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--line); }
+  .setting-row:last-child{ border-bottom:none; }
+  .setting-name{ font-size:14px; font-weight:600; }
+  .setting-desc{ font-size:12.3px; color:var(--ink-soft); margin-top:2px; }
+  .toggle{ width:42px; height:24px; border-radius:20px; background:var(--paper-alt); position:relative; cursor:pointer; flex-shrink:0; }
+  .toggle::after{ content:""; position:absolute; width:18px; height:18px; border-radius:50%; background:#fff; top:3px; left:3px; box-shadow:0 1px 3px rgba(0,0,0,0.25); transition:.15s; }
+  .toggle.on{ background:var(--violet); }
+  .toggle.on::after{ left:21px; }
+
+  /* support */
+  .faq-item{ border:1px solid var(--line); border-radius:12px; padding:15px 16px; margin-bottom:10px; cursor:pointer; background:var(--card); }
+  .faq-q{ display:flex; justify-content:space-between; align-items:center; font-size:13.6px; font-weight:600; }
+  .faq-a{ font-size:12.6px; color:var(--ink-soft); margin-top:10px; line-height:1.55; display:none; }
+  .faq-item.open .faq-a{ display:block; }
+  .faq-item.open .chev{ transform:rotate(180deg); }
+  .chev{ transition:.15s; width:14px; height:14px; color:var(--ink-faint); }
+
+  @media (max-width:1080px){
+    .grid-2{ grid-template-columns:1fr; }
+    .grid-3{ grid-template-columns:repeat(2,1fr); }
+    .grid-4{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:760px){
+    .sidebar{ display:none; }
+    .content{ padding:24px 18px; }
+    .topbar{ padding:18px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">L</div>
+      <div>
+        <div class="brand-name">Leapath</div>
+        <div class="brand-tag">Student</div>
+      </div>
+    </div>
+
+    <div class="side-user">
+      <div class="side-avatar">AV</div>
+      <div>
+        <div class="side-user-name">Aisha Verma</div>
+        <div class="side-user-role">M.Tech · Chandigarh University</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Overview</div>
+      <button class="nav-btn active" data-view="overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-btn" data-view="announcements">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M7 14v4a2 2 0 002 2h1"/></svg>
+        Announcements
+        <span class="nav-badge">3</span>
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Portfolio</div>
+      <button class="nav-btn" data-view="profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        My Profile Details
+      </button>
+      <button class="nav-btn" data-view="resume">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/></svg>
+        Resume
+      </button>
+      <button class="nav-btn" data-view="portfolio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        Portfolio
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Readiness</div>
+      <button class="nav-btn" data-view="intent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-5 2 2-5z"/></svg>
+        Career Intent
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Account</div>
+      <button class="nav-btn" data-view="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 11-4 0v-.09A1.7 1.7 0 008.5 19.4a1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.55-1H3a2 2 0 110-4h.09A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06A1.7 1.7 0 008.5 4.6a1.7 1.7 0 001-1.55V3a2 2 0 114 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9a1.7 1.7 0 001.55 1H21a2 2 0 110 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
+        Settings
+      </button>
+      <button class="nav-btn" data-view="support">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.5 2.5 0 014.9.8c0 1.7-2.4 2-2.4 3.3"/><circle cx="12" cy="16.6" r="0.4" fill="currentColor"/></svg>
+        Support
+      </button>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="readiness-mini">
+        <div class="readiness-mini-top">
+          <span class="readiness-mini-label">READINESS</span>
+          <span class="readiness-mini-val">25%</span>
+        </div>
+        <div class="readiness-mini-bar"><div class="readiness-mini-fill"></div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- shared topbar -->
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="pageTitle">Good afternoon, Aisha</div>
+        <div class="topbar-sub" id="pageSub">Here's where your placement journey stands today.</div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          Search
+        </div>
+        <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="dot"></span></div>
+        <div class="top-avatar">AV</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ================= OVERVIEW ================= -->
+      <section class="view active" id="view-overview">
+
+        <section class="hero-mod" data-module="student-dashboard" style="margin-bottom:24px;">
+          <div class="hero-mod-left">
+            <div class="hero-mod-badge">
+              <span class="status-dot"></span>
+              Career readiness online
+              <span class="live-chip">LIVE</span>
+            </div>
+            <h1 class="hero-mod-heading">Define your intent.<br><span class="accent">Know exactly where you're headed.</span></h1>
+            <p class="hero-mod-desc">Set the roles you're working toward, track skill gaps against real requirements, and see which career paths your coursework already leads to.</p>
+            <div class="hero-mod-actions">
+              <button class="hero-mod-btn-primary" type="button" data-goto="intent">Set target role <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+              <button class="hero-mod-btn-secondary" type="button" data-goto="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>View role fit</button>
+            </div>
+            <div class="hero-mod-meta">
+              <span>Target roles <b>3</b></span>
+              <span>Top match <b>74%</b></span>
+            </div>
+          </div>
+          <div class="hero-mod-right">
+            <div class="hero-mod-orbit orbit-a"></div>
+            <div class="hero-mod-orbit orbit-b"></div>
+            <div class="hero-mod-card">
+              <div class="hero-mod-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg></div>
+              <div class="hero-mod-card-eyebrow">CAREER PULSE</div>
+              <div class="hero-mod-card-title">Senior Software Engineer</div>
+              <div class="hero-mod-card-sub">Primary target role</div>
+              <div class="hero-mod-floating float-top">
+                <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span>
+                <span><span class="flabel">Role fit</span><span class="fvalue">74% match</span></span>
+              </div>
+              <div class="hero-mod-floating float-bottom">
+                <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
+                <span><span class="flabel">Skills</span><span class="fvalue">5 tracked</span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid-4" style="margin-bottom:26px;">
+          <div class="stat-card stat-clickable" onclick="openModal('applications')">
+            <div class="stat-top">
+              <div class="stat-icon" style="background:var(--violet-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></svg></div>
+              <span class="stat-trend" style="color:var(--green);">+2 wk</span>
+            </div>
+            <div class="stat-val">6</div>
+            <div class="stat-label">Applications sent</div>
+            <div class="stat-view">View details →</div>
+          </div>
+          <div class="stat-card stat-clickable" onclick="openModal('interviews')">
+            <div class="stat-top">
+              <div class="stat-icon" style="background:var(--green-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg></div>
+              <span class="stat-trend" style="color:var(--green);">2 upcoming</span>
+            </div>
+            <div class="stat-val">2</div>
+            <div class="stat-label">Interviews scheduled</div>
+            <div class="stat-view">View details →</div>
+          </div>
+          <div class="stat-card stat-clickable" onclick="openModal('saved')">
+            <div class="stat-top">
+              <div class="stat-icon" style="background:var(--amber-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M12 2l3 6.5 7 1-5 5 1.2 7L12 18l-6.2 3.5 1.2-7-5-5 7-1z"/></svg></div>
+              <span class="stat-trend" style="color:var(--ink-faint);">this month</span>
+            </div>
+            <div class="stat-val">14</div>
+            <div class="stat-label">Saved opportunities</div>
+            <div class="stat-view">View details →</div>
+          </div>
+          <div class="stat-card stat-clickable" onclick="openModal('recruiters')">
+            <div class="stat-top">
+              <div class="stat-icon" style="background:var(--coral-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div>
+              <span class="stat-trend" style="color:var(--green);">+18</span>
+            </div>
+            <div class="stat-val">142</div>
+            <div class="stat-label">Recruiter profile views</div>
+            <div class="stat-view">View details →</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:26px; align-items:start;">
+          <div class="card">
+            <div class="weekmap-head">
+              <div>
+                <div class="weekmap-title">Week-by-week roadmap</div>
+                <div class="weekmap-sub">Click the circle next to each task to advance its status</div>
+              </div>
+              <div class="weekmap-total"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>8 weeks</div>
+            </div>
+
+            <div class="week-block" data-week="1">
+              <div class="week-rail">
+                <div class="week-marker is-done"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div class="week-rail-line"></div>
+              </div>
+              <div class="week-body">
+                <div class="week-info-row" data-week-toggle>
+                  <div style="flex:1;">
+                    <div class="week-name">Week 1 · <span>System Design Fundamentals</span></div>
+                    <div class="week-progress-line" data-progress-line>100% complete · 1 task</div>
+                    <div class="week-progress-bar"><div class="week-progress-fill" data-progress-fill style="width:100%;"></div></div>
+                  </div>
+                  <div class="week-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="week-tasks" data-week-tasks>
+                <div class="task-card" data-task data-status="done">
+                  <div class="task-top">
+                    <button class="task-toggle tt-done" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></button>
+                    <span class="task-type">COURSE</span>
+                    <span class="task-meta-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>4h</span>
+                    <span class="task-pts">+12 pts</span>
+                    <div class="status-group">
+                      <button class="status-btn sb-pending" data-status-btn="pending">Pending</button>
+                      <button class="status-btn sb-progress" data-status-btn="progress">In Progress</button>
+                      <button class="status-btn sb-done is-active" data-status-btn="done">Done</button>
+                    </div>
+                  </div>
+                  <div class="task-title is-struck" data-task-title>System Design Fundamentals</div>
+                  <div class="task-desc">Core principles: scalability, load balancing, caching and trade-offs — the foundation for every system design round.</div>
+                  <div class="task-chips"><span class="chip">System Design</span></div>
+                  <a class="task-link" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>Coursera</a>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="week-block" data-week="2">
+              <div class="week-rail">
+                <div class="week-marker">2</div>
+                <div class="week-rail-line"></div>
+              </div>
+              <div class="week-body">
+                <div class="week-info-row" data-week-toggle>
+                  <div style="flex:1;">
+                    <div class="week-name">Week 2 · <span>Kubernetes for Engineers</span></div>
+                    <div class="week-progress-line" data-progress-line>50% complete · 2 tasks</div>
+                    <div class="week-progress-bar"><div class="week-progress-fill" data-progress-fill style="width:50%;"></div></div>
+                  </div>
+                  <div class="week-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="week-tasks" data-week-tasks>
+                <div class="task-card" data-task data-status="done">
+                  <div class="task-top">
+                    <button class="task-toggle tt-done" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></button>
+                    <span class="task-type">COURSE</span>
+                    <span class="task-meta-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>6h</span>
+                    <span class="task-pts">+18 pts</span>
+                    <div class="status-group">
+                      <button class="status-btn sb-pending" data-status-btn="pending">Pending</button>
+                      <button class="status-btn sb-progress" data-status-btn="progress">In Progress</button>
+                      <button class="status-btn sb-done is-active" data-status-btn="done">Done</button>
+                    </div>
+                  </div>
+                  <div class="task-title is-struck" data-task-title>Kubernetes Basics &amp; Architecture</div>
+                  <div class="task-desc">Pods, deployments, services and cluster architecture — the building blocks recruiters expect for the Kubernetes gap on your profile.</div>
+                  <div class="task-chips"><span class="chip">Kubernetes</span></div>
+                  <a class="task-link" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>Udemy</a>
+                </div>
+                <div class="task-card" data-task data-status="progress">
+                  <div class="task-top">
+                    <button class="task-toggle tt-progress" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></button>
+                    <span class="task-type type-assess">ASSESS</span>
+                    <span class="task-meta-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>3h</span>
+                    <span class="task-pts">+9 pts</span>
+                    <div class="status-group">
+                      <button class="status-btn sb-pending" data-status-btn="pending">Pending</button>
+                      <button class="status-btn sb-progress is-active" data-status-btn="progress">In Progress</button>
+                      <button class="status-btn sb-done" data-status-btn="done">Done</button>
+                    </div>
+                  </div>
+                  <div class="task-title" data-task-title>Kubernetes Hands-on Assessment</div>
+                  <div class="task-desc">Deploy a 3-tier app to a cluster and pass the scenario-based assessment to confirm the skill on your profile.</div>
+                  <div class="task-chips"><span class="chip">Kubernetes</span><span class="chip">Distributed Systems</span></div>
+                  <span class="task-internal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>LeapPath Projects</span>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="week-block" data-week="3">
+              <div class="week-rail">
+                <div class="week-marker is-locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+              </div>
+              <div class="week-body">
+                <div class="week-info-row" data-week-toggle>
+                  <div style="flex:1;">
+                    <div class="week-name">Week 3 · <span>Distributed Systems Deep Dive</span></div>
+                    <div class="week-progress-line">Complete Week 2 first</div>
+                  </div>
+                  <div class="week-lock-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Locked</div>
+                  <div class="week-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="week-tasks" data-week-tasks>
+                <div class="task-card is-locked" data-task data-status="pending" data-locked="true">
+                  <div class="task-top">
+                    <button class="task-toggle" data-toggle disabled></button>
+                    <span class="task-type">COURSE</span>
+                    <span class="task-meta-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>5h</span>
+                    <span class="task-pts">+15 pts</span>
+                    <div class="status-group">
+                      <button class="status-btn sb-pending is-active" disabled>Pending</button>
+                      <button class="status-btn sb-progress" disabled>In Progress</button>
+                      <button class="status-btn sb-done" disabled>Done</button>
+                    </div>
+                  </div>
+                  <div class="task-title" data-task-title>Distributed Systems Deep Dive</div>
+                  <div class="task-desc">Consensus, replication and partition tolerance — closes out the last gap flagged in your skill gap analysis.</div>
+                  <div class="task-chips"><span class="chip">Distributed Systems</span></div>
+                  <span class="task-internal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>LeapPath Projects</span>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="roadmap-note" style="margin-top:4px;">Next up: finish the Kubernetes hands-on assessment to unlock Week 3 and close your last flagged skill gap.</div>
+            <div style="text-align:center; margin-top:16px;"><a class="section-link">View all 8 weeks →</a></div>
+          </div>
+
+          <div>
+          <div class="card">
+            <div class="section-head">
+              <div class="section-title" style="font-size:16px;">Assessment scores</div>
+              <a class="section-link">Retake →</a>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:18px; padding-bottom:18px; border-bottom:1px solid var(--line);">
+              <div class="gauge-ring" style="width:76px; height:76px; margin:0;">
+                <svg width="76" height="76" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="var(--paper-alt)" stroke-width="12"/>
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="var(--green)" stroke-width="12" stroke-linecap="round"
+                    stroke-dasharray="326.7" stroke-dashoffset="65" transform="rotate(-90 60 60)"/>
+                </svg>
+                <div class="dial-center"><div class="dial-val" style="color:var(--ink); font-size:19px;">80</div></div>
+              </div>
+              <div>
+                <div style="font-weight:700; font-size:14px;">Overall assessment score</div>
+                <div style="font-size:12.3px; color:var(--ink-soft); margin-top:2px;">Top 20% among Chandigarh University applicants</div>
+              </div>
+            </div>
+            <div class="assess-row">
+              <div class="assess-name">Aptitude Test</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:82%; background:var(--violet);"></div></div>
+              <div class="assess-score mono">82</div>
+            </div>
+            <div class="assess-row">
+              <div class="assess-name">Coding Assessment</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:76%; background:var(--green);"></div></div>
+              <div class="assess-score mono">76</div>
+            </div>
+            <div class="assess-row">
+              <div class="assess-name">Communication</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:88%; background:var(--amber);"></div></div>
+              <div class="assess-score mono">88</div>
+            </div>
+            <div class="assess-row">
+              <div class="assess-name">Domain Knowledge</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:64%; background:var(--coral);"></div></div>
+              <div class="assess-score mono">64</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px;">
+            <div class="section-head">
+              <div class="section-title" style="font-size:16px;">Roadmap points</div>
+              <span class="mono" style="font-size:12.5px; color:var(--ink-soft);">30 / 132 pts</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:4px;">
+              <div class="stat-icon" style="background:var(--amber-soft); flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M12 2l3 6.5 7 1-5 5 1.2 7L12 18l-6.2 3.5 1.2-7-5-5 7-1z"/></svg></div>
+              <div>
+                <div style="font-weight:700; font-size:14px;">2 tasks completed this week</div>
+                <div style="font-size:12.3px; color:var(--ink-soft); margin-top:2px;">System Design Fundamentals + Kubernetes Basics · Kubernetes Assessment in progress</div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <div class="section-head">
+              <div class="section-title">Recent announcements</div>
+              <a class="section-link" data-goto="announcements">View all →</a>
+            </div>
+
+            <div class="ann-card ann-pinned">
+              <div class="ann-date"><div class="d">02</div><div class="m">Sep</div></div>
+              <div>
+                <span class="tag" style="background:var(--violet-soft); color:var(--violet);">Placement Drive</span>
+                <div class="ann-title">Airbnb campus drive — registration closes soon</div>
+                <div class="ann-desc">Open for M.Tech CSE students with 7.5+ CGPA. Resume + portfolio required at registration.</div>
+              </div>
+            </div>
+
+            <div class="ann-card">
+              <div class="ann-date"><div class="d">28</div><div class="m">Aug</div></div>
+              <div>
+                <span class="tag" style="background:var(--amber-soft); color:var(--amber);">Workshop</span>
+                <div class="ann-title">Mock interview bootcamp — Systems Design</div>
+                <div class="ann-desc">3-hour session with alumni interviewers from Discord and Razorpay. Seats limited to 40.</div>
+              </div>
+            </div>
+
+            <div class="ann-card">
+              <div class="ann-date"><div class="d">24</div><div class="m">Aug</div></div>
+              <div>
+                <span class="tag" style="background:var(--green-soft); color:var(--green);">Deadline</span>
+                <div class="ann-title">Career Intent form due for Winter drive</div>
+                <div class="ann-desc">Update your role, location and CTC preferences before the shortlisting round begins.</div>
+              </div>
+            </div>
+
+            <div class="section-head" style="margin-top:20px;">
+              <div class="section-title">Profile checklist</div>
+              <a class="section-link" data-goto="profile">Edit →</a>
+            </div>
+            <div class="card">
+              <div class="check-row">
+                <div class="check-icon" style="background:var(--green-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div><div class="check-name">Achievements</div><div class="check-sub">7 of 7 verified</div></div>
+                <div class="check-pct">100%</div>
+              </div>
+              <div class="check-row">
+                <div class="check-icon" style="background:var(--amber-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.4"><circle cx="12" cy="12" r="9"/></svg></div>
+                <div><div class="check-name">Education</div><div class="check-sub">Awaiting verification</div></div>
+                <div class="check-pct">0%</div>
+              </div>
+              <div class="check-row">
+                <div class="check-icon" style="background:var(--paper-alt);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2.4"><circle cx="12" cy="12" r="9"/></svg></div>
+                <div><div class="check-name">Experience</div><div class="check-sub">Not added yet</div></div>
+                <div class="check-pct">0%</div>
+              </div>
+              <div class="check-row">
+                <div class="check-icon" style="background:var(--paper-alt);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2.4"><circle cx="12" cy="12" r="9"/></svg></div>
+                <div><div class="check-name">Projects</div><div class="check-sub">Not added yet</div></div>
+                <div class="check-pct">0%</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-head">
+              <div class="section-title">Roles matching you</div>
+              <a class="section-link">View all →</a>
+            </div>
+            <div class="card" style="margin-bottom:20px;">
+              <div class="job-row job-clickable" onclick="openJobModal('airbnb')">
+                <div class="job-logo" style="background:#C4553F;">A</div>
+                <div style="flex:1;"><div class="job-title">Supervisor, Trust &amp; Safety</div><div class="job-sub">Airbnb · Gurugram · Full-time</div></div>
+                <div class="job-match">82% match</div>
+              </div>
+              <div class="job-row job-clickable" onclick="openJobModal('discord-swe')">
+                <div class="job-logo" style="background:#5B46E0;">D</div>
+                <div style="flex:1;"><div class="job-title">Senior Software Engineer</div><div class="job-sub">Discord · Remote (U.S.)</div></div>
+                <div class="job-match">74% match</div>
+              </div>
+              <div class="job-row job-clickable" onclick="openJobModal('discord-mgr')">
+                <div class="job-logo" style="background:#5B46E0;">D</div>
+                <div style="flex:1;"><div class="job-title">Manager, Safety Operations</div><div class="job-sub">Discord · Remote US</div></div>
+                <div class="job-match">68% match</div>
+              </div>
+            </div>
+
+            <div class="section-head">
+              <div class="section-title">Skill gap analysis</div>
+              <a class="section-link" data-goto="profile">Add skills →</a>
+            </div>
+            <div class="card">
+              <div style="font-size:12.3px; color:var(--ink-soft); margin-bottom:16px; line-height:1.5;">Based on the roles you're matched with, here's how your current skills compare to what recruiters expect.</div>
+              <div class="skill-row">
+                <div class="skill-name">System Design</div>
+                <div class="skill-bars"><div class="skill-bar-req"></div><div class="skill-bar-you" style="width:70%; background:var(--amber);"></div></div>
+                <span class="tag" style="background:var(--amber-soft); color:var(--amber);">Developing</span>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name">Kubernetes</div>
+                <div class="skill-bars"><div class="skill-bar-req"></div><div class="skill-bar-you" style="width:20%; background:var(--coral);"></div></div>
+                <span class="tag" style="background:var(--coral-soft); color:var(--coral);">Gap</span>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name">SQL &amp; Databases</div>
+                <div class="skill-bars"><div class="skill-bar-req"></div><div class="skill-bar-you" style="width:88%; background:var(--green);"></div></div>
+                <span class="tag" style="background:var(--green-soft); color:var(--green);">Strong</span>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name">Distributed Systems</div>
+                <div class="skill-bars"><div class="skill-bar-req"></div><div class="skill-bar-you" style="width:55%; background:var(--amber);"></div></div>
+                <span class="tag" style="background:var(--amber-soft); color:var(--amber);">Developing</span>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name">Communication</div>
+                <div class="skill-bars"><div class="skill-bar-req"></div><div class="skill-bar-you" style="width:88%; background:var(--green);"></div></div>
+                <span class="tag" style="background:var(--green-soft); color:var(--green);">Strong</span>
+              </div>
+              <div class="skill-note">Closing the Kubernetes gap alone would lift your average match score by roughly 9 points.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ANNOUNCEMENTS ================= -->
+      <section class="view" id="view-announcements">
+        <div class="section-head">
+          <div class="section-title">All announcements</div>
+        </div>
+        <div class="ann-card ann-pinned">
+          <div class="ann-date"><div class="d">02</div><div class="m">Sep</div></div>
+          <div>
+            <span class="tag" style="background:var(--violet-soft); color:var(--violet);">Placement Drive</span>
+            <div class="ann-title">Airbnb campus drive — registration closes soon</div>
+            <div class="ann-desc">Open for M.Tech CSE students with 7.5+ CGPA. Resume and portfolio must be verified before you register. Shortlists are released within 48 hours of the deadline.</div>
+          </div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-date"><div class="d">28</div><div class="m">Aug</div></div>
+          <div>
+            <span class="tag" style="background:var(--amber-soft); color:var(--amber);">Workshop</span>
+            <div class="ann-title">Mock interview bootcamp — Systems Design</div>
+            <div class="ann-desc">3-hour session with alumni interviewers from Discord and Razorpay covering scalability, trade-offs and whiteboard etiquette. Seats limited to 40, first come basis.</div>
+          </div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-date"><div class="d">24</div><div class="m">Aug</div></div>
+          <div>
+            <span class="tag" style="background:var(--green-soft); color:var(--green);">Deadline</span>
+            <div class="ann-title">Career Intent form due for Winter drive</div>
+            <div class="ann-desc">Update your preferred roles, locations, and CTC expectations before the shortlisting round begins on 5 September.</div>
+          </div>
+        </div>
+        <div class="ann-card">
+          <div class="ann-date"><div class="d">19</div><div class="m">Aug</div></div>
+          <div>
+            <span class="tag" style="background:var(--coral-soft); color:var(--coral);">Notice</span>
+            <div class="ann-title">TPO office closed for maintenance on 21 Aug</div>
+            <div class="ann-desc">Verification requests submitted that day will be processed the following morning instead.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROFILE ================= -->
+      <section class="view" id="view-profile">
+        <div class="profile-hero"></div>
+        <div class="profile-headbar">
+          <div style="display:flex; align-items:flex-end; gap:16px;">
+            <div class="profile-avatar">AV</div>
+            <div style="padding-bottom:4px;">
+              <div class="profile-name">Aisha Verma</div>
+              <div class="profile-meta">M.Tech, Computer Science · Chandigarh University</div>
+            </div>
+          </div>
+          <span class="verified-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>TPO Verified</span>
+        </div>
+
+        <div class="subtabs">
+          <div class="subtab active">Personal</div>
+          <div class="subtab">Education · 2</div>
+          <div class="subtab">Skills · 0</div>
+          <div class="subtab">Evidence · 4</div>
+          <div class="subtab">Projects · 2</div>
+          <div class="subtab">Experience · 1</div>
+          <div class="subtab">Achievements · 7</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="section-head"><div class="section-title" style="font-size:16px;">Personal information</div><a class="section-link">Edit</a></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+              <div class="field"><div class="field-label">Full name</div><div class="field-val">Aisha Verma</div></div>
+              <div class="field"><div class="field-label">Email</div><div class="field-val">aisha.verma@leapath.edu</div></div>
+              <div class="field"><div class="field-label">Phone number</div><div class="field-val">+91 89382 38523</div></div>
+              <div class="field"><div class="field-label">Location</div><div class="field-val">Chandigarh, India</div></div>
+              <div class="field"><div class="field-label">Date of birth</div><div class="field-val" style="color:var(--ink-faint); font-weight:500;">Not added</div></div>
+              <div class="field"><div class="field-label">Headline</div><div class="field-val">Aspiring Backend Engineer</div></div>
+            </div>
+            <div class="field" style="margin-top:4px;">
+              <div class="field-label">About</div>
+              <div class="field-val" style="font-weight:500; color:var(--ink-soft); line-height:1.6;">Final-year M.Tech student focused on distributed systems, with two shipped internship projects and a growing interest in developer tooling.</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:18px;">
+              <div class="section-title" style="font-size:15px; margin-bottom:14px;">Profile strength</div>
+              <div style="font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--violet); margin-bottom:6px;">60%</div>
+              <div class="readiness-mini-bar" style="background:var(--paper-alt); margin-bottom:16px;"><div class="readiness-mini-fill" style="width:60%; background:var(--violet);"></div></div>
+              <div class="check-row" style="padding:7px 0;"><div class="check-icon" style="width:20px;height:20px;background:var(--green-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-name" style="font-size:12.6px;">Headline &amp; bio written</div></div>
+              <div class="check-row" style="padding:7px 0;"><div class="check-icon" style="width:20px;height:20px;background:var(--green-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-name" style="font-size:12.6px;">Education details added</div></div>
+              <div class="check-row" style="padding:7px 0; border-bottom:none;"><div class="check-icon" style="width:20px;height:20px;background:var(--paper-alt);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="3"><circle cx="12" cy="12" r="8"/></svg></div><div class="check-name" style="font-size:12.6px; color:var(--ink-faint);">Certifications added</div></div>
+            </div>
+            <div class="card" style="background:var(--violet-soft); border:none;">
+              <div style="font-size:12.6px; font-weight:700; color:var(--violet); margin-bottom:6px;">QUICK TIP</div>
+              <div style="font-size:12.8px; color:#3E3487; line-height:1.55;">Recruiters spend twice as long on profiles with verified certifications. Keep your Evidence tab current.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= RESUME ================= -->
+      <section class="view" id="view-resume">
+        <div class="grid-2">
+          <div>
+            <div class="section-head"><div class="section-title">Resume preview</div><a class="section-link">Download</a></div>
+            <div class="resume-preview">
+              <div style="font-family:'Fraunces',serif; font-size:18px; font-weight:600;">Aisha Verma</div>
+              <div style="font-size:11.5px; color:var(--ink-soft); margin-bottom:10px;">aisha.verma@leapath.edu · Chandigarh, India</div>
+              <div class="resume-line" style="width:40%; height:10px;"></div>
+              <div style="height:8px;"></div>
+              <div class="resume-line" style="width:92%;"></div>
+              <div class="resume-line" style="width:88%;"></div>
+              <div class="resume-line" style="width:60%;"></div>
+              <div style="height:10px;"></div>
+              <div class="resume-line" style="width:34%; height:10px;"></div>
+              <div style="height:8px;"></div>
+              <div class="resume-line" style="width:95%;"></div>
+              <div class="resume-line" style="width:80%;"></div>
+              <div class="resume-line" style="width:70%;"></div>
+              <div style="height:10px;"></div>
+              <div class="resume-line" style="width:30%; height:10px;"></div>
+              <div style="height:8px;"></div>
+              <div class="resume-line" style="width:55%;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-head"><div class="section-title">ATS readiness</div></div>
+            <div class="card" style="text-align:center; margin-bottom:18px;">
+              <div class="gauge-ring">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="var(--paper-alt)" stroke-width="12"/>
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="var(--green)" stroke-width="12" stroke-linecap="round"
+                    stroke-dasharray="326.7" stroke-dashoffset="88" transform="rotate(-90 60 60)"/>
+                </svg>
+                <div class="dial-center">
+                  <div class="dial-val" style="color:var(--ink);">73</div>
+                  <div class="dial-cap" style="color:var(--ink-faint);">ATS score</div>
+                </div>
+              </div>
+              <div style="font-size:12.6px; color:var(--ink-soft); margin-top:4px;">Add measurable outcomes to two more bullet points to cross 80.</div>
+              <button class="btn btn-outline-violet" style="margin-top:14px; width:100%;">Replace resume</button>
+            </div>
+
+            <div class="section-head"><div class="section-title" style="font-size:15px;">Version history</div></div>
+            <div class="card">
+              <div class="check-row"><div><div class="check-name" style="font-size:13px;">Resume_v3_final.pdf</div><div class="check-sub">Uploaded 31 Jul 2025</div></div><span class="tag" style="background:var(--green-soft); color:var(--green);">Active</span></div>
+              <div class="check-row"><div><div class="check-name" style="font-size:13px;">Resume_v2.pdf</div><div class="check-sub">Uploaded 12 Jun 2025</div></div><span class="tag" style="background:var(--paper-alt); color:var(--ink-soft);">Archived</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PORTFOLIO ================= -->
+      <section class="view" id="view-portfolio">
+        <div class="section-head">
+          <div class="section-title">Projects · 2</div>
+          <button class="btn btn-outline-violet">+ Add project</button>
+        </div>
+        <div class="grid-3">
+          <div class="proj-card">
+            <div class="proj-cover" style="background:linear-gradient(140deg,#5B46E0,#8A7CF0);"></div>
+            <div class="proj-body">
+              <div class="proj-title">Distributed Task Queue</div>
+              <div class="proj-desc">A Go-based job queue with at-least-once delivery, built for a 3-node cluster demo.</div>
+              <span class="chip">Go</span><span class="chip">Redis</span><span class="chip">Docker</span>
+            </div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-cover" style="background:linear-gradient(140deg,#2E7A58,#7FC1A2);"></div>
+            <div class="proj-body">
+              <div class="proj-title">Campus Marketplace</div>
+              <div class="proj-desc">Full-stack listing app for hostel resale, used by 300+ students in one semester.</div>
+              <span class="chip">React</span><span class="chip">Node.js</span><span class="chip">Postgres</span>
+            </div>
+          </div>
+          <div class="proj-card" style="display:flex; align-items:center; justify-content:center; border-style:dashed; color:var(--ink-faint); font-size:13px; font-weight:600; min-height:170px;">
+            + Add a new project
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CAREER INTENT ================= -->
+      <section class="view" id="view-intent">
+        <div class="section-head">
+          <div class="section-title">Career intent</div>
+          <a class="section-link">Edit preferences →</a>
+        </div>
+        <div class="grid-2" style="margin-bottom:16px;">
+          <div class="intent-card">
+            <div class="intent-head">
+              <div class="intent-icon" style="background:var(--violet-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+              <div style="font-weight:700; font-size:14px;">Preferred roles</div>
+            </div>
+            <span class="chip">Backend Engineer</span><span class="chip">Systems Engineer</span><span class="chip">SDE-1</span>
+          </div>
+          <div class="intent-card">
+            <div class="intent-head">
+              <div class="intent-icon" style="background:var(--green-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></div>
+              <div style="font-weight:700; font-size:14px;">Preferred locations</div>
+            </div>
+            <span class="chip">Bengaluru</span><span class="chip">Gurugram</span><span class="chip">Remote (India)</span>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="intent-card">
+            <div class="intent-head">
+              <div class="intent-icon" style="background:var(--amber-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
+              <div style="font-weight:700; font-size:14px;">Availability</div>
+            </div>
+            <div style="font-size:13px; color:var(--ink-soft);">Ready to join within <strong style="color:var(--ink);">30 days</strong></div>
+          </div>
+          <div class="intent-card">
+            <div class="intent-head">
+              <div class="intent-icon" style="background:var(--coral-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+              <div style="font-weight:700; font-size:14px;">Expected CTC</div>
+            </div>
+            <div style="font-size:13px; color:var(--ink-soft);"><strong style="color:var(--ink);">₹9 – 14 LPA</strong></div>
+          </div>
+          <div class="intent-card">
+            <div class="intent-head">
+              <div class="intent-icon" style="background:var(--violet-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/></svg></div>
+              <div style="font-weight:700; font-size:14px;">Work type</div>
+            </div>
+            <span class="chip">Full-time</span><span class="chip">Hybrid</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SETTINGS ================= -->
+      <section class="view" id="view-settings">
+        <div class="section-head"><div class="section-title">Account settings</div></div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="setting-row">
+            <div><div class="setting-name">Public profile visibility</div><div class="setting-desc">Let verified recruiters on Leapath find your profile</div></div>
+            <div class="toggle on"></div>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-name">Email notifications</div><div class="setting-desc">Placement drives, deadlines, and interview updates</div></div>
+            <div class="toggle on"></div>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-name">SMS alerts</div><div class="setting-desc">Only for interview confirmations and last-minute changes</div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-name">Show profile in TPO search</div><div class="setting-desc">Allow your placement office to feature your profile</div></div>
+            <div class="toggle on"></div>
+          </div>
+        </div>
+        <div class="section-head"><div class="section-title" style="font-size:15px;">Security</div></div>
+        <div class="card">
+          <div class="setting-row">
+            <div><div class="setting-name">Password</div><div class="setting-desc">Last changed 3 months ago</div></div>
+            <button class="btn btn-outline">Change</button>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-name">Connected accounts</div><div class="setting-desc">Google, LinkedIn</div></div>
+            <button class="btn btn-outline">Manage</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SUPPORT ================= -->
+      <section class="view" id="view-support">
+        <div class="grid-2">
+          <div>
+            <div class="section-head"><div class="section-title">Frequently asked</div></div>
+            <div class="faq-item open">
+              <div class="faq-q">How long does profile verification take?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+              <div class="faq-a">Your TPO office typically reviews education and experience entries within 2–3 working days of submission.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Can recruiters see my draft projects?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+              <div class="faq-a">No. Only projects you mark as published appear on your public profile.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">How do I update my career intent mid-season?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+              <div class="faq-a">Go to Career Intent and edit your preferences any time — changes apply from the next matching cycle.</div>
+            </div>
+          </div>
+          <div>
+            <div class="section-head"><div class="section-title">Contact support</div></div>
+            <div class="card">
+              <div style="font-size:13px; color:var(--ink-soft); line-height:1.6; margin-bottom:16px;">Can't find what you're looking for? Message the placement support desk — average reply time is under 4 hours during business days.</div>
+              <button class="btn btn-primary" style="width:100%; margin-bottom:10px;">Start a conversation</button>
+              <button class="btn btn-outline" style="width:100%;">Email support@leapath.edu</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============ MODAL ============ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">Details</div>
+        <div class="modal-close" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const titles = {
+    overview:   ["Good afternoon, Aisha", "Here's where your placement journey stands today."],
+    announcements: ["Announcements", "Placement drives, workshops, and deadlines from your TPO."],
+    profile:    ["My Profile Details", "Add and update the information recruiters and your portfolio will use."],
+    resume:     ["Resume", "Keep one active, ATS-ready resume for every application."],
+    portfolio:  ["Portfolio", "Showcase the projects that best represent your work."],
+    intent:     ["Career Intent", "Tell us what you're looking for so we can match you better."],
+    settings:   ["Settings", "Manage visibility, notifications, and account security."],
+    support:    ["Support", "We're here to help with anything Leapath-related."]
+  };
+
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const views = document.querySelectorAll('.view');
+
+  function goto(view){
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    views.forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
+    document.getElementById('pageTitle').textContent = titles[view][0];
+    document.getElementById('pageSub').textContent = titles[view][1];
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  navBtns.forEach(btn => btn.addEventListener('click', () => goto(btn.dataset.view)));
+  document.querySelectorAll('[data-goto]').forEach(el => el.addEventListener('click', () => goto(el.dataset.goto)));
+
+  // ============ MODAL DATA ============
+  const modalData = {
+    applications: {
+      title: "Applications sent · 6",
+      rows: [
+        {logo:"A", color:"#C4553F", title:"Supervisor, Trust & Safety", sub:"Airbnb · Applied 18 Aug", tag:"In review", tagColor:"amber"},
+        {logo:"D", color:"#5B46E0", title:"Senior Software Engineer", sub:"Discord · Applied 15 Aug", tag:"Shortlisted", tagColor:"green"},
+        {logo:"D", color:"#5B46E0", title:"Manager, Safety Operations", sub:"Discord · Applied 12 Aug", tag:"In review", tagColor:"amber"},
+        {logo:"R", color:"#C7811C", title:"Backend Engineer Intern", sub:"Razorpay · Applied 8 Aug", tag:"Rejected", tagColor:"coral"},
+        {logo:"Z", color:"#2E7A58", title:"SDE-1", sub:"Zerodha · Applied 3 Aug", tag:"In review", tagColor:"amber"},
+        {logo:"S", color:"#5B46E0", title:"Platform Engineer", sub:"Swiggy · Applied 29 Jul", tag:"Shortlisted", tagColor:"green"}
+      ]
+    },
+    interviews: {
+      title: "Interviews scheduled · 2",
+      rows: [
+        {logo:"D", color:"#5B46E0", title:"Senior Software Engineer — Round 2", sub:"Discord · 28 Aug, 3:00 PM · Video call", tag:"Confirmed", tagColor:"green"},
+        {logo:"S", color:"#5B46E0", title:"Platform Engineer — Screening call", sub:"Swiggy · 3 Sep, 11:00 AM · Video call", tag:"Confirmed", tagColor:"green"}
+      ]
+    },
+    saved: {
+      title: "Saved opportunities · 14",
+      rows: [
+        {logo:"A", color:"#C4553F", title:"Supervisor, Trust & Safety", sub:"Airbnb · Gurugram · Full-time", tag:"Applied", tagColor:"green"},
+        {logo:"D", color:"#5B46E0", title:"Senior Software Engineer", sub:"Discord · Remote (U.S.)", tag:"Applied", tagColor:"green"},
+        {logo:"D", color:"#5B46E0", title:"Manager, Safety Operations", sub:"Discord · Remote US", tag:"Applied", tagColor:"green"},
+        {logo:"F", color:"#2E7A58", title:"Frontend Engineer", sub:"Flipkart · Bengaluru · Full-time", tag:"Not applied", tagColor:"grey"},
+        {logo:"P", color:"#C7811C", title:"Data Analyst", sub:"PhonePe · Bengaluru · Full-time", tag:"Not applied", tagColor:"grey"},
+        {logo:"M", color:"#5B46E0", title:"Cloud Engineer", sub:"Microsoft · Hyderabad · Full-time", tag:"Not applied", tagColor:"grey"}
+      ],
+      more: 8
+    },
+    recruiters: {
+      title: "Recruiter profile views · 142",
+      rows: [
+        {logo:"A", color:"#C4553F", title:"Airbnb — Talent Acquisition", sub:"Viewed your profile · 2 hours ago", tag:"", tagColor:""},
+        {logo:"D", color:"#5B46E0", title:"Discord — Engineering Recruiting", sub:"Viewed your profile · Yesterday", tag:"", tagColor:""},
+        {logo:"R", color:"#C7811C", title:"Razorpay — Campus Team", sub:"Viewed your resume · 2 days ago", tag:"", tagColor:""},
+        {logo:"Z", color:"#2E7A58", title:"Zerodha — Hiring Team", sub:"Viewed your portfolio · 4 days ago", tag:"", tagColor:""},
+        {logo:"S", color:"#5B46E0", title:"Swiggy — Tech Recruiting", sub:"Viewed your profile · 5 days ago", tag:"", tagColor:""}
+      ],
+      more: 137
+    }
+  };
+
+  const tagStyles = {
+    green:"background:var(--green-soft); color:var(--green);",
+    amber:"background:var(--amber-soft); color:var(--amber);",
+    coral:"background:var(--coral-soft); color:var(--coral);",
+    grey:"background:var(--paper-alt); color:var(--ink-soft);"
+  };
+
+  function openModal(key){
+    const data = modalData[key];
+    document.getElementById('modalTitle').textContent = data.title;
+    let html = data.rows.map(r => `
+      <div class="mrow">
+        <div class="mrow-logo" style="background:${r.color};">${r.logo}</div>
+        <div>
+          <div class="mrow-title">${r.title}</div>
+          <div class="mrow-sub">${r.sub}</div>
+        </div>
+        ${r.tag ? `<div class="mrow-right"><span class="tag" style="${tagStyles[r.tagColor]}">${r.tag}</span></div>` : ''}
+      </div>`).join('');
+    if(data.more){
+      html += `<div style="text-align:center; padding-top:14px; font-size:12.5px; color:var(--ink-soft);">+ ${data.more} more</div>`;
+    }
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  function closeModal(){
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+  // ============ JOB DESCRIPTION MODAL ============
+  const jobData = {
+    "airbnb": {
+      title: "Supervisor, Trust & Safety",
+      meta: "Airbnb · Gurugram, India · Full-time",
+      match: 82,
+      description: "Lead a team responding to trust and safety escalations across the India region, balancing host and guest experience with policy enforcement.",
+      responsibilities: [
+        "Manage a team of 6–8 safety agents handling escalated cases",
+        "Set weekly quality and turnaround targets, and report on them",
+        "Partner with policy and legal teams on edge-case decisions",
+        "Coach agents through recurring feedback sessions"
+      ],
+      requirements: [
+        "1–2 years in operations, trust & safety, or people management",
+        "Comfortable working rotational shifts including weekends",
+        "Strong written communication in English and Hindi"
+      ],
+      skills: ["Team Management", "Policy Judgment", "Communication", "Conflict Resolution"]
+    },
+    "discord-swe": {
+      title: "Senior Software Engineer",
+      meta: "Discord · Remote (U.S.) · Full-time",
+      match: 74,
+      description: "Build and scale backend services powering real-time voice and messaging for hundreds of millions of users.",
+      responsibilities: [
+        "Design and ship services on Discord's core messaging platform",
+        "Own reliability and performance for services in your area",
+        "Review designs and code with a distributed engineering team",
+        "Participate in an on-call rotation for owned services"
+      ],
+      requirements: [
+        "Strong fundamentals in distributed systems and databases",
+        "Experience with Kubernetes or similar container orchestration",
+        "Comfortable working async across U.S. and India time zones"
+      ],
+      skills: ["Distributed Systems", "Kubernetes", "System Design", "Go / Rust"]
+    },
+    "discord-mgr": {
+      title: "Manager, Safety Operations",
+      meta: "Discord · Remote US · Full-time",
+      match: 68,
+      description: "Lead a regional safety operations pod, setting priorities for how the team investigates and actions user reports.",
+      responsibilities: [
+        "Manage a pod of safety specialists and their case queues",
+        "Define SLAs for report review and escalation handling",
+        "Work with data teams to spot emerging abuse patterns",
+        "Represent operations in cross-functional policy reviews"
+      ],
+      requirements: [
+        "2+ years leading an operations or safety team",
+        "Data-literate — comfortable reading dashboards and trends",
+        "Prior experience in an online community or platform is a plus"
+      ],
+      skills: ["Team Management", "Data Analysis", "Policy Judgment", "Communication"]
+    }
+  };
+
+  function openJobModal(key){
+    const j = jobData[key];
+    document.getElementById('modalTitle').textContent = j.title;
+    const html = `
+      <div class="jd-meta">${j.meta}</div>
+      <div class="jd-match-wrap">
+        <div class="jd-match-bar"><div class="jd-match-fill" style="width:${j.match}%;"></div></div>
+        <div class="jd-match-pct">${j.match}% match</div>
+      </div>
+      <div class="jd-body">
+        <p>${j.description}</p>
+        <div class="jd-section-label">What you'll do</div>
+        <ul class="jd-list">${j.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>
+        <div class="jd-section-label">What we're looking for</div>
+        <ul class="jd-list">${j.requirements.map(r => `<li>${r}</li>`).join('')}</ul>
+        <div class="jd-section-label">Key skills</div>
+        <div class="jd-chips">${j.skills.map(s => `<span class="chip">${s}</span>`).join('')}</div>
+      </div>
+      <div class="jd-footer">
+        <button class="btn btn-primary" style="flex:1;">Apply now</button>
+        <button class="btn btn-outline" style="flex:1;">Save for later</button>
+      </div>`;
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('open'));
+  });
+
+  // ============ WEEK-BY-WEEK ROADMAP ============
+  function setTaskStatus(card, status){
+    card.dataset.status = status;
+    card.querySelectorAll('[data-status-btn]').forEach(b => b.classList.toggle('is-active', b.dataset.statusBtn === status));
+    const toggle = card.querySelector('[data-toggle]');
+    toggle.classList.remove('tt-progress','tt-done');
+    if(status === 'progress') toggle.classList.add('tt-progress');
+    if(status === 'done') toggle.classList.add('tt-done');
+    const title = card.querySelector('[data-task-title]');
+    title.classList.toggle('is-struck', status === 'done');
+    updateWeekProgress(card.closest('.week-block'));
+  }
+  function updateWeekProgress(block){
+    if(!block) return;
+    const line = block.querySelector('[data-progress-line]');
+    if(!line) return;
+    const tasks = block.querySelectorAll('[data-task]:not(.is-locked)');
+    if(!tasks.length) return;
+    const done = Array.from(tasks).filter(t => t.dataset.status === 'done').length;
+    const pct = Math.round((done / tasks.length) * 100);
+    line.textContent = `${pct}% complete · ${tasks.length} task${tasks.length > 1 ? 's' : ''}`;
+    const fill = block.querySelector('[data-progress-fill]');
+    if(fill) fill.style.width = pct + '%';
+    block.classList.toggle('is-done-week', pct === 100);
+  }
+
+  // collapsed by default — click a week's row to expand/collapse its tasks
+  document.querySelectorAll('[data-week-toggle]').forEach(row => {
+    row.addEventListener('click', () => {
+      row.closest('.week-block').classList.toggle('is-open');
+    });
+  });
+  document.querySelectorAll('[data-task]:not(.is-locked)').forEach(card => {
+    card.querySelectorAll('[data-status-btn]').forEach(btn => {
+      btn.addEventListener('click', () => setTaskStatus(card, btn.dataset.statusBtn));
+    });
+    const toggle = card.querySelector('[data-toggle]');
+    toggle.addEventListener('click', () => {
+      const order = ['pending','progress','done'];
+      const next = order[(order.indexOf(card.dataset.status) + 1) % order.length];
+      setTaskStatus(card, next);
+    });
+  });
+
+  document.querySelectorAll('.toggle').forEach(t => {
+    t.addEventListener('click', () => t.classList.toggle('on'));
+  });
+
+  document.querySelectorAll('.subtab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.subtab').forEach(s => s.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
