@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leapath — Student Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#FFFFFF;--paper:#FFFFFF;--paper-alt:#F5F3FB;--ink:#1D1B2E;
+  --ink-soft:#6E6B82;--ink-faint:#A29EB3;--violet:#5B46E0;--violet-2:#806DFA;
+  --violet-soft:#EEEAFE;--line:#E9E6F2;--green:#2E7A58;--green-soft:#E5F4EB;
+  --amber:#C7811C;--amber-soft:#FBEED6;--coral:#C4553F;--coral-soft:#FBE7E1;
+  --shadow:0 1px 2px rgba(29,27,55,.03),0 20px 55px rgba(29,27,55,.075);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,sans-serif;background:var(--navy);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+.aurora{position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+ radial-gradient(ellipse 1400px 900px at 12% -10%,rgba(91,70,224,.07),transparent 60%),
+ radial-gradient(ellipse 1000px 800px at 105% 8%,rgba(13,148,136,.05),transparent 55%),
+ radial-gradient(ellipse 900px 700px at 40% 115%,rgba(139,124,246,.06),transparent 60%),
+ linear-gradient(180deg,#fff 0%,#FCFBFF 45%,#fff 100%)}
+.grain{position:fixed;inset:0;z-index:-1;opacity:.16;pointer-events:none;background-image:radial-gradient(rgba(50,40,90,.18) .45px,transparent .55px);background-size:6px 6px}
+.app{display:grid;grid-template-columns:264px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;padding:24px 16px 18px;border-right:1px solid var(--line);background:rgba(255,255,255,.72);backdrop-filter:blur(20px);display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:11px;padding:4px 10px 24px}.brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,var(--violet),#8977F4);color:white;font:700 20px Fraunces,serif;box-shadow:0 12px 28px rgba(91,70,224,.24)}
+.brand-name{font:700 17px Sora,sans-serif;letter-spacing:-.6px}.brand-tag{font-size:10px;color:var(--ink-faint);font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-top:2px}
+.side-user{display:flex;gap:10px;align-items:center;padding:13px 11px;margin-bottom:18px;border:1px solid rgba(91,70,224,.09);border-radius:17px;background:rgba(255,255,255,.65)}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#DED8FF,#8777EE);color:#fff;font-weight:800;font-size:12px}.side-user-name{font-size:12px;font-weight:800}.side-user-role{font-size:10px;color:var(--ink-soft);margin-top:3px}
+.nav-label{font-size:9px;color:var(--ink-faint);font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:0 12px;margin:17px 0 7px}
+.nav-btn{width:100%;border:0;background:transparent;color:#656176;border-radius:13px;padding:11px 12px;display:flex;align-items:center;gap:12px;font:600 12.5px Inter,sans-serif;cursor:pointer;text-align:left;transition:.22s}.nav-btn svg{width:18px;height:18px}.nav-btn:hover{background:rgba(91,70,224,.055);color:var(--violet)}.nav-btn.active{background:linear-gradient(90deg,var(--violet-soft),rgba(238,234,254,.45));color:var(--violet);box-shadow:inset 0 0 0 1px rgba(91,70,224,.08)}.nav-badge{margin-left:auto;font:500 10px 'DM Mono';padding:3px 6px;border-radius:7px;background:#fff;border:1px solid var(--line)}
+.sidebar-foot{margin-top:auto;padding:12px}.readiness-mini{padding:13px;border-radius:16px;background:linear-gradient(145deg,#F7F5FF,#fff);border:1px solid rgba(91,70,224,.1)}.mini-top{display:flex;justify-content:space-between;font-size:10px;font-weight:800;letter-spacing:.07em}.mini-top span:last-child{color:var(--violet)}.mini-bar{height:5px;border-radius:99px;background:#E8E5F3;margin-top:9px;overflow:hidden}.mini-bar i{display:block;width:42%;height:100%;background:linear-gradient(90deg,var(--violet),#9B8BFF);border-radius:inherit}
+.main{min-width:0}.topbar{height:88px;padding:0 42px;border-bottom:1px solid rgba(233,230,242,.8);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.54);backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}
+.topbar-title{font:600 24px Fraunces,serif;letter-spacing:-.5px}.topbar-title .name{color:var(--violet);position:relative}.topbar-title .name:after{content:"";position:absolute;left:1px;right:1px;bottom:-2px;height:4px;border-radius:99px;background:rgba(91,70,224,.16)}.topbar-sub{font-size:11.5px;color:var(--ink-soft);margin-top:5px}
+.topbar-right{display:flex;align-items:center;gap:10px}.search{width:185px;height:38px;border:1px solid var(--line);background:rgba(255,255,255,.75);border-radius:12px;display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--ink-faint);font-size:11px}.search svg,.icon-btn svg{width:17px;height:17px}.icon-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;background:white;position:relative}.dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#F15E5E;right:9px;top:8px;border:1.5px solid white}
+.content{max-width:1480px;margin:auto;padding:34px 42px 64px}
+.hero{min-height:302px;border-radius:30px;overflow:hidden;position:relative;color:#fff;background:linear-gradient(125deg,#2B235B 0%,#4A3AB0 48%,#705DF0 100%);box-shadow:0 28px 70px rgba(54,37,132,.26);padding:38px 42px;display:grid;grid-template-columns:1.2fr .8fr;isolation:isolate}
+.hero:before{content:"";position:absolute;width:500px;height:500px;border-radius:50%;right:-110px;top:-270px;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 67%)}.hero:after{content:"";position:absolute;inset:0;opacity:.22;background-image:linear-gradient(125deg,transparent 70%,rgba(255,255,255,.5) 70.3%,transparent 70.7%);background-size:130px 130px;pointer-events:none}
+.hero-copy,.hero-visual{position:relative;z-index:1}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:7px 10px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.13);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.pulse{width:6px;height:6px;background:#9CFFCE;border-radius:50%;box-shadow:0 0 0 5px rgba(156,255,206,.1)}
+.hero h1{font:600 clamp(34px,4vw,54px)/1.05 Fraunces,serif;letter-spacing:-2px;margin:21px 0 13px}.hero h1 span{color:#C8C1FF}.hero p{font-size:13px;line-height:1.7;color:rgba(255,255,255,.7);max-width:570px}.hero-actions{display:flex;gap:10px;margin-top:25px}.btn{border:0;border-radius:12px;padding:11px 16px;font:700 11px Inter,sans-serif;cursor:pointer;transition:.2s}.btn-main{background:#fff;color:#4536AB;box-shadow:0 8px 22px rgba(0,0,0,.13)}.btn-main:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,0,0,.18)}.btn-ghost{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);color:white}
+.hero-visual{display:flex;justify-content:flex-end;align-items:center}.orbit{width:210px;height:210px;border:1px solid rgba(255,255,255,.17);border-radius:50%;position:relative;display:grid;place-items:center}.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%}.orbit:before{inset:23px}.orbit:after{inset:50px}.core{width:82px;height:82px;border-radius:28px;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#DED8FF);color:var(--violet);box-shadow:0 20px 45px rgba(0,0,0,.2)}.core svg{width:38px;height:38px}.sat{position:absolute;width:36px;height:36px;border-radius:13px;display:grid;place-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(9px);font-size:15px}.s1{top:3px;right:36px}.s2{bottom:16px;left:4px}.s3{right:-5px;bottom:54px}
+.next-strip{display:grid;grid-template-columns:1.1fr .9fr .75fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-top:18px;box-shadow:var(--shadow)}
+.strip{background:rgba(255,255,255,.88);padding:20px 22px;min-height:116px}.strip-kicker{font-size:9px;font-weight:800;color:var(--ink-faint);letter-spacing:.12em;text-transform:uppercase}.next-title{font:700 15px Sora,sans-serif;margin:9px 0 4px}.next-sub{font-size:11px;color:var(--ink-soft);line-height:1.55}.inline-action{display:inline-flex;align-items:center;gap:6px;color:var(--violet);font-size:10px;font-weight:800;margin-top:10px;cursor:pointer}.readiness{display:flex;gap:14px;align-items:center}.ring{width:70px;height:70px;border-radius:50%;background:conic-gradient(var(--violet) 0 38%,#E8E5F3 38% 100%);display:grid;place-items:center}.ring:after{content:"38%";width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#fff;font:700 13px 'DM Mono';color:var(--violet)}.delta{font:700 10px 'DM Mono';color:var(--green);background:var(--green-soft);padding:4px 7px;border-radius:7px}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:37px 0 15px}.section-title{font:700 21px Sora,sans-serif;letter-spacing:-.8px}.section-sub{font-size:11px;color:var(--ink-soft);margin-top:5px}.link-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 11px;color:var(--ink-soft);font-size:10px;font-weight:800;cursor:pointer}
+.main-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(330px,.65fr);gap:18px}.panel{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.focus{padding:24px}.focus-top{display:flex;justify-content:space-between;gap:20px;align-items:start}.task-icon{width:44px;height:44px;border-radius:15px;background:var(--violet-soft);color:var(--violet);display:grid;place-items:center}.task-icon svg{width:21px}.task-name{font:700 17px Sora,sans-serif;letter-spacing:-.5px;margin:13px 0 6px}.task-desc{font-size:11.5px;line-height:1.65;color:var(--ink-soft);max-width:600px}.priority{font:700 9px 'DM Mono';color:var(--amber);background:var(--amber-soft);padding:5px 7px;border-radius:7px;white-space:nowrap}
+.progress-wrap{margin:20px 0 17px}.progress-top{display:flex;justify-content:space-between;font-size:10px;font-weight:800;margin-bottom:8px}.progress-top span:last-child{color:var(--violet)}.progress{height:8px;border-radius:99px;background:#ECEAF4;overflow:hidden}.progress i{display:block;width:64%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--violet),#9A8BFF)}
+.focus-foot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--line)}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:9px;font-weight:700;padding:5px 8px;border-radius:7px;background:#F6F5FA;color:var(--ink-soft)}.continue{padding:10px 14px;border:0;border-radius:10px;background:var(--violet);color:#fff;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 9px 20px rgba(91,70,224,.23)}
+.momentum{padding:23px}.momentum-top{display:flex;justify-content:space-between;align-items:center}.small-title{font:700 13px Sora,sans-serif}.week{font:500 9px 'DM Mono';color:var(--ink-faint)}.chart{height:145px;margin:17px 0 11px;display:flex;align-items:end;gap:8px;padding:0 3px}.bar{flex:1;border-radius:7px 7px 3px 3px;background:#EAE7F5;min-height:18px;position:relative;transition:.2s}.bar.active{background:linear-gradient(180deg,#A597FF,var(--violet));box-shadow:0 9px 18px rgba(91,70,224,.18)}.bar:hover{transform:translateY(-4px)}.days{display:flex;justify-content:space-between;font:9px 'DM Mono';color:var(--ink-faint)}
+.lower-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.pipeline{padding:22px}.pipe-item{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:11px;padding:14px 0;border-bottom:1px solid #F0EEF6}.pipe-item:last-child{border-bottom:0}.company{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:11px}.pipe-title{font-size:11px;font-weight:800}.pipe-meta{font-size:9px;color:var(--ink-soft);margin-top:4px}.tag{font-size:9px;font-weight:800;padding:5px 7px;border-radius:7px}.green{background:var(--green-soft);color:var(--green)}.amber{background:var(--amber-soft);color:var(--amber)}
+.plan{padding:22px}.timeline{margin-top:17px}.event{display:grid;grid-template-columns:50px 12px 1fr;gap:10px;min-height:61px}.event-time{font:500 9px 'DM Mono';color:var(--ink-faint);padding-top:3px}.event-line{position:relative}.event-line:before{content:"";position:absolute;top:4px;left:3px;width:7px;height:7px;border-radius:50%;background:var(--violet);box-shadow:0 0 0 4px var(--violet-soft)}.event-line:after{content:"";position:absolute;top:17px;bottom:0;left:6px;width:1px;background:var(--line)}.event:last-child .event-line:after{display:none}.event-title{font-size:10.5px;font-weight:800}.event-sub{font-size:9px;color:var(--ink-soft);margin-top:4px}
+.toast{position:fixed;right:28px;bottom:26px;padding:13px 16px;background:#241D4D;color:white;border-radius:13px;font-size:11px;font-weight:700;box-shadow:0 20px 45px rgba(20,12,60,.25);transform:translateY(90px);opacity:0;transition:.35s;z-index:50}.toast.show{transform:none;opacity:1}
+.reveal{animation:up .6s cubic-bezier(.16,1,.3,1) both}.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media(max-width:1120px){.app{grid-template-columns:224px 1fr}.content,.topbar{padding-left:28px;padding-right:28px}.main-grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.hero-visual{display:none}}
+@media(max-width:820px){.app{display:block}.sidebar{display:none}.topbar{padding:0 18px;height:78px}.content{padding:24px 18px 50px}.topbar-right .search{display:none}.topbar-title{font-size:20px}.hero{padding:30px 25px;min-height:290px}.hero h1{font-size:37px}.next-strip,.lower-grid{grid-template-columns:1fr}.main-grid{gap:14px}.hero-actions{flex-wrap:wrap}}
+
+/* ===== SKILL GAP INTELLIGENCE ===== */
+.skill-section{margin-top:38px}
+.skill-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+.skill-panel{padding:24px;position:relative;overflow:hidden}
+.skill-panel:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-90px;background:radial-gradient(circle,rgba(91,70,224,.09),transparent 68%);pointer-events:none}
+.skill-head{display:flex;justify-content:space-between;align-items:start;gap:16px;position:relative}
+.skill-score{font:700 12px 'DM Mono';color:var(--violet);background:var(--violet-soft);padding:8px 10px;border-radius:10px}
+.skill-summary{font-size:11px;color:var(--ink-soft);line-height:1.65;margin-top:8px;max-width:600px}
+.gap-list{margin-top:20px;display:grid;gap:11px}
+.gap-row{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:12px;padding:12px;border:1px solid #F0EDF7;border-radius:15px;background:rgba(255,255,255,.72);transition:.2s}
+.gap-row:hover{transform:translateX(4px);border-color:rgba(91,70,224,.2);box-shadow:0 12px 25px rgba(29,27,55,.06)}
+.gap-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:15px}
+.gap-name{font-size:11px;font-weight:800}.gap-note{font-size:9px;color:var(--ink-soft);margin-top:4px}
+.gap-level{font:700 9px 'DM Mono';padding:5px 7px;border-radius:7px}
+.level-high{background:var(--coral-soft);color:var(--coral)}.level-mid{background:var(--amber-soft);color:var(--amber)}.level-low{background:var(--violet-soft);color:var(--violet)}
+.target-card{position:relative;padding:24px;background:linear-gradient(145deg,#FAF9FF,#F3F0FF);border-color:rgba(91,70,224,.13)}
+.match-title{font:700 15px Sora,sans-serif;margin:15px 0 5px}.match-sub{font-size:10px;color:var(--ink-soft);line-height:1.6}
+.skill-radar{height:156px;margin:18px 0;position:relative;display:grid;place-items:center}
+.radar-ring{position:absolute;border:1px solid rgba(91,70,224,.12);border-radius:50%}.rr1{width:148px;height:148px}.rr2{width:102px;height:102px}.rr3{width:55px;height:55px}
+.radar-shape{width:106px;height:106px;position:relative;background:linear-gradient(145deg,rgba(91,70,224,.25),rgba(128,109,250,.06));clip-path:polygon(50% 4%,92% 32%,76% 89%,25% 94%,5% 39%);border:1px solid var(--violet);filter:drop-shadow(0 10px 20px rgba(91,70,224,.12))}
+.radar-dot{position:absolute;width:7px;height:7px;background:var(--violet);border-radius:50%;box-shadow:0 0 0 4px rgba(91,70,224,.12)}
+.rd1{top:6px;left:49%}.rd2{top:31px;right:11%}.rd3{bottom:8px;right:26%}.rd4{bottom:4px;left:24%}.rd5{top:38px;left:8%}
+.skill-labels{display:flex;justify-content:space-between;font-size:8px;font-weight:800;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em}
+@media(max-width:820px){.skill-grid{grid-template-columns:1fr}}
+
+
+/* announcements + role matching */
+.extra-section{margin-top:38px}.extra-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.announcement-list{padding:7px 22px}.announcement-item{display:grid;grid-template-columns:48px 1fr 30px;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid #F0EEF6}.announcement-item:last-child{border:0}
+.announce-date{width:46px;height:46px;border-radius:14px;background:var(--amber-soft);color:var(--amber);display:flex;flex-direction:column;align-items:center;justify-content:center}.announce-date.violet{background:var(--violet-soft);color:var(--violet)}.announce-date.greenbg{background:var(--green-soft);color:var(--green)}.announce-date b{font:700 15px Sora,sans-serif;line-height:1}.announce-date span{font:700 8px 'DM Mono';margin-top:3px}.announce-title{font-size:11px;font-weight:800}.announce-sub{font-size:9.5px;color:var(--ink-soft);line-height:1.55;margin-top:4px}.announce-meta{display:inline-block;font:700 8px 'DM Mono';color:var(--ink-faint);letter-spacing:.04em;margin-top:7px}.mini-open{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--violet);cursor:pointer;transition:.2s}.mini-open:hover{background:var(--violet);color:#fff;transform:translateY(-2px)}
+.role-match{padding:23px;background:linear-gradient(145deg,#FAF9FF,#F2EFFF);border-color:rgba(91,70,224,.13)}.role-top{display:flex;justify-content:space-between;align-items:start}.role-heading{font:700 17px Sora,sans-serif;letter-spacing:-.6px;margin-top:7px}.role-score{font:700 9px 'DM Mono';padding:6px 8px;border-radius:8px;background:rgba(91,70,224,.1);color:var(--violet)}.role-desc{font-size:10px;line-height:1.6;color:var(--ink-soft);margin:10px 0 16px}.role-item{display:grid;grid-template-columns:31px 1fr auto;align-items:center;gap:10px;padding:11px 0;border-top:1px solid rgba(91,70,224,.09)}.role-rank{font:700 10px 'DM Mono';color:var(--violet)}.role-info b{display:block;font-size:10.5px}.role-info span{font-size:8.5px;color:var(--ink-soft);margin-top:3px;display:block}.match-pill{font:700 9px 'DM Mono';padding:5px 7px;border-radius:7px;background:var(--green-soft);color:var(--green)}.match-pill.soft{background:var(--violet-soft);color:var(--violet)}
+@media(max-width:820px){.extra-grid{grid-template-columns:1fr}.announcement-list{padding:7px 16px}}
+
+</style>
+</head>
+<body>
+<div class="aurora"></div><div class="grain"></div>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">L</div><div><div class="brand-name">Leapath</div><div class="brand-tag">Student</div></div></div>
+  <div class="side-user"><div class="avatar">AV</div><div><div class="side-user-name">Aisha Verma</div><div class="side-user-role">M.Tech · Chandigarh University</div></div></div>
+  <div class="nav-label">Overview</div>
+  <button class="nav-btn active" data-view="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+  <button class="nav-btn" data-view="Announcements"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M7 14v4a2 2 0 002 2h1"/></svg>Announcements <span class="nav-badge">3</span></button>
+  <div class="nav-label">Career</div>
+  <button class="nav-btn" data-view="My Profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>My Profile</button>
+  <button class="nav-btn" data-view="Resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 12h6M9 16h5"/></svg>Resume</button>
+  <button class="nav-btn" data-view="Portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>Portfolio</button>
+  <div class="nav-label">Preferences</div>
+  <button class="nav-btn" data-view="Career Intent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg>Career Intent</button>
+  <button class="nav-btn" data-view="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09"/></svg>Settings</button>
+  <div class="sidebar-foot"><div class="readiness-mini"><div class="mini-top"><span>READINESS</span><span>38%</span></div><div class="mini-bar"><i></i></div></div></div>
+</aside>
+<main class="main">
+<header class="topbar">
+  <div><div class="topbar-title">Good afternoon, <span class="name">Aisha</span></div><div class="topbar-sub">Here's where your placement journey stands today.</div></div>
+  <div class="topbar-right"><div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>Search anything</div><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg><i class="dot"></i></div><div class="avatar">AV</div></div>
+</header>
+<div class="content">
+<section class="hero reveal">
+ <div class="hero-copy"><div class="eyebrow"><i class="pulse"></i> Your career workspace</div><h1>Build momentum.<br><span>One smart move at a time.</span></h1><p>Your dashboard is now organized around what matters next — complete the highest-impact work, track your readiness, and move closer to the opportunities you want.</p><div class="hero-actions"><button class="btn btn-main" onclick="notify('Opening your next action…')">Continue your journey</button><button class="btn btn-ghost" onclick="notify('Career plan opened')">View career plan</button></div></div>
+ <div class="hero-visual"><div class="orbit"><div class="core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14.5 4.5c3.4.5 5 2.1 5.5 5.5-2.3 5-6.5 8-12.5 9.5l2.3-4.3L7.5 13c1.5-6 4.5-10.2 7-8.5Z"/><path d="M10 15l-3 3M13.5 8.5h.01"/></svg></div><div class="sat s1">✦</div><div class="sat s2">↗</div><div class="sat s3">✓</div></div></div>
+</section>
+<section class="next-strip reveal d1">
+ <div class="strip"><div class="strip-kicker">Next best action</div><div class="next-title">Complete your career intent</div><div class="next-sub">Tell us your target roles so we can personalize every recommendation.</div><div class="inline-action" onclick="notify('Career intent selected')">Set intent →</div></div>
+ <div class="strip readiness"><div class="ring"></div><div><div class="strip-kicker">Career readiness</div><div class="next-title">38% ready <span class="delta">+8%</span></div><div class="next-sub">You are ahead of last week.</div></div></div>
+ <div class="strip"><div class="strip-kicker">This week</div><div class="next-title">12 <span style="font-size:11px;color:var(--ink-faint);font-family:Inter;font-weight:600">/ 18 points</span></div><div class="next-sub">Keep this pace to unlock Week 3.</div><div class="inline-action">See progress →</div></div>
+</section>
+
+<div class="section-head reveal d1"><div><div class="section-title">Your focus</div><div class="section-sub">The work that will create the biggest impact right now.</div></div><button class="link-btn" onclick="notify('All tasks opened')">View all tasks →</button></div>
+<section class="main-grid reveal d2">
+ <article class="panel focus"><div class="focus-top"><div><div class="task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h10v18H7z"/><path d="M9.5 8h5M9.5 12h5M9.5 16h3"/></svg></div><div class="task-name">Finish your profile foundation</div><div class="task-desc">Add the information recruiters actually look for, then Leapath can calculate a more accurate role match and surface relevant opportunities.</div></div><div class="priority">HIGH IMPACT</div></div><div class="progress-wrap"><div class="progress-top"><span>PROFILE COMPLETION</span><span id="profilePct">64%</span></div><div class="progress"><i id="profileBar"></i></div></div><div class="focus-foot"><div class="chips"><span class="chip">Experience</span><span class="chip">Skills</span><span class="chip">Projects</span></div><button class="continue" onclick="completeTask()">Continue →</button></div></article>
+ <article class="panel momentum"><div class="momentum-top"><div class="small-title">Momentum</div><div class="week">WEEK 02</div></div><div class="chart"><i class="bar" style="height:31%"></i><i class="bar active" style="height:66%"></i><i class="bar active" style="height:84%"></i><i class="bar" style="height:48%"></i><i class="bar active" style="height:72%"></i><i class="bar" style="height:39%"></i><i class="bar" style="height:18%"></i></div><div class="days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="next-sub" style="margin-top:15px">Your strongest streak this month is <b style="color:var(--ink)">3 active days</b>.</div></article>
+</section>
+
+<div class="section-head reveal d2"><div><div class="section-title">Career pulse</div><div class="section-sub">A quick view of opportunities and your upcoming schedule.</div></div></div>
+<section class="lower-grid reveal d3">
+ <article class="panel pipeline"><div class="small-title">Application pipeline</div>
+   <div class="pipe-item"><div class="company" style="background:#D26A56">A</div><div><div class="pipe-title">Supervisor, Trust & Safety</div><div class="pipe-meta">Airbnb · Applied 2 days ago</div></div><span class="tag amber">IN REVIEW</span></div>
+   <div class="pipe-item"><div class="company" style="background:#5B46E0">D</div><div><div class="pipe-title">Software Engineer</div><div class="pipe-meta">Discord · Interview scheduled</div></div><span class="tag green">NEXT UP</span></div>
+   <div class="pipe-item"><div class="company" style="background:#2E7A58">Z</div><div><div class="pipe-title">Backend Engineer</div><div class="pipe-meta">Zerodha · Profile viewed</div></div><span class="tag green">ACTIVE</span></div>
+ </article>
+ <article class="panel plan"><div class="small-title">Coming up</div><div class="timeline">
+   <div class="event"><div class="event-time">TODAY<br>06:30</div><div class="event-line"></div><div><div class="event-title">Complete aptitude practice</div><div class="event-sub">Career readiness · 30 min</div></div></div>
+   <div class="event"><div class="event-time">TOMORROW<br>11:00</div><div class="event-line"></div><div><div class="event-title">Discord interview prep</div><div class="event-sub">Interview workspace · 45 min</div></div></div>
+   <div class="event"><div class="event-time">FRI<br>04:00</div><div class="event-line"></div><div><div class="event-title">Portfolio review deadline</div><div class="event-sub">Required for profile completion</div></div></div>
+ </div></article>
+</section>
+
+
+<section class="extra-section reveal d3">
+  <div class="section-head"><div><div class="section-title">Recent announcements</div><div class="section-sub">Important updates and opportunities you shouldn't miss.</div></div><button class="link-btn" onclick="notify('All announcements opened')">View all →</button></div>
+  <div class="extra-grid">
+    <article class="panel announcement-list">
+      <div class="announcement-item">
+        <div class="announce-date"><b>28</b><span>AUG</span></div>
+        <div class="announce-copy"><div class="announce-title">Placement drive registration is now open</div><div class="announce-sub">Complete your profile before registration closes to be eligible for the next recruiter shortlist.</div><span class="announce-meta">PLACEMENTS · 2 hours ago</span></div>
+        <button class="mini-open" onclick="notify('Announcement opened')">↗</button>
+      </div>
+      <div class="announcement-item">
+        <div class="announce-date violet"><b>30</b><span>AUG</span></div>
+        <div class="announce-copy"><div class="announce-title">Resume review slots available</div><div class="announce-sub">Book a one-to-one review session and improve your recruiter-facing profile.</div><span class="announce-meta">CAREER CENTER · Today</span></div>
+        <button class="mini-open" onclick="notify('Resume review opened')">↗</button>
+      </div>
+      <div class="announcement-item">
+        <div class="announce-date greenbg"><b>02</b><span>SEP</span></div>
+        <div class="announce-copy"><div class="announce-title">Backend assessment preparation</div><div class="announce-sub">A new practice module has been added to your recommended learning path.</div><span class="announce-meta">LEARNING · New</span></div>
+        <button class="mini-open" onclick="notify('Learning module opened')">↗</button>
+      </div>
+    </article>
+    <article class="panel role-match">
+      <div class="role-top"><div><div class="strip-kicker">Personalized for you</div><div class="role-heading">Roles matching you</div></div><span class="role-score">TOP 3</span></div>
+      <p class="role-desc">Based on your profile, skills, projects and current career direction.</p>
+      <div class="role-item">
+        <div class="role-rank">01</div><div class="role-info"><b>Backend Engineer</b><span>Strong skill alignment</span></div><div class="match-pill">84%</div>
+      </div>
+      <div class="role-item">
+        <div class="role-rank">02</div><div class="role-info"><b>Software Engineer</b><span>Good project alignment</span></div><div class="match-pill">78%</div>
+      </div>
+      <div class="role-item">
+        <div class="role-rank">03</div><div class="role-info"><b>Cloud Engineer</b><span>Growth opportunity</span></div><div class="match-pill soft">69%</div>
+      </div>
+      <div class="inline-action" onclick="notify('All matching roles opened')">Explore all matching roles →</div>
+    </article>
+  </div>
+</section>
+
+<section class="skill-section reveal d3">
+  <div class="section-head"><div><div class="section-title">Skill Gap</div><div class="section-sub">See exactly what to strengthen for the roles you want.</div></div><button class="link-btn" onclick="notify('Full skill analysis opened')">Full analysis →</button></div>
+  <div class="skill-grid">
+    <article class="panel skill-panel">
+      <div class="skill-head">
+        <div><div class="small-title">Your highest-impact gaps</div><div class="skill-summary">Focus on these first. Closing them will improve your role readiness faster than working on everything at once.</div></div>
+        <div class="skill-score">3 GAPS</div>
+      </div>
+      <div class="gap-list">
+        <div class="gap-row"><div class="gap-icon" style="background:#FBE7E1">⌘</div><div><div class="gap-name">System Design</div><div class="gap-note">Important for backend and platform roles</div></div><span class="gap-level level-high">HIGH</span></div>
+        <div class="gap-row"><div class="gap-icon" style="background:#FBEED6">◈</div><div><div class="gap-name">Kubernetes</div><div class="gap-note">Strengthen deployment and production concepts</div></div><span class="gap-level level-mid">MEDIUM</span></div>
+        <div class="gap-row"><div class="gap-icon" style="background:#EEEAFE">↗</div><div><div class="gap-name">Problem Solving</div><div class="gap-note">Practice medium-level DSA patterns</div></div><span class="gap-level level-low">GROWING</span></div>
+      </div>
+    </article>
+    <article class="panel target-card">
+      <div class="strip-kicker">Target role match</div>
+      <div class="match-title">Backend Engineer</div>
+      <div class="match-sub">Your current profile is building toward this role. The visualization shows where your strongest and weakest signals are.</div>
+      <div class="skill-radar">
+        <div class="radar-ring rr1"></div><div class="radar-ring rr2"></div><div class="radar-ring rr3"></div>
+        <div class="radar-shape"></div>
+        <i class="radar-dot rd1"></i><i class="radar-dot rd2"></i><i class="radar-dot rd3"></i><i class="radar-dot rd4"></i><i class="radar-dot rd5"></i>
+      </div>
+      <div class="skill-labels"><span>Backend</span><span>System</span><span>Cloud</span><span>DSA</span><span>Projects</span></div>
+      <div class="inline-action" style="margin-top:18px" onclick="notify('Personalized learning path opened')">Build my gap-closing plan →</div>
+    </article>
+  </div>
+</section>
+
+</div>
+</main>
+</div>
+<div class="toast" id="toast">Saved successfully</div>
+<script>
+const buttons=document.querySelectorAll('.nav-btn');
+buttons.forEach(b=>b.addEventListener('click',()=>{buttons.forEach(x=>x.classList.remove('active'));b.classList.add('active');notify(b.dataset.view+' selected');}));
+function notify(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2200)}
+function completeTask(){const bar=document.getElementById('profileBar'),pct=document.getElementById('profilePct');bar.style.width='78%';pct.textContent='78%';notify('Nice work — profile progress updated to 78%');}
+</script>
+</body></html>
