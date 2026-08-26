@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leapath — Drives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3fa;--panel:#fff;--ink:#241b35;--muted:#817a8e;
+  --line:#e7e2ef;--purple:#6d43d7;--purple-2:#4d2fa9;
+  --side:#22183a;--side-2:#2c1d4d;--green:#2b9b70;--red:#cf625b;
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.app{display:flex;min-height:100vh}
+.sidebar{width:220px;position:fixed;inset:0 auto 0 0;background:linear-gradient(180deg,#251941,#1e1634);color:#c8c2d4;padding:18px 9px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)}
+.brand{height:58px;padding:0 12px 17px;display:flex;align-items:flex-start;gap:13px;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{font:800 43px/32px Sora;color:#fff;letter-spacing:-5px}.brand-name{font:600 16px Sora;color:#f6f4fa}.role{display:inline-flex;margin-top:5px;padding:3px 8px;border-radius:8px;background:rgba(211,160,55,.13);color:#d8b45d;font-size:8px;font-weight:800;letter-spacing:.7px}
+.nav{padding-top:12px}.nav-group{margin-bottom:13px}.nav-label{padding:0 10px 8px;color:#837a98;font-size:8px;font-weight:800;letter-spacing:1.6px}.nav a{height:36px;margin:2px 0;padding:0 11px;border-radius:9px;color:#bbb5c8;text-decoration:none;display:flex;align-items:center;gap:11px;font-size:12px;font-weight:500;transition:.2s}.nav a:hover{background:rgba(132,99,211,.11);color:#fff}.nav a.active{background:linear-gradient(90deg,rgba(112,70,202,.42),rgba(98,61,170,.32));color:#fff;border:1px solid rgba(144,109,231,.22);box-shadow:inset 3px 0 #8e66ec}.nav svg{width:17px;height:17px;stroke:#aaa2bd;stroke-width:1.8}.bottom-user{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:17px 7px 6px}.user-row{display:flex;align-items:center;gap:9px}.avatar{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#6f51d5,#442993);color:#fff;font-size:12px;font-weight:800;box-shadow:0 8px 18px rgba(0,0,0,.25)}.user-row b{display:block;color:#eeeaf4;font-size:11px}.user-row span{display:block;margin-top:3px;font-size:9px;color:#958da5}.collapse{margin:16px 7px 0;color:#9188a2;font-size:9px;font-weight:800;letter-spacing:1px}
+
+.main{margin-left:220px;width:calc(100% - 220px)}
+.topbar{height:60px;padding:0 26px 0 23px;background:rgba(255,255,255,.62);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}.page-title{font:700 17px Sora}.page-sub{font-size:10.5px;color:#857e90;margin-top:4px}.top-actions{display:flex;align-items:center;gap:15px}.campus{padding:8px 13px;border-radius:13px;border:1px solid #e7e2ee;background:#fbfaff;color:#5c526c;font-size:10px;font-weight:700}.bell{width:31px;height:31px;border:0;background:transparent;color:#776f82}.top-avatar{display:flex;gap:8px;align-items:center}.top-avatar .mini{width:32px;height:32px;border-radius:50%;background:#f1eef7;display:grid;place-items:center;font-size:10px;color:#706781}.top-avatar b{font-size:10px}.top-avatar span{display:block;font-size:8px;color:#948d9e;margin-top:2px}
+
+.content{max-width:1280px;margin:0 auto;padding:30px 28px 54px}
+
+/* header inspired by supplied hero reference */
+.drive-hero{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(330px,.8fr);min-height:310px;border-radius:25px;border:1px solid rgba(133,100,224,.26);background:radial-gradient(circle at 84% 25%,rgba(144,101,255,.29),transparent 42%),linear-gradient(108deg,#170d31 0%,#25144d 42%,#4e2aa9 100%);box-shadow:0 24px 55px rgba(44,24,92,.18)}
+.drive-hero:before{content:"";position:absolute;inset:0;opacity:.1;background-image:radial-gradient(circle,rgba(255,255,255,.75) 1px,transparent 1.2px);background-size:28px 28px;mask-image:linear-gradient(90deg,#000 0%,#000 62%,transparent 100%)}.hero-left{position:relative;z-index:2;padding:38px 42px;display:flex;flex-direction:column;justify-content:center}.hero-badge{align-self:flex-start;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 14px;border:1px solid rgba(221,214,254,.25);border-radius:999px;background:rgba(255,255,255,.07);backdrop-filter:blur(10px);color:#e6e0fa;font-size:11px;font-weight:750}.dot{width:7px;height:7px;border-radius:50%;background:#a78bfa;box-shadow:0 0 0 4px rgba(167,139,250,.13)}.live{padding:3px 7px;border-radius:999px;border:1px solid rgba(74,222,128,.32);background:rgba(74,222,128,.08);color:#91edb1;font-size:8px;letter-spacing:.7px}.hero-left h1{margin:17px 0 8px;color:#fff;font:800 clamp(31px,4vw,50px)/1.04 Sora;letter-spacing:-1.8px}.hero-left h1 span{color:#c9b9ff}.hero-left p{max-width:600px;margin:0;color:rgba(255,255,255,.69);font-size:13px;line-height:1.65}.hero-actions{display:flex;gap:10px;margin-top:20px}.primary{border:0;border-radius:12px;padding:12px 16px;background:#fff;color:#442189;font:700 12px Inter;cursor:pointer;box-shadow:0 12px 26px rgba(0,0,0,.22);transition:.2s}.primary:hover{transform:translateY(-2px)}.secondary{border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:11px 16px;background:rgba(255,255,255,.06);color:#fff;font:700 12px Inter;cursor:pointer}.hero-meta{display:flex;gap:24px;margin-top:18px;color:rgba(255,255,255,.55);font-size:10px}.hero-meta b{color:#e7defd;margin-left:4px}.hero-right{position:relative;display:flex;align-items:center;justify-content:center;min-height:310px}.orbit{position:absolute;border:1px solid rgba(221,214,254,.24);border-radius:50%}.o1{width:310px;height:310px;transform:translate(-10%,-5%)}.o2{width:235px;height:235px;transform:translate(18%,20%)}.pulse-card{position:relative;z-index:2;width:225px;padding:25px 20px;border-radius:22px;background:linear-gradient(160deg,rgba(167,139,250,.25),rgba(83,39,183,.18));border:1px solid rgba(196,181,253,.23);backdrop-filter:blur(16px);box-shadow:0 26px 50px rgba(7,2,25,.28);text-align:center}.pulse-icon{width:55px;height:55px;margin:auto;display:grid;place-items:center;border-radius:16px;background:linear-gradient(145deg,#8d63f6,#5426b7);box-shadow:0 12px 28px rgba(15,4,50,.4);font-size:24px}.eyebrow{margin-top:14px;color:#d1c1ff;font-size:8px;font-weight:800;letter-spacing:1.5px}.pulse-card h3{margin:8px 0 3px;color:#fff;font:700 18px Sora}.pulse-card p{margin:0;color:rgba(255,255,255,.63);font-size:10px}.floating{position:absolute;z-index:3;padding:9px 11px;border-radius:12px;background:rgba(20,10,47,.9);border:1px solid rgba(196,181,253,.22);box-shadow:0 12px 25px rgba(5,2,20,.25);color:#fff;font-size:10px}.floating small{display:block;color:rgba(255,255,255,.48);font-size:8px;margin-bottom:2px}.f1{top:45px;right:25px}.f2{left:13px;bottom:36px}
+
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin:27px 0 15px}.toolbar h2{font:700 18px Sora;margin:0}.toolbar p{margin:5px 0 0;color:#8a8294;font-size:11px}.filters{display:flex;gap:8px}.filter{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;color:#746c7e;font-size:10px;font-weight:700}.filter.active{background:#f0ebff;color:#6740c7;border-color:#d8ccfb}
+.drive-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.drive-card{position:relative;overflow:hidden;background:linear-gradient(145deg,#fff,#fcfbff);border:1px solid #e5e0ed;border-radius:19px;padding:19px;box-shadow:0 8px 22px rgba(48,32,79,.045);transition:transform .22s,box-shadow .22s,border-color .22s}.drive-card:hover{transform:translateY(-4px);box-shadow:0 20px 36px rgba(45,27,86,.1);border-color:#d4c5fa}.drive-card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#7250dc,transparent 75%);opacity:.75}.drive-card.rejected:before{background:linear-gradient(90deg,#d76862,transparent 75%)}.card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.company-mark{width:43px;height:43px;border-radius:14px;background:#f1edfb;display:grid;place-items:center;color:#6540c4;font-weight:800;font:700 14px Sora}.card-title{margin:0;color:#30263f;font-size:14px;font-weight:800}.card-role{margin-top:5px;color:#89818f;font-size:10px}.status{padding:6px 9px;border-radius:999px;font-size:8px;font-weight:800;white-space:nowrap}.approved{background:#eaf7f0;color:#278b63;border:1px solid #c5e8d7}.rejected-b{background:#fff0ef;color:#c75b54;border:1px solid #f4d1ce}.card-desc{margin:15px 0;color:#615969;font-size:11px;line-height:1.55;min-height:34px}.detail-row{display:flex;gap:14px;flex-wrap:wrap;border-top:1px solid #eeeaf3;padding-top:13px;color:#81798b;font-size:9px}.detail{display:flex;align-items:center;gap:5px}.detail svg{width:13px;height:13px}.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:15px}.progress{font-size:9px;color:#7e7589}.progress b{color:#4c425a}.open{width:30px;height:30px;border:1px solid #e8e3f0;background:#f8f6fb;border-radius:9px;color:#7250d2;cursor:pointer;font-size:15px;transition:.2s}.open:hover{background:#7250d2;color:#fff}.warning{margin-top:14px;padding:10px 11px;border:1px solid #f2d4d0;background:#fff7f6;border-radius:10px;color:#aa554f;font-size:9px}.warning b{font-weight:800}.empty-tip{margin-top:18px;padding:15px 17px;border-radius:15px;border:1px dashed #d9d2e6;background:rgba(255,255,255,.5);display:flex;align-items:center;justify-content:space-between;color:#756d80;font-size:10px}.empty-tip button{border:0;background:none;color:#6943ce;font-weight:800;font-size:10px;cursor:pointer}
+.chat{position:fixed;right:28px;bottom:28px;width:52px;height:52px;border-radius:50%;border:0;background:linear-gradient(145deg,#6d48d8,#4822a8);color:#fff;box-shadow:0 16px 35px rgba(82,47,184,.35);font-size:21px;cursor:pointer}
+@media(max-width:980px){.sidebar{width:72px}.brand-name,.role,.nav-label,.nav a span,.bottom-user .user-copy,.collapse{display:none}.main{margin-left:72px;width:calc(100% - 72px)}.brand{justify-content:center;padding-left:0}.nav a{justify-content:center}.drive-hero{grid-template-columns:1fr}.hero-right{display:none}.drive-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.top-avatar .user-copy,.campus{display:none}.content{padding:20px 14px}.drive-hero{border-radius:20px}.hero-left{padding:29px 22px}.hero-left h1{font-size:34px}.toolbar{align-items:flex-end}.filters .filter:not(.active){display:none}.hero-actions{flex-direction:column;align-items:stretch}.primary,.secondary{width:100%}.drive-grid{gap:11px}}
+
+/* ===== FUNCTIONAL DRIVE FILTERS ===== */
+.filters{align-items:center}
+.filter{cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease}
+.filter:hover{transform:translateY(-2px);border-color:#cfc1f7;box-shadow:0 7px 16px rgba(65,43,123,.08)}
+.filter.active{box-shadow:0 6px 16px rgba(100,64,199,.13)}
+.attention-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#d76862;margin-right:5px;vertical-align:1px}
+.drive-card.filter-hidden{display:none}
+.filter-empty{grid-column:1/-1;padding:45px 25px;text-align:center;border:1px dashed #d8d0e6;border-radius:18px;background:rgba(255,255,255,.55);color:#82798e;font-size:11px}
+.filter-empty strong{display:block;font:700 16px Sora;color:#3b304c;margin-bottom:7px}
+
+
+/* =========================================================
+   SIGNATURE PREMIUM LAYER — DRIVES
+   ========================================================= */
+:root{
+  --glass:rgba(255,255,255,.72);
+  --deep:#211631;
+  --lav:#8f72ed;
+}
+body{
+  background:
+    radial-gradient(circle at 86% 12%,rgba(123,87,222,.07),transparent 24%),
+    radial-gradient(circle at 58% 88%,rgba(111,75,198,.04),transparent 26%),
+    var(--bg);
+}
+.topbar{
+  background:rgba(250,249,253,.82)!important;
+  box-shadow:0 1px 0 rgba(53,36,84,.03);
+}
+.page-title{letter-spacing:-.4px}
+.campus{
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 5px 16px rgba(44,29,81,.04);
+}
+.campus:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(123,87,222,.06),transparent);transform:translateX(-100%);transition:.6s}
+.campus:hover:before{transform:translateX(100%)}
+
+/* Hero refinement */
+.drive-hero{
+  min-height:332px!important;
+  border-radius:28px!important;
+  border-color:rgba(151,119,241,.34)!important;
+  box-shadow:0 30px 75px rgba(43,23,92,.22),0 4px 15px rgba(55,30,112,.09)!important;
+}
+.drive-hero:after{
+  content:"";
+  position:absolute;inset:auto 0 0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+}
+.hero-left{padding:42px 46px!important}
+.hero-badge{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 24px rgba(4,1,20,.12);
+}
+.hero-left h1{
+  text-shadow:0 4px 30px rgba(0,0,0,.12);
+}
+.hero-actions .primary{
+  position:relative;overflow:hidden;
+}
+.hero-actions .primary:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.38) 50%,transparent 65%);
+  transform:translateX(-130%);
+  transition:.65s;
+}
+.hero-actions .primary:hover:after{transform:translateX(130%)}
+.pulse-card{
+  border-radius:25px!important;
+  transform:translateY(-3px);
+}
+.pulse-card:before{
+  content:"";position:absolute;inset:1px;border-radius:24px;
+  border:1px solid rgba(255,255,255,.07);pointer-events:none;
+}
+.pulse-icon{animation:premiumPulse 3.4s ease-in-out infinite}
+@keyframes premiumPulse{
+  0%,100%{transform:translateY(0);box-shadow:0 12px 28px rgba(15,4,50,.4)}
+  50%{transform:translateY(-4px);box-shadow:0 18px 35px rgba(112,70,230,.34)}
+}
+
+/* Toolbar */
+.toolbar{margin-top:31px!important;margin-bottom:17px!important}
+.toolbar h2{font-size:20px!important;letter-spacing:-.55px}
+.toolbar p{font-size:10.5px!important}
+.filters{
+  padding:4px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(76,55,120,.08);
+  border-radius:14px;
+  box-shadow:0 9px 24px rgba(43,28,77,.05);
+}
+.filter{
+  border-color:transparent!important;
+  background:transparent!important;
+  border-radius:10px!important;
+}
+.filter.active{
+  background:linear-gradient(135deg,#7150d5,#5b38bd)!important;
+  color:#fff!important;
+  box-shadow:0 8px 18px rgba(89,56,190,.22)!important;
+}
+.filter.active .attention-dot{background:#ffb0a9;box-shadow:0 0 0 3px rgba(255,176,169,.12)}
+.filter:hover:not(.active){background:#f5f2fb!important}
+
+/* Cards */
+.drive-grid{gap:18px!important}
+.drive-card{
+  min-height:250px;
+  padding:21px!important;
+  border-radius:21px!important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.98),rgba(251,250,255,.93))!important;
+  box-shadow:0 10px 28px rgba(44,28,78,.055),inset 0 1px 0 rgba(255,255,255,.9)!important;
+}
+.drive-card:after{
+  content:"";
+  position:absolute;width:120px;height:120px;border-radius:50%;
+  right:-70px;top:-65px;
+  background:radial-gradient(circle,rgba(119,85,219,.11),transparent 68%);
+  pointer-events:none;
+}
+.drive-card.rejected:after{
+  background:radial-gradient(circle,rgba(215,104,98,.10),transparent 68%);
+}
+.drive-card:hover{
+  transform:translateY(-6px)!important;
+  box-shadow:0 24px 46px rgba(48,28,93,.12),0 0 0 1px rgba(115,81,213,.07)!important;
+}
+.drive-card:hover .company-mark{transform:rotate(-3deg) scale(1.05)}
+.company-mark{
+  width:46px!important;height:46px!important;border-radius:15px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 8px 17px rgba(75,50,130,.07);
+  transition:.25s ease;
+}
+.card-title{font-family:Sora,Inter,sans-serif!important;font-size:14px!important;letter-spacing:-.25px}
+.card-role{font-weight:600!important}
+.status{
+  padding:7px 10px!important;
+  letter-spacing:.35px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
+}
+.card-desc{
+  padding:10px 11px;
+  border-radius:11px;
+  background:rgba(245,243,250,.55);
+  min-height:auto!important;
+}
+.detail-row{
+  padding-top:14px!important;
+}
+.detail{
+  padding:6px 8px;
+  border-radius:8px;
+  background:#faf9fc;
+  border:1px solid rgba(70,51,110,.045);
+}
+.card-footer{
+  margin-top:13px!important;
+  padding-top:13px;
+  border-top:1px solid rgba(70,51,110,.07);
+}
+.open{
+  width:34px!important;height:34px!important;border-radius:11px!important;
+  box-shadow:0 5px 12px rgba(79,54,135,.07);
+}
+.warning{
+  border-radius:13px!important;
+  position:relative;
+  padding-left:13px!important;
+  box-shadow:inset 3px 0 0 rgba(207,98,91,.55);
+}
+.warning:before{content:"";position:absolute;right:12px;top:50%;width:5px;height:5px;border-radius:50%;background:#d76862;box-shadow:0 0 0 4px rgba(215,104,98,.08);transform:translateY(-50%)}
+
+/* Empty CTA */
+.empty-tip{
+  margin-top:22px!important;
+  border-radius:18px!important;
+  background:linear-gradient(100deg,rgba(255,255,255,.82),rgba(246,242,255,.75))!important;
+  border-style:solid!important;
+  border-color:rgba(115,81,213,.14)!important;
+  box-shadow:0 12px 28px rgba(45,29,83,.045);
+}
+.empty-tip button{
+  padding:9px 12px;border-radius:10px;
+  background:#eee9fb;
+}
+
+/* Sidebar subtle premium refinement */
+.sidebar{
+  background:
+    radial-gradient(circle at 120% 15%,rgba(125,86,226,.15),transparent 25%),
+    linear-gradient(180deg,#251941,#1d1532)!important;
+}
+.nav a.active{box-shadow:inset 3px 0 #9a76f0,0 8px 22px rgba(17,9,39,.18)!important}
+.avatar{box-shadow:0 10px 22px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.12)}
+
+
+/* ==========================================================
+   OG SIGNATURE EXPERIENCE — LEAPATH DRIVES
+   Visual system upgrade without changing the existing theme
+   ========================================================== */
+
+/* Ambient page depth */
+.content{
+  position:relative;
+}
+.content::before{
+  content:"";
+  position:absolute;
+  width:560px;height:560px;
+  border-radius:50%;
+  right:-280px;top:250px;
+  background:radial-gradient(circle,rgba(115,81,213,.055),transparent 68%);
+  pointer-events:none;
+}
+
+/* ---------- HERO: more cinematic ---------- */
+.drive-hero{
+  background:
+    radial-gradient(circle at 78% 30%,rgba(160,126,255,.38),transparent 16%),
+    radial-gradient(circle at 92% 72%,rgba(104,57,222,.45),transparent 33%),
+    linear-gradient(112deg,#160b2c 0%,#241144 43%,#5b34bd 100%)!important;
+}
+.drive-hero .hero-left{z-index:4}
+.hero-badge{
+  position:relative;
+  overflow:hidden;
+}
+.hero-badge::after{
+  content:"";
+  position:absolute;
+  width:90px;height:100%;
+  left:-100px;top:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent);
+  transform:skewX(-25deg);
+  animation:badgeShine 5s ease-in-out infinite;
+}
+@keyframes badgeShine{
+  0%,60%,100%{left:-110px}
+  75%{left:110%}
+}
+.hero-left h1{
+  font-size:clamp(38px,4.1vw,56px)!important;
+  max-width:650px;
+}
+.hero-left h1 span{
+  background:linear-gradient(90deg,#d8ccff,#a98dff 55%,#e2d9ff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent!important;
+}
+.hero-left p{max-width:610px!important}
+.primary{
+  transform:translateZ(0);
+}
+.primary:hover{box-shadow:0 18px 32px rgba(0,0,0,.28)!important}
+.secondary:hover{
+  background:rgba(255,255,255,.12)!important;
+  border-color:rgba(255,255,255,.42)!important;
+}
+.pulse-card{
+  width:238px!important;
+  padding:28px 22px!important;
+}
+.pulse-card h3{font-size:21px!important}
+.floating{
+  backdrop-filter:blur(18px);
+  background:linear-gradient(135deg,rgba(27,15,56,.94),rgba(41,25,78,.82))!important;
+}
+.floating::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:1px solid rgba(255,255,255,.04);
+  pointer-events:none;
+}
+
+/* ---------- PIPELINE HEADER ---------- */
+.toolbar{
+  position:relative;
+  padding:3px 0 2px;
+}
+.toolbar h2{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.toolbar h2::before{
+  content:"";
+  width:4px;height:22px;
+  border-radius:99px;
+  background:linear-gradient(#9677f3,#6037c8);
+  box-shadow:0 0 12px rgba(111,75,212,.28);
+}
+.toolbar > div:first-child{position:relative}
+/* Pipeline count badge — inline so it never overlaps the title */
+.toolbar > div:first-child::after{
+  content:"5 DRIVES";
+  position:static!important;
+  display:inline-flex;
+  align-items:center;
+  vertical-align:middle;
+  margin-left:10px;
+  transform:translateY(-2px);
+  padding:5px 9px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#f3efff,#e9e2ff);
+  border:1px solid rgba(128,98,216,.10);
+  color:#7658c8;
+  font-size:8px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:1px;
+  box-shadow:0 4px 10px rgba(94,67,177,.06);
+}
+
+/* ---------- FILTERS: premium control ---------- */
+.filters{
+  position:relative;
+  isolation:isolate;
+}
+.filters::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(240,235,252,.5));
+  z-index:-1;
+}
+.filter{
+  position:relative!important;
+  font-weight:800!important;
+}
+.filter.active{
+  letter-spacing:.05px;
+}
+.filter.active::after{
+  content:"";
+  position:absolute;
+  left:50%;bottom:3px;
+  width:14px;height:2px;
+  border-radius:99px;
+  background:rgba(255,255,255,.8);
+  transform:translateX(-50%);
+}
+
+/* ---------- CARDS: product-quality hierarchy ---------- */
+.drive-card{
+  isolation:isolate;
+  padding:22px!important;
+}
+.drive-card::before{
+  height:4px!important;
+  opacity:1!important;
+}
+.drive-card::selection{background:#d9ccff}
+.card-head{
+  position:relative;
+  z-index:2;
+}
+.company-mark{
+  position:relative;
+  overflow:hidden;
+}
+.company-mark::after{
+  content:"";
+  position:absolute;
+  width:34px;height:34px;
+  border-radius:50%;
+  right:-15px;bottom:-15px;
+  background:rgba(111,75,212,.13);
+}
+.card-title{
+  line-height:1.3;
+}
+.status{
+  position:relative;
+  overflow:hidden;
+}
+.status::before{
+  content:"";
+  display:inline-block;
+  width:5px;height:5px;
+  border-radius:50%;
+  margin-right:5px;
+  background:currentColor;
+  opacity:.8;
+  box-shadow:0 0 0 3px rgba(255,255,255,.45);
+}
+.card-desc{
+  position:relative;
+  z-index:1;
+  margin-top:17px!important;
+  color:#62596c!important;
+  border:1px solid rgba(79,58,119,.035);
+}
+.detail-row{
+  gap:7px!important;
+}
+.detail{
+  flex:1 1 auto;
+  min-width:max-content;
+  transition:.2s ease;
+}
+.drive-card:hover .detail{
+  background:#f7f4fc;
+  border-color:rgba(108,74,195,.09);
+}
+.card-footer .progress{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.card-footer .progress::before{
+  content:"";
+  width:6px;height:6px;
+  border-radius:50%;
+  background:#7c59dc;
+  box-shadow:0 0 0 4px rgba(124,89,220,.08);
+}
+.rejected .card-footer .progress::before{
+  background:#d76862;
+  box-shadow:0 0 0 4px rgba(215,104,98,.08);
+}
+.open{
+  position:relative;
+  overflow:hidden;
+}
+.open::before{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#7b57df,#5a35bf);
+  opacity:0;
+  transition:.2s;
+}
+.open:hover::before{opacity:1}
+.open:hover{font-size:0!important}
+.open:hover::after{
+  content:"↗";
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  color:#fff;font-size:15px;
+}
+
+/* Make the attention card a deliberate exception */
+.drive-card.rejected{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(220,117,108,.07),transparent 27%),
+    linear-gradient(145deg,#fff,#fffafa)!important;
+}
+.drive-card.rejected .company-mark{
+  box-shadow:0 8px 20px rgba(207,98,91,.09);
+}
+.warning{
+  transition:.22s ease;
+}
+.drive-card.rejected:hover .warning{
+  transform:translateX(2px);
+  background:#fff4f3!important;
+}
+
+/* ---------- STATUS MICRO-INTERACTION ---------- */
+.approved{
+  animation:softGlow 3.5s ease-in-out infinite;
+}
+@keyframes softGlow{
+  0%,100%{box-shadow:0 0 0 rgba(43,155,112,0)}
+  50%{box-shadow:0 4px 13px rgba(43,155,112,.12)}
+}
+
+/* ---------- EMPTY CTA ---------- */
+.empty-tip{
+  min-height:68px;
+  position:relative;
+  overflow:hidden;
+}
+.empty-tip::before{
+  content:"✦";
+  position:absolute;
+  left:18px;
+  color:#8b6be4;
+  opacity:.55;
+}
+.empty-tip span{padding-left:14px}
+.empty-tip button{
+  position:relative;
+  transition:.2s ease!important;
+}
+.empty-tip button:hover{
+  background:#7150d5!important;
+  color:#fff!important;
+  transform:translateX(2px);
+}
+
+/* ---------- Top bar ---------- */
+.top-actions{gap:10px!important}
+.bell{
+  border-radius:10px!important;
+  transition:.2s ease;
+}
+.bell:hover{
+  background:#f0ecfa!important;
+  color:#6844c9!important;
+}
+.top-avatar{
+  padding:3px 6px 3px 3px;
+  border-radius:18px;
+  transition:.2s;
+}
+.top-avatar:hover{background:#f5f2fa}
+
+/* ---------- floating action ---------- */
+.chat{
+  width:56px!important;height:56px!important;
+  box-shadow:0 20px 42px rgba(82,47,184,.42)!important;
+}
+.chat::before{
+  content:"";
+  position:absolute;inset:-6px;
+  border-radius:50%;
+  border:1px solid rgba(109,72,216,.13);
+  animation:chatRing 2.8s ease-out infinite;
+}
+@keyframes chatRing{
+  0%{transform:scale(.86);opacity:0}
+  30%{opacity:.8}
+  100%{transform:scale(1.2);opacity:0}
+}
+
+/* Better filter transitions */
+.drive-card{
+  animation:cardEnter .5s cubic-bezier(.2,.8,.2,1) both;
+}
+.drive-card:nth-child(2){animation-delay:.05s}
+.drive-card:nth-child(3){animation-delay:.1s}
+.drive-card:nth-child(4){animation-delay:.15s}
+.drive-card:nth-child(5){animation-delay:.2s}
+@keyframes cardEnter{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:760px){
+  .toolbar > div:first-child::after{display:none}
+  .filters{max-width:100%;overflow:auto}
+  .filter{white-space:nowrap}
+}
+
+
+.toolbar > div:first-child{
+  display:block;
+}
+.toolbar h2{
+  display:inline-flex!important;
+  vertical-align:middle;
+}
+
+
+/* ================= PROPOSE A DRIVE MODAL ================= */
+.propose-modal-backdrop{
+  position:fixed; inset:0; z-index:1000;
+  display:none; align-items:center; justify-content:center;
+  padding:28px;
+  background:rgba(24,16,43,.30);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.propose-modal-backdrop.is-open{display:flex;animation:modalBackdropIn .22s ease}
+@keyframes modalBackdropIn{from{opacity:0}to{opacity:1}}
+.propose-modal{
+  width:min(900px,100%);
+  max-height:calc(100vh - 56px);
+  overflow:auto;
+  border-radius:22px;
+  border:1px solid rgba(121,98,180,.24);
+  background:linear-gradient(145deg,#fff,#faf9fd);
+  box-shadow:0 35px 100px rgba(26,14,56,.30),0 4px 14px rgba(46,27,91,.10);
+  padding:32px;
+  animation:modalCardIn .28s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes modalCardIn{
+  from{opacity:0;transform:translateY(16px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:25px;
+}
+.modal-head h2{
+  margin:0;color:#302742;font:700 20px Sora,Inter,sans-serif;
+  letter-spacing:-.35px;
+}
+.modal-close{
+  width:38px;height:38px;border:0;border-radius:10px;
+  background:transparent;color:#716a7c;font-size:28px;line-height:1;
+  cursor:pointer;transition:.2s ease;
+}
+.modal-close:hover{background:#f0ecf7;color:#5436af;transform:rotate(90deg)}
+.propose-form{display:grid;gap:20px}
+.form-field{display:grid;gap:9px}
+.form-field label{
+  color:#686173;font-size:12px;font-weight:800;letter-spacing:.1px;
+}
+.form-field input,.form-field textarea,.form-field select{
+  width:100%;outline:none;
+  border:1px solid #d9d4e5;
+  background:#fff;
+  color:#302742;
+  border-radius:17px;
+  padding:16px 19px;
+  font:500 14px Inter,sans-serif;
+  transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.form-field input::placeholder,.form-field textarea::placeholder{color:#9993a0}
+.form-field textarea{min-height:124px;resize:vertical}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{
+  border-color:#9b80e9;
+  box-shadow:0 0 0 4px rgba(116,79,214,.10);
+  background:#fff;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-row.three{grid-template-columns:1.45fr .7fr .7fr}
+.input-wrap{position:relative}
+.input-wrap input{padding-right:48px}
+.input-icon{
+  position:absolute;right:17px;top:50%;transform:translateY(-50%);
+  color:#504a5b;font-size:19px;pointer-events:none;
+}
+.modal-actions{
+  display:flex;align-items:center;gap:11px;margin-top:12px;
+}
+.submit-drive{
+  border:0;border-radius:13px;
+  padding:15px 22px;
+  background:linear-gradient(135deg,#8668dd,#6a47c9);
+  color:#fff;font:800 13px Inter,sans-serif;letter-spacing:.1px;
+  cursor:pointer;box-shadow:0 10px 22px rgba(94,61,193,.20);
+  transition:.2s ease;
+}
+.submit-drive:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(94,61,193,.28)}
+.cancel-drive{
+  border:1px solid #d9d4e5;border-radius:13px;
+  padding:14px 21px;background:#fff;color:#3f384a;
+  font:700 13px Inter,sans-serif;cursor:pointer;transition:.2s ease;
+}
+.cancel-drive:hover{background:#f6f3fa;border-color:#c9bde8}
+body.modal-open{overflow:hidden}
+@media(max-width:700px){
+  .propose-modal-backdrop{padding:12px;align-items:flex-end}
+  .propose-modal{padding:24px 18px;border-radius:20px;max-height:92vh}
+  .form-row,.form-row.three{grid-template-columns:1fr}
+  .modal-actions{position:sticky;bottom:0;padding-top:12px;background:linear-gradient(180deg,transparent,#fff 25%)}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">L</div><div><div class="brand-name">Leapath.</div><span class="role">RECRUITER</span></div></div>
+  <nav class="nav">
+    <div class="nav-group"><div class="nav-label">OVERVIEW</div><a href="#"><span>▦</span><span>Dashboard</span></a></div>
+    <div class="nav-group"><div class="nav-label">TALENT</div><a href="#"><span>◯</span><span>Candidates</span></a><a href="#"><span>☆</span><span>Shortlisted</span></a><a href="#"><span>▥</span><span>Hiring Roles</span></a><a class="active" href="#"><span>♧</span><span>Drives</span></a></div>
+    <div class="nav-group"><div class="nav-label">INSIGHTS</div><a href="#"><span>▥</span><span>Analytics</span></a></div>
+    <div class="nav-group"><a href="#"><span>⚙</span><span>Settings</span></a><a href="#"><span>?</span><span>Support</span></a></div>
+  </nav>
+  <div class="bottom-user"><div class="user-row"><div class="avatar">K</div><div class="user-copy"><b>Kiran</b><span>Recruiter</span></div></div><div class="collapse">‹‹ &nbsp; COLLAPSE</div></div>
+</aside>
+
+<main class="main">
+<header class="topbar"><div><div class="page-title">Drives</div><div class="page-sub">Propose interview rounds and hiring events — a TPO reviews before students see them</div></div><div class="top-actions"><div class="campus">▦ &nbsp; IIIT Hyderabad</div><button class="bell">♧</button><div class="top-avatar"><div class="mini">K</div><div class="user-copy"><b>Kiran</b><span>Recruiter</span></div></div></div></header>
+
+<section class="content">
+  <section class="drive-hero">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="dot"></span>Recruitment workspace <span class="live">LIVE</span></div>
+      <h1>Build your next<br><span>great hiring drive.</span></h1>
+      <p>Propose interview rounds, coordinate schedules and keep every drive visible from draft to student launch — with TPO approval built into the workflow.</p>
+      <div class="hero-actions"><button class="primary js-propose-drive" type="button">＋ Propose a drive</button><button class="secondary">View drive analytics ↗</button></div>
+      <div class="hero-meta"><span>Active drives <b>4</b></span><span>Awaiting approval <b>1</b></span><span>Students reached <b>320</b></span></div>
+    </div>
+    <div class="hero-right"><div class="orbit o1"></div><div class="orbit o2"></div><div class="pulse-card"><div class="pulse-icon">◫</div><div class="eyebrow">DRIVE PULSE</div><h3>4 active</h3><p>1 event needs attention</p></div><div class="floating f1"><small>NEXT DRIVE</small>Aug 28 · 10:00 AM</div><div class="floating f2"><small>APPROVAL RATE</small>94% on-time</div></div>
+  </section>
+
+  <div class="toolbar"><div><h2>Drive pipeline</h2><p>Everything you are planning, running or reviewing — in one place.</p></div><div class="filters" role="tablist" aria-label="Drive filters">
+  <button class="filter active" data-filter="all" role="tab">All drives · 5</button>
+  <button class="filter" data-filter="approved" role="tab">Approved · 4</button>
+  <button class="filter attention-filter" data-filter="attention" role="tab"><span class="attention-dot"></span>Needs attention · 1</button>
+</div></div>
+
+  <section class="drive-grid">
+    <article class="drive-card" data-status="approved"><div class="card-head"><div style="display:flex;gap:12px"><div class="company-mark">T1</div><div><h3 class="card-title">test1</h3><div class="card-role">qwert</div></div></div><span class="status approved">✓ LIVE TO STUDENTS</span></div><p class="card-desc">Interview event is published and visible to eligible students.</p><div class="detail-row"><span class="detail">◷ Aug 20, 2026</span><span class="detail">◷ 3:30 PM–4:30 PM</span><span class="detail">▣ Online</span></div><div class="card-footer"><span class="progress">Candidate response <b>Strong</b></span><button class="open">→</button></div></article>
+
+    <article class="drive-card" data-status="approved"><div class="card-head"><div style="display:flex;gap:12px"><div class="company-mark">QW</div><div><h3 class="card-title">qwertqwert</h3><div class="card-role">qwert</div></div></div><span class="status approved">✓ LIVE TO STUDENTS</span></div><p class="card-desc">A live hiring session with schedule and student access confirmed.</p><div class="detail-row"><span class="detail">◷ Aug 20, 2026</span><span class="detail">◷ 3:30 PM–4:31 PM</span><span class="detail">▣ Online</span></div><div class="card-footer"><span class="progress">Status <b>On track</b></span><button class="open">→</button></div></article>
+
+    <article class="drive-card rejected" data-status="attention"><div class="card-head"><div style="display:flex;gap:12px"><div class="company-mark" style="background:#fff0ef;color:#c85d57">A</div><div><h3 class="card-title">Amazon</h3><div class="card-role">SDE-1</div></div></div><span class="status rejected-b">! REJECTED</span></div><p class="card-desc">Scheduling conflict was detected during TPO review.</p><div class="detail-row"><span class="detail">◷ Aug 21, 2026</span><span class="detail">◷ 9:05 AM–5:05 PM</span><span class="detail">▣ Online</span></div><div class="warning"><b>TPO note:</b> Another event is scheduled on the same day. Adjust the timing and resubmit.</div><div class="card-footer"><span class="progress">Action required <b>Reschedule</b></span><button class="open">→</button></div></article>
+
+    <article class="drive-card" data-status="approved"><div class="card-head"><div style="display:flex;gap:12px"><div class="company-mark">AS</div><div><h3 class="card-title">Associate Software Engineer</h3><div class="card-role">ASE-1</div></div></div><span class="status approved">✓ LIVE TO STUDENTS</span></div><p class="card-desc">Software engineering interview drive with role requirements shared.</p><div class="detail-row"><span class="detail">◷ Aug 28, 2026</span><span class="detail">◷ 10:00 AM–4:00 PM</span><span class="detail">⌖ College Placement Cell</span></div><div class="card-footer"><span class="progress">Readiness <b>100%</b></span><button class="open">→</button></div></article>
+
+    <article class="drive-card" data-status="approved"><div class="card-head"><div style="display:flex;gap:12px"><div class="company-mark">QA</div><div><h3 class="card-title">QA-1</h3><div class="card-role">Tester-1</div></div></div><span class="status approved">✓ LIVE TO STUDENTS</span></div><p class="card-desc">Quality assurance interview event with an online assessment round.</p><div class="detail-row"><span class="detail">◷ Aug 28, 2026</span><span class="detail">◷ 10:00 AM–4:00 PM</span><span class="detail">▣ Online</span></div><div class="card-footer"><span class="progress">Candidate response <b>Growing</b></span><button class="open">→</button></div></article>
+  </section>
+  <div class="empty-tip"><span>Want to launch another hiring event? Start a drive and send it to the TPO for review.</span><button class="js-propose-drive" type="button">Propose a drive →</button></div>
+</section>
+</main>
+<button class="chat">◔</button>
+</div>
+
+<script>
+(function(){
+  const buttons = document.querySelectorAll('.filter[data-filter]');
+  const cards = document.querySelectorAll('.drive-card');
+  const grid = document.querySelector('.drive-grid');
+
+  const empty = document.createElement('div');
+  empty.className = 'filter-empty';
+  empty.innerHTML = '<strong>No drives found</strong><span>There are no drives in this category right now.</span>';
+  empty.style.display = 'none';
+  grid.appendChild(empty);
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      buttons.forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+
+      let visible = 0;
+      cards.forEach(card => {
+        const show = filter === 'all' || card.dataset.status === filter;
+        card.classList.toggle('filter-hidden', !show);
+        if(show){
+          card.style.animation = 'none';
+          void card.offsetWidth;
+          card.style.animation = 'cardEnter .36s cubic-bezier(.2,.8,.2,1) both';
+        }
+        if(show) visible++;
+      });
+
+      empty.style.display = visible ? 'none' : 'block';
+    });
+  });
+})();
+</script>
+
+
+<div class="propose-modal-backdrop" id="proposeDriveModal" aria-hidden="true">
+  <section class="propose-modal" role="dialog" aria-modal="true" aria-labelledby="proposeDriveTitle">
+    <div class="modal-head">
+      <h2 id="proposeDriveTitle">Propose a Drive</h2>
+      <button class="modal-close" type="button" aria-label="Close" data-close-modal>×</button>
+    </div>
+
+    <form class="propose-form" id="proposeDriveForm">
+      <div class="form-field">
+        <label for="driveTitle">Title</label>
+        <input id="driveTitle" name="title" type="text" placeholder="e.g. Software Engineer — Interview Round 1" required>
+      </div>
+
+      <div class="form-field">
+        <label for="driveDescription">Description</label>
+        <textarea id="driveDescription" name="description" placeholder="What students should expect, prerequisites, format…"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="targetRole">Target role</label>
+          <input id="targetRole" name="targetRole" type="text" placeholder="e.g. SDE-1" required>
+        </div>
+        <div class="form-field">
+          <label for="driveMode">Mode</label>
+          <select id="driveMode" name="mode">
+            <option>Online</option>
+            <option>In person</option>
+            <option>Hybrid</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row three">
+        <div class="form-field">
+          <label for="driveDate">Date</label>
+          <div class="input-wrap">
+            <input id="driveDate" name="date" type="date" required>
+            <span class="input-icon">◷</span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="startTime">Start</label>
+          <div class="input-wrap">
+            <input id="startTime" name="start" type="time" required>
+            <span class="input-icon">◷</span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="endTime">End</label>
+          <div class="input-wrap">
+            <input id="endTime" name="end" type="time" required>
+            <span class="input-icon">◷</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="submit-drive" type="submit">◷ &nbsp; Submit for TPO Review</button>
+        <button class="cancel-drive" type="button" data-close-modal>Cancel</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+
+<script>
+(function(){
+  const modal = document.getElementById('proposeDriveModal');
+  const openers = document.querySelectorAll('.js-propose-drive');
+  const closers = modal.querySelectorAll('[data-close-modal]');
+  const firstInput = document.getElementById('driveTitle');
+
+  function openModal(){
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open');
+    setTimeout(()=>firstInput.focus(),80);
+  }
+  function closeModal(){
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');
+  }
+
+  openers.forEach(btn=>btn.addEventListener('click',openModal));
+  closers.forEach(btn=>btn.addEventListener('click',closeModal));
+  modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape' && modal.classList.contains('is-open'))closeModal()});
+
+  document.getElementById('proposeDriveForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    const submit = this.querySelector('.submit-drive');
+    const original = submit.innerHTML;
+    submit.innerHTML='✓ &nbsp; Submitted for Review';
+    submit.style.background='linear-gradient(135deg,#49a97a,#268a60)';
+    setTimeout(()=>{
+      this.reset();
+      submit.innerHTML=original;
+      submit.style.background='';
+      closeModal();
+    },900);
+  });
+})();
+</script>
+
+</body>
+</html>
