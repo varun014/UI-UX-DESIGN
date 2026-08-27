@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leapath — Hiring Roles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sidebar:#22183c; --sidebar2:#19132d; --purple:#7650d5; --violet:#9a7bea;
+  --ink:#302842; --muted:#7f788c; --line:#e6e0ef; --paper:#f7f6fa; --card:#fff;
+  --green:#1c9b72; --amber:#e99b25; --red:#e55457; --shadow:0 16px 40px rgba(45,31,80,.08);
+}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif}
+button,input{font:inherit} button{cursor:pointer}
+.app{min-height:100vh;display:flex}
+
+/* SIDEBAR */
+.sidebar{position:fixed;inset:0 auto 0 0;width:220px;color:#c5c0d0;background:
+radial-gradient(circle at 120% 5%,rgba(121,79,222,.20),transparent 27%),
+linear-gradient(180deg,#261b46 0%,#1c1532 100%);border-right:1px solid rgba(255,255,255,.06);z-index:20}
+.brand{height:73px;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+.brand-mark{font:800 42px/1 Sora;color:#fff;margin-right:16px}.brand-name{font:600 16px Sora;color:#eeeaf6}
+.brand small{display:inline-block;margin-top:4px;padding:3px 7px;border-radius:6px;background:rgba(196,147,44,.18);color:#d9b966;font-size:7px;font-weight:800;letter-spacing:.9px}
+.nav{padding:12px 8px}.nav-label{padding:0 11px;margin:9px 0 6px;color:#847c98;font-size:8px;font-weight:800;letter-spacing:1.6px}
+.nav a{height:36px;display:flex;align-items:center;gap:11px;padding:0 12px;margin:2px 0;border-radius:9px;color:#bdb7c9;text-decoration:none;font-size:12px;transition:.2s}
+.nav a:hover{background:rgba(255,255,255,.055);color:#fff;transform:translateX(2px)}
+.nav a.active{background:linear-gradient(90deg,rgba(112,75,205,.48),rgba(112,75,205,.22));color:#fff;box-shadow:inset 2px 0 #9a7aea;border:1px solid rgba(145,112,235,.20)}
+.icon{width:16px;text-align:center;font-size:16px;color:#aaa2bd}
+.side-bottom{position:absolute;left:0;right:0;bottom:0;padding:16px 14px 18px;border-top:1px solid rgba(255,255,255,.07)}
+.user-mini{display:flex;align-items:center;gap:10px}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7650d5,#3d2495);color:#fff;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.22)}
+.user-mini strong{font-size:12px;color:#eeeaf6}.user-mini span{display:block;font-size:10px;color:#938ba5;margin-top:3px}.collapse{margin-top:17px;color:#938ba5;font-size:9px;font-weight:800;letter-spacing:1.4px}
+
+/* TOPBAR */
+.main{margin-left:220px;width:calc(100% - 220px);min-height:100vh}
+.topbar{height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(255,255,255,.76);border-bottom:1px solid var(--line);backdrop-filter:blur(16px);position:sticky;top:0;z-index:10}
+.page-title{font:700 15px Sora}.page-sub{font-size:10px;color:#777184;margin-top:3px}
+.top-right{display:flex;align-items:center;gap:14px}.campus{padding:8px 13px;border:1px solid #e5dff0;border-radius:12px;background:#fbfaff;color:#51466b;font-size:11px;font-weight:700}.campus b{color:#7553d2;margin-right:6px}.bell{width:32px;height:32px;border:0;background:transparent;border-radius:9px;color:#655e70}.bell:hover{background:#f1eef7}.profile{display:flex;align-items:center;gap:8px}.profile .avatar{width:32px;height:32px;background:#f1eef8;color:#6c6480;box-shadow:none;font-size:10px}.profile strong{font-size:11px}.profile span{font-size:9px;color:#908999}
+
+/* CONTENT */
+.content{padding:30px 7.2vw 60px;position:relative;overflow:hidden;min-height:calc(100vh - 62px)}
+.content:before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;right:-360px;top:-120px;background:radial-gradient(circle,rgba(123,87,222,.08),transparent 68%);pointer-events:none}
+.hero{position:relative;overflow:hidden;min-height:275px;border-radius:27px;padding:35px 42px;display:flex;align-items:center;justify-content:space-between;background:
+radial-gradient(circle at 78% 34%,rgba(158,123,255,.45),transparent 15%),
+radial-gradient(circle at 93% 75%,rgba(102,58,222,.48),transparent 33%),
+linear-gradient(110deg,#160b2b,#241044 47%,#6038c1);color:#fff;box-shadow:0 26px 70px rgba(42,20,91,.20)}
+.hero:after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.18) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(90deg,#000,transparent 70%);opacity:.28}
+.hero-copy{position:relative;z-index:2;max-width:670px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.07);font-size:10px;font-weight:800;letter-spacing:1.1px}.live{padding:4px 7px;border-radius:6px;background:rgba(61,178,128,.17);color:#8ce0bd;font-size:8px}
+.hero h1{font:800 clamp(34px,4vw,55px)/1.05 Sora;margin:19px 0 15px;letter-spacing:-2px}.hero h1 span{background:linear-gradient(90deg,#d8ceff,#9f83ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:620px;margin:0;color:#c8c1d4;font-size:16px;line-height:1.55}.hero-actions{display:flex;gap:10px;margin-top:23px}.btn-primary,.btn-secondary{border-radius:12px;padding:13px 17px;font-size:12px;font-weight:800;transition:.2s}.btn-primary{border:0;background:#fff;color:#41366a;box-shadow:0 10px 25px rgba(0,0,0,.16)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(0,0,0,.23)}.btn-secondary{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.06);color:#eeeafa}.btn-secondary:hover{background:rgba(255,255,255,.13)}
+.hero-orbit{position:relative;z-index:2;width:290px;height:230px}.orbit{position:absolute;border:1px solid rgba(210,195,255,.22);border-radius:50%}.orbit.one{width:250px;height:250px;right:-25px;top:-5px}.orbit.two{width:180px;height:180px;right:20px;top:31px}.role-panel{position:absolute;right:28px;top:36px;width:190px;padding:21px;border-radius:22px;background:linear-gradient(145deg,rgba(120,81,213,.9),rgba(79,47,160,.88));border:1px solid rgba(255,255,255,.14);box-shadow:0 24px 50px rgba(15,5,45,.3);backdrop-filter:blur(16px)}.role-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(135deg,#a885ff,#5424bb);font-size:20px}.role-panel .small{margin-top:17px;color:#cbc0eb;font-size:8px;font-weight:800;letter-spacing:1.8px}.role-panel h3{font:700 18px/1.25 Sora;margin:8px 0 3px}.role-panel p{font-size:10px;color:#d2c9e7}
+.floating-stat{position:absolute;z-index:3;padding:13px 17px;border-radius:17px;background:rgba(29,20,53,.93);border:1px solid rgba(255,255,255,.12);box-shadow:0 14px 30px rgba(8,3,26,.25);color:#fff}.floating-stat.top{right:4px;top:10px}.floating-stat.bottom{left:5px;bottom:7px}.floating-stat small{display:block;color:#a9a1ba;font-size:9px}.floating-stat strong{font:700 15px Sora}
+
+/* KPI */
+.kpis{position:relative;z-index:3;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+.kpi{padding:18px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.82);box-shadow:0 8px 24px rgba(47,33,77,.05);transition:.22s}.kpi:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.kpi-top{display:flex;justify-content:space-between}.kpi-icon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#f2effc;color:#7650d5}.kpi b{display:block;font:700 23px Sora;margin-top:9px}.kpi span{font-size:10px;color:#766f82;font-weight:700}.trend{font-size:9px;color:#1c9b72;background:#edf9f4;border-radius:999px;padding:5px 8px}
+
+/* SECTION */
+.section-head{display:flex;align-items:end;justify-content:space-between;margin:31px 0 14px}.section-head h2{margin:0;font:700 20px Sora;letter-spacing:-.5px;display:flex;align-items:center;gap:9px}.section-head h2:before{content:"";width:4px;height:22px;border-radius:99px;background:linear-gradient(#9677f3,#6037c8);box-shadow:0 0 12px rgba(111,75,212,.28)}.section-head p{margin:6px 0 0;color:#878091;font-size:11px}.filters{padding:4px;display:flex;gap:3px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 20px rgba(44,30,76,.04)}.filter{border:0;background:transparent;padding:8px 11px;border-radius:10px;color:#756e80;font-size:10px;font-weight:800}.filter.active{background:linear-gradient(135deg,#7350d5,#5c39bd);color:#fff;box-shadow:0 7px 16px rgba(89,56,190,.20)}
+.role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.role-card{position:relative;overflow:hidden;padding:20px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#fff,#fbfaff);box-shadow:0 8px 24px rgba(45,31,80,.05);transition:.25s}.role-card:hover{transform:translateY(-6px);box-shadow:0 24px 48px rgba(46,29,88,.12);border-color:#d8cef1}.role-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}.role-card:after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;right:-70px;top:-65px;background:radial-gradient(circle,rgba(119,85,219,.11),transparent 68%);pointer-events:none}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.company{display:flex;gap:13px}.company-logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#7953d9,#5427ba);color:#fff;font-size:18px;box-shadow:0 10px 22px rgba(84,39,184,.18)}.company h3{font:700 14px Sora;margin:1px 0 5px}.meta{color:#827b8c;font-size:10px}.priority{display:inline-block;margin-left:6px;padding:4px 7px;border-radius:6px;background:#fff1f1;color:#d55054;font-size:7px;font-weight:900;letter-spacing:.6px}.priority.high{background:#fff7e9;color:#bf7d1c}.priority.medium{background:#f0eef9;color:#6f6387}.actions{display:flex;align-items:center;gap:7px}.pause,.dots{border:0;background:transparent;color:#5f576d;font-size:10px;font-weight:800;padding:6px;border-radius:9px;cursor:pointer;transition:background-color .16s ease,color .16s ease}.pause:hover{background:#f4f1fa;color:#4c2db5}.dots{font-size:18px;line-height:1;width:30px;height:30px;display:grid;place-items:center;padding:0}.dots:hover,.dots.active{background:#f1eef8;color:#4c2db5}
+.role-menu{position:fixed;top:0;left:0;width:224px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px rgba(40,26,72,.16);z-index:200;opacity:0;transform:translateY(-6px) scale(.97);pointer-events:none;transition:opacity .15s ease,transform .15s ease;overflow:hidden}
+.role-menu.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.role-menu-head{padding:14px 16px 12px;font:800 10.5px Sora;letter-spacing:.4px;color:#8a8294;border-bottom:1px solid var(--line)}
+.role-menu-item{width:100%;display:flex;align-items:center;gap:10px;padding:12px 16px;border:0;background:transparent;color:#39313f;font:600 13px "DM Sans";text-align:left;cursor:pointer;transition:background-color .14s ease}
+.role-menu-item:hover{background:#f6f4fa}
+.role-menu-item.danger{color:#d5433f;border-top:1px solid var(--line)}
+.role-menu-item.danger:hover{background:#fdf1f1}
+.role-menu-item .rmi-icon{width:16px;display:inline-grid;place-items:center;font-size:13px}.desc{min-height:36px;margin:15px 0 12px;padding:9px 10px;border-radius:10px;background:#f8f7fb;color:#686176;font-size:11px}.skills{display:flex;gap:5px;flex-wrap:wrap}.skill{padding:4px 7px;border:1px solid #e8e3f0;border-radius:7px;background:#fff;color:#675f75;font-size:8px;font-weight:800}.card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:15px;padding-top:14px;border-top:1px solid #eeeaf3}.readiness{font-size:9px;color:#756e7f;font-weight:700}.match{border:0;background:transparent;color:#6652a1;font-size:10px;font-weight:800}.match:hover{color:#4c2db5}
+.chat{position:fixed;right:28px;bottom:26px;width:54px;height:54px;border:0;border-radius:50%;background:linear-gradient(135deg,#7650d5,#4b29b4);color:#fff;font-size:22px;box-shadow:0 20px 38px rgba(82,47,184,.38);z-index:8}.chat:after{content:"";position:absolute;inset:-6px;border:1px solid rgba(109,72,216,.14);border-radius:50%;animation:ring 2.8s infinite}@keyframes ring{0%{transform:scale(.86);opacity:0}30%{opacity:1}100%{transform:scale(1.2);opacity:0}}
+
+@media(max-width:1050px){.content{padding:25px}.hero-orbit{display:none}.kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.sidebar{width:66px}.brand{padding:0 18px}.brand-name,.nav-label,.nav a span,.side-bottom strong,.side-bottom span,.collapse{display:none}.main{margin-left:66px;width:calc(100% - 66px)}.content{padding:18px}.topbar{padding:0 14px}.campus{display:none}.hero{padding:28px 25px}.hero h1{font-size:35px}.role-grid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.section-head{align-items:flex-start;gap:10px}.filters{overflow:auto}.profile strong,.profile span{display:none}}
+</style>
+
+<style>
+/* ============ ROLE DETAILS VIEW ============ */
+.back-link{border:0;background:transparent;color:#5f576d;font-size:12px;font-weight:800;padding:9px 4px;margin-bottom:14px;display:inline-flex;align-items:center;gap:4px;border-radius:9px;transition:.18s}
+.back-link:hover{color:#4c2db5;gap:8px;background:#f4f0fc;padding-left:10px;padding-right:10px}
+
+.role-head-card{position:relative;overflow:hidden;padding:28px 30px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,#fff,#fbfaff 60%,#f6f2ff);box-shadow:0 10px 30px rgba(45,31,80,.06);margin-bottom:18px}
+.role-head-card:after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;right:-160px;top:-160px;background:radial-gradient(circle,rgba(123,87,222,.10),transparent 68%);pointer-events:none}
+.rh-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;position:relative;z-index:1}
+.rh-id{display:flex;gap:16px}
+.rh-icon{width:52px;height:52px;flex-shrink:0;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#7953d9,#5427ba);color:#fff;font-size:22px;box-shadow:0 12px 26px rgba(84,39,184,.22)}
+.rh-id h1{margin:2px 0 8px;font:800 27px Sora;letter-spacing:-.6px}
+.rh-meta{color:#847c94;font-size:12px;font-weight:600}
+.pause.big{border:1px solid #e5dff0;background:#fff;color:#51466b;padding:11px 18px;border-radius:12px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:4px;transition:.18s;flex-shrink:0}
+.pause.big:hover{border-color:#c9bdea;background:#faf8ff;transform:translateY(-1px)}
+.rh-desc{margin:18px 0 22px;color:#565064;font-size:14px;line-height:1.6;position:relative;z-index:1}
+.rh-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:18px;border-top:1px solid #efeaf6;position:relative;z-index:1}
+.rh-label{font-size:9px;font-weight:800;letter-spacing:1.2px;color:#948da2;margin-bottom:8px}
+.rh-facts{display:flex;gap:12px}
+.rh-fact{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:#fbfaff}
+.rh-fact-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#f2effc;color:#7650d5;flex-shrink:0}
+.rh-fact-val{font:700 15px Sora}
+.role-hero{align-items:flex-start;margin-bottom:18px}
+.role-hero .hero-copy{max-width:640px}
+.rh-badge-icon{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,.14);font-size:10px;vertical-align:-3px}
+.role-hero h1{font:800 clamp(28px,3.2vw,40px)/1.15 Sora;margin:18px 0 10px;letter-spacing:-1px;color:#fff}
+.rh-meta-hero{color:#c8c1d4;font-size:12px;font-weight:600;margin-bottom:14px}
+.rh-meta-hero b{color:#f1eefb}
+.rh-desc-hero{max-width:600px;margin:0 0 18px;color:#c8c1d4;font-size:14px;line-height:1.6}
+.rh-skills-hero{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.rh-skills-hero .skill{padding:5px 9px;border-radius:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#eeeafa;font-size:9px;font-weight:800}
+.role-hero .pause.big{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.06);color:#eeeafa;box-shadow:none}
+.role-hero .pause.big:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+.role-hero .role-panel .small{margin-top:14px}
+.role-hero .role-panel h3{font:800 24px/1.2 Sora;margin:6px 0 4px}
+.role-hero .role-panel p{color:#d2c9e7}
+
+.section-head.tight{margin:0 0 12px}
+
+.topmatch-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;align-items:start;margin-bottom:8px}
+@media(max-width:1050px){.topmatch-grid{grid-template-columns:1fr}}
+
+.tm-card{position:relative;overflow:hidden;padding:26px 28px;border:1px solid #e2d8f7;border-radius:22px;background:linear-gradient(150deg,#fff,#fbfaff 55%,#f5f0ff);box-shadow:0 14px 34px rgba(63,38,140,.10);transition:.25s}
+.tm-card:hover{box-shadow:0 22px 48px rgba(63,38,140,.16);transform:translateY(-3px)}
+.tm-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.tm-who{display:flex;gap:14px}
+.tm-avatar{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#7953d9,#5427ba);color:#fff;font:700 16px Sora;box-shadow:0 12px 26px rgba(84,39,184,.22);flex-shrink:0}
+.tm-name{display:flex;align-items:center;gap:6px;font:700 18px Sora}
+.tm-verified{color:#1c9b72;font-size:13px}
+.tm-sub{color:#8b849a;font-size:11px;font-weight:700;margin-top:4px}
+.tm-match-badge{text-align:center;padding:9px 14px;border-radius:13px;background:linear-gradient(135deg,#fff3da,#ffe6b8);border:1px solid #f4d9a0;flex-shrink:0}
+.tm-match-badge .lbl{display:block;font-size:8px;font-weight:800;letter-spacing:1px;color:#a97a1c}
+.tm-match-badge .val{font:800 20px Sora;color:#8a5c10}
+.tm-blurb{margin:16px 0;color:#4a4459;font-size:13.5px;font-weight:600;line-height:1.5}
+.tm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.tm-stat{padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:#fff}
+.tm-stat .lbl{font-size:8.5px;font-weight:800;letter-spacing:1px;color:#9a93a7;margin-bottom:5px}
+.tm-stat .val{font:700 20px Sora;color:#332d47}
+.tm-stat .val small{font-size:11px;color:#1c9b72;font-weight:800;margin-left:3px}
+.tm-role-pill{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:10px;background:#f2effc;color:#6a4fc4;font-size:11px;font-weight:800;margin-bottom:16px}
+.tm-highlights{padding-top:14px;border-top:1px solid #efeaf6;margin-bottom:18px}
+.tm-highlights .rh-label{margin-bottom:10px}
+.tm-highlight-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#4a4459;font-weight:600;padding:5px 0}
+.tm-highlight-row .ck{color:#1c9b72}
+.tm-actions{display:flex;gap:10px}
+.tm-actions .btn-outline,.tm-actions .btn-fill{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:13px;border-radius:13px;font-size:12.5px;font-weight:800;transition:.18s}
+.tm-actions .btn-outline{border:1px solid #ddd7ea;background:#fff;color:#494259}
+.tm-actions .btn-outline:hover{border-color:#c9bdea;background:#faf8ff;transform:translateY(-1px)}
+.tm-actions .btn-fill{border:0;background:linear-gradient(135deg,#8d70e6,#5b36c5);color:#fff;box-shadow:0 12px 25px rgba(91,54,197,.25)}
+.tm-actions .btn-fill:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(91,54,197,.32)}
+
+.why-panel{padding:24px 26px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(45,31,80,.06);margin-top:38px}
+.why-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.why-head h3{margin:0;font:700 13px Sora;letter-spacing:.2px;color:#847c94}
+.why-score-row{display:flex;align-items:baseline;gap:8px;margin-bottom:16px}
+.why-score{font:800 40px Sora;letter-spacing:-1.5px;background:linear-gradient(135deg,#7650d5,#4b29b4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.why-score-sub{color:#a29aae;font-size:13px;font-weight:700}
+.why-checks{margin-bottom:18px}
+.why-check{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:#4a4459;font-weight:600;padding:6px 0;line-height:1.4}
+.why-check .ck{color:#1c9b72;flex-shrink:0;margin-top:1px}
+.why-signals{display:flex;flex-direction:column;gap:14px}
+.why-signal-row{display:grid;grid-template-columns:132px 1fr 32px;align-items:center;gap:14px}
+.why-signal-label{font-size:11px;font-weight:700;color:#726b81;white-space:nowrap}
+.why-signal-track{height:7px;border-radius:99px;background:#f0ecf7;overflow:hidden}
+.why-signal-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#9a7bea,#6d48cf);width:0;transition:width 1s cubic-bezier(.22,1,.36,1)}
+.why-signal-val{font:700 12px Sora;color:#332d47;text-align:right}
+
+.candidate-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+@media(max-width:1200px){.candidate-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.candidate-grid{grid-template-columns:1fr}}
+.cand-card{position:relative;overflow:hidden;padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(150deg,#fff,#fbfaff);box-shadow:0 6px 18px rgba(45,31,80,.045);transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s ease,border-color .22s ease;opacity:0;transform:translateY(14px);animation:candIn .5s cubic-bezier(.22,1,.36,1) forwards}
+.cand-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(63,38,140,.14);border-color:#d8cef1}
+.cand-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--status-color,#d8d2e6)}
+.cand-spot{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(220px circle at var(--sx,50%) var(--sy,50%),rgba(118,80,213,.08),transparent 70%);opacity:0;transition:opacity .35s ease}
+.cand-card:hover .cand-spot{opacity:1}
+.cand-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:1}
+.cand-who{display:flex;gap:11px;min-width:0}
+.cand-avatar{width:38px;height:38px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#7953d9,#5427ba);color:#fff;font:700 13px Sora}
+.cand-name{display:flex;align-items:center;gap:5px;font:700 14px Sora;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cand-name .ck{color:#1c9b72;font-size:11px;flex-shrink:0}
+.cand-sub{color:#938ca0;font-size:10.5px;font-weight:700;margin-top:3px}
+.cand-match{text-align:center;padding:6px 10px;border-radius:10px;font:800 13px Sora;flex-shrink:0}
+.cand-match.hi{background:#e7f7f0;color:#178a63}
+.cand-match.mid{background:#fff3da;color:#a97a1c}
+.cand-match.lo{background:#f1eef8;color:#756c88}
+.cand-blurb{margin:12px 0 12px;color:#615a71;font-size:11.5px;font-weight:600;line-height:1.45;min-height:32px;position:relative;z-index:1}
+.cand-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;position:relative;z-index:1}
+.cand-stat{padding:8px 6px;border-radius:10px;background:#f8f7fb;text-align:center}
+.cand-stat .lbl{display:block;font-size:7px;font-weight:800;letter-spacing:.6px;color:#a29bab;margin-bottom:3px}
+.cand-stat .val{font:700 13px Sora;color:#332d47}
+.cand-pills{display:flex;align-items:center;justify-content:space-between;gap:6px;padding-top:11px;border-top:1px solid #eeeaf3;margin-bottom:12px;position:relative;z-index:1}
+.cand-role-pill{font-size:9.5px;font-weight:800;color:#6a4fc4;display:flex;align-items:center;gap:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cand-status{font-size:9px;font-weight:800;padding:4px 8px;border-radius:7px;white-space:nowrap;flex-shrink:0}
+.cand-status.shortlisted{background:#fff3da;color:#a97a1c}
+.cand-status.contacted{background:#e7f7f0;color:#178a63}
+.cand-status.engaged{background:#eaf3ff;color:#2f68c9}
+.cand-status.placed{background:#e7f7f0;color:#178a63}
+.cand-status.notpursuing{background:#fdeceb;color:#c14a4d}
+.cand-actions{display:flex;gap:8px;position:relative;z-index:1}
+.cand-actions button{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;border-radius:11px;font-size:10.5px;font-weight:800;transition:.18s}
+.cand-actions .cbtn-outline{border:1px solid #e2ddec;background:#fff;color:#5c5569}
+.cand-actions .cbtn-outline:hover{border-color:#c9bdea;background:#faf8ff}
+.cand-actions .cbtn-fill{border:0;background:linear-gradient(135deg,#8d70e6,#5b36c5);color:#fff;box-shadow:0 8px 18px rgba(91,54,197,.22)}
+.cand-actions .cbtn-fill:hover{transform:translateY(-1px);box-shadow:0 12px 22px rgba(91,54,197,.28)}
+.cand-actions .cbtn-disabled{border:1px solid #eee9f5;background:#f8f7fb;color:#a49dae;cursor:default}
+@keyframes candIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:26px;flex-wrap:wrap}
+.page-info{font-size:11.5px;color:#847c94;font-weight:700}
+.page-info b{color:#332d47}
+.page-controls{display:flex;align-items:center;gap:6px}
+.page-btn{min-width:36px;height:36px;padding:0 12px;border-radius:11px;border:1px solid var(--line);background:#fff;color:#5c5569;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:4px;transition:.18s}
+.page-btn:hover:not(:disabled):not(.active){border-color:#c9bdea;background:#faf8ff;transform:translateY(-1px)}
+.page-btn.active{border-color:transparent;background:linear-gradient(135deg,#7953d9,#5427ba);color:#fff;box-shadow:0 8px 18px rgba(84,39,184,.28)}
+.page-btn:disabled{opacity:.4;cursor:default}
+.page-ellipsis{color:#b6afc0;font-size:12px;font-weight:800;padding:0 4px}
+@media(max-width:640px){.rh-top{flex-direction:column}.rh-bottom{flex-direction:column;align-items:flex-start}.rh-facts{width:100%}.rh-fact{flex:1}}
+</style>
+
+<style>
+.role-modal-backdrop{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:28px;background:rgba(20,12,39,.52);backdrop-filter:blur(11px)}
+.role-modal-backdrop.open{display:flex;animation:fade .22s ease}
+.role-modal{width:min(1050px,96vw);max-height:90vh;overflow:auto;border:1px solid rgba(190,173,242,.75);border-radius:26px;background:linear-gradient(145deg,#fff,#fbfaff 60%,#f5f1ff);box-shadow:0 34px 100px rgba(16,8,42,.34);animation:pop .28s cubic-bezier(.2,.9,.2,1)}
+.role-modal-header{display:flex;justify-content:space-between;gap:20px;padding:32px 38px 18px}.modal-title{display:flex;gap:14px}.modal-title-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#f0eaff,#e4d9ff);color:#6945c8;font-size:23px}.modal-title h2{margin:2px 0 7px;font:700 25px Sora}.modal-title p{margin:0;color:#747083;font-size:13px}.modal-close{border:0;background:transparent;font-size:27px;color:#686175}.role-form{padding:0 38px 34px}.form-grid{display:grid;grid-template-columns:2fr .9fr;gap:18px}.form-grid.two{grid-template-columns:1fr 1fr}.form-grid.three{grid-template-columns:1.15fr 1fr 1fr}.field{display:flex;flex-direction:column;gap:8px}.field label{font-size:13px;font-weight:800;color:#4a455e}.field input,.field textarea,.field select{width:100%;border:1px solid #ddd7ea;background:#fff;color:#332d47;border-radius:14px;outline:none;padding:14px 16px;font-size:14px;transition:.2s}.field input:focus,.field textarea:focus,.field select:focus{border-color:#7650d5;box-shadow:0 0 0 4px rgba(118,80,213,.10)}.field textarea{height:105px;resize:vertical}.form-section{margin-top:20px}.department-row{display:flex;gap:8px;flex-wrap:wrap}.dept{border:1px solid #dfd9eb;background:#fff;color:#554e65;border-radius:999px;padding:9px 15px;font-size:11px;font-weight:800}.dept.active{background:linear-gradient(135deg,#7753d6,#5b35bd);border-color:#7650d5;color:#fff}.range-wrap{display:flex;align-items:center;gap:14px}.range-wrap input{accent-color:#6d48cf}.range-value{font:700 17px Sora;color:#51446f}.modal-note{display:flex;gap:10px;margin-top:22px;padding:13px 15px;border:1px solid #e5ddf6;border-radius:14px;background:#f8f5ff;color:#716985;font-size:11px}.modal-footer{display:flex;justify-content:flex-end;gap:12px;margin-top:18px;padding-top:18px;border-top:1px solid #ece7f4}.modal-cancel,.modal-create{border-radius:13px;padding:13px 24px;font-size:13px;font-weight:800}.modal-cancel{border:1px solid #ddd7e8;background:#fff;color:#494259}.modal-create{border:0;background:linear-gradient(135deg,#8d70e6,#5b36c5);color:#fff;box-shadow:0 12px 25px rgba(91,54,197,.25)}.modal-create.success{background:linear-gradient(135deg,#23a77a,#16835f)}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}@media(max-width:720px){.role-modal-backdrop{padding:10px}.role-modal-header,.role-form{padding-left:20px;padding-right:20px}.form-grid,.form-grid.two,.form-grid.three{grid-template-columns:1fr}.role-modal{max-height:95vh}}</style>
+
+
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">L</div><div><div class="brand-name">Leapath.</div><small>RECRUITER</small></div></div>
+  <nav class="nav">
+    <div class="nav-label">OVERVIEW</div>
+    <a href="#"><span class="icon">⊞</span><span>Dashboard</span></a>
+    <div class="nav-label">TALENT</div>
+    <a href="#"><span class="icon">⌕</span><span>Candidates</span></a>
+    <a href="#"><span class="icon">☆</span><span>Shortlisted</span></a>
+    <a class="active" href="#"><span class="icon">▣</span><span>Hiring Roles</span></a>
+    <a href="#"><span class="icon">♧</span><span>Drives</span></a>
+    <div class="nav-label">INSIGHTS</div>
+    <a href="#"><span class="icon">▥</span><span>Analytics</span></a>
+    <a href="#"><span class="icon">⚙</span><span>Settings</span></a>
+    <a href="#"><span class="icon">?</span><span>Support</span></a>
+  </nav>
+  <div class="side-bottom"><div class="user-mini"><div class="avatar">K</div><div><strong>Kiran</strong><span>Recruiter</span></div></div><div class="collapse">‹‹ &nbsp; COLLAPSE</div></div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div><div class="page-title">Hiring Roles</div><div class="page-sub">Your open requisitions · auto-matched to the cohort</div></div>
+  <div class="top-right"><div class="campus"><b>▦</b> IIIT Hyderabad</div><button class="bell">♧</button><div class="profile"><div class="avatar">K</div><div><strong>Kiran</strong><span>Recruiter</span></div></div></div>
+</header>
+
+<section class="content">
+  <div id="rolesListView">
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">◉ &nbsp; TALENT PIPELINE <span class="live">LIVE</span></div>
+      <h1>Find the people who <span>move your team forward.</span></h1>
+      <p>Create roles, define the skills that matter, and instantly see the students most ready to make an impact.</p>
+      <div class="hero-actions"><button class="btn-primary" id="createRole">＋ &nbsp; Create a role</button><button class="btn-secondary">▥ &nbsp; Explore matches</button></div>
+    </div>
+    <div class="hero-orbit">
+      <div class="orbit one"></div><div class="orbit two"></div>
+      <div class="role-panel"><div class="role-icon">▣</div><div class="small">ROLE PULSE</div><h3>Game Test Engineer</h3><p>95% cohort readiness</p></div>
+      <div class="floating-stat top"><small>Ready to hire</small><strong>4 active</strong></div>
+      <div class="floating-stat bottom"><small>Top match</small><strong>95% ready</strong></div>
+    </div>
+  </section>
+
+  <section class="kpis">
+    <article class="kpi"><div class="kpi-top"><div class="kpi-icon">▣</div><span class="trend">+1 this week</span></div><b>4</b><span>Active roles</span></article>
+    <article class="kpi"><div class="kpi-top"><div class="kpi-icon" style="color:#c88925;background:#fff7e9">♨</div><span class="trend" style="color:#bd781a;background:#fff7e9">2 priority</span></div><b>2</b><span>Urgent / high priority</span></article>
+    <article class="kpi"><div class="kpi-top"><div class="kpi-icon" style="color:#3d6ac5;background:#edf4ff">◉</div><span class="trend">Open</span></div><b>1</b><span>Internship role</span></article>
+    <article class="kpi"><div class="kpi-top"><div class="kpi-icon" style="color:#15916a;background:#ebf8f3">◎</div><span class="trend">+4 pts</span></div><b>88/100</b><span>Average readiness</span></article>
+  </section>
+
+  <div class="section-head">
+    <div><h2>Role pipeline</h2><p>Your open roles, prioritized by readiness and hiring urgency.</p></div>
+    <div class="filters"><button class="filter active" data-filter="all">All roles · 4</button><button class="filter" data-filter="urgent">Priority · 2</button><button class="filter" data-filter="intern">Internships · 1</button></div>
+  </div>
+
+  <section class="role-grid" id="roleGrid">
+    <article class="role-card" data-type="urgent" data-role="gameqa" style="--accent:#e55457">
+      <div class="card-top"><div class="company"><div class="company-logo">▣</div><div><h3>Game Test Engineer <span class="priority">URGENT</span></h3><div class="meta">⌾ Hyderabad &nbsp;·&nbsp; Contract &nbsp;·&nbsp; <b>4–6 LPA</b></div></div></div><div class="actions"><button class="pause">◉ &nbsp; Pause</button><button class="dots">···</button></div></div>
+      <div class="desc">We test games here</div><div class="skills"><span class="skill">Bug reporting</span><span class="skill">Game mechanics</span></div>
+      <div class="card-bottom"><span class="readiness">◎ Readiness ≥ 95 &nbsp; ◌</span><button class="match">See matches &nbsp;›</button></div>
+    </article>
+    <article class="role-card" data-type="urgent" data-role="fde" style="--accent:#ed9b1f">
+      <div class="card-top"><div class="company"><div class="company-logo">▣</div><div><h3>Forward Deployed Engineer <span class="priority high">HIGH</span></h3><div class="meta">⌾ Bangalore &nbsp;·&nbsp; Full-time &nbsp;·&nbsp; <b>18–94</b></div></div></div><div class="actions"><button class="pause">◉ &nbsp; Pause</button><button class="dots">···</button></div></div>
+      <div class="desc">C++, Python</div><div class="skills"><span class="skill">ReactJS</span><span class="skill">AI</span></div>
+      <div class="card-bottom"><span class="readiness">◎ Readiness ≥ 83 &nbsp; ◌ CSE, ECE, ME, EEE, MBA</span><button class="match">See matches &nbsp;›</button></div>
+    </article>
+    <article class="role-card" data-type="all" data-role="manualqa" style="--accent:#8464d9">
+      <div class="card-top"><div class="company"><div class="company-logo">▣</div><div><h3>Manual QA <span class="priority medium">MEDIUM</span></h3><div class="meta">⌾ Bengaluru &nbsp;·&nbsp; Full-time &nbsp;·&nbsp; <b>8–10 LPA</b></div></div></div><div class="actions"><button class="pause">◉ &nbsp; Pause</button><button class="dots">···</button></div></div>
+      <div class="desc">Software testing</div><div class="skills"><span class="skill">QA</span><span class="skill">QC</span><span class="skill">Software testing</span></div>
+      <div class="card-bottom"><span class="readiness">◎ Readiness ≥ 54 &nbsp; ◌ CSE</span><button class="match">See matches &nbsp;›</button></div>
+    </article>
+    <article class="role-card" data-type="intern" data-role="aiml" style="--accent:#8d6ae0">
+      <div class="card-top"><div class="company"><div class="company-logo">▣</div><div><h3>AI/ML intern <span class="priority medium">MEDIUM</span></h3><div class="meta">⌾ Bangalore &nbsp;·&nbsp; Internship &nbsp;·&nbsp; <b>8 LPA</b></div></div></div><div class="actions"><button class="pause">◉ &nbsp; Pause</button><button class="dots">···</button></div></div>
+      <div class="desc">Build agentic AI tasks</div><div class="skills"><span class="skill">PostgreSQL</span><span class="skill">LangGraph</span><span class="skill">LangChain</span></div>
+      <div class="card-bottom"><span class="readiness">◎ Readiness ≥ 80 &nbsp; ◌ CSE, ECE</span><button class="match">See matches &nbsp;›</button></div>
+    </article>
+  </section>
+
+  <div class="role-menu" id="roleMenu">
+    <div class="role-menu-head" id="roleMenuTitle">ROLE</div>
+    <button class="role-menu-item" id="menuEditRole"><span class="rmi-icon">✎</span> Edit role</button>
+    <button class="role-menu-item" id="menuPauseRole"><span class="rmi-icon">◉</span> Pause role</button>
+    <button class="role-menu-item danger" id="menuDeleteRole"><span class="rmi-icon">🗑</span> Delete role</button>
+  </div>
+  </div>
+
+  <div id="roleDetailsView" style="display:none">
+    <button class="back-link" id="backToRoles">‹ &nbsp; Back to roles</button>
+
+    <section class="hero role-hero" id="roleHeadCard">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="rh-badge-icon" id="rhIcon">▣</span> &nbsp;ROLE DETAILS <span class="live">ACTIVE</span></div>
+        <h1 id="rhTitle">Manual QA</h1>
+        <div class="rh-meta-hero" id="rhMeta">⌾ Bengaluru &nbsp;·&nbsp; Full-time &nbsp;·&nbsp; <b>8–10 LPA</b> &nbsp;·&nbsp; 🗓 Posted 26 Aug 2026</div>
+        <p class="rh-desc-hero" id="rhDesc">Software testing</p>
+        <div class="rh-skills-hero" id="rhSkills"><span class="skill">QA</span><span class="skill">QC</span><span class="skill">Software testing</span></div>
+        <div class="hero-actions"><button class="pause big" id="rhPauseBtn">◉ &nbsp; Pause role</button></div>
+      </div>
+      <div class="hero-orbit">
+        <div class="orbit one"></div><div class="orbit two"></div>
+        <div class="role-panel">
+          <div class="role-icon">◎</div>
+          <div class="small">READINESS THRESHOLD</div>
+          <h3 id="rhThreshold">54/100</h3>
+          <p>Minimum score to match</p>
+        </div>
+        <div class="floating-stat top"><small>Preferred depts</small><strong id="rhDepts">CSE</strong></div>
+      </div>
+    </section>
+
+    <section class="kpis" id="rdKpis">
+      <article class="kpi"><div class="kpi-top"><div class="kpi-icon">☷</div></div><b id="kpiTotal">0</b><span>Total candidates</span></article>
+      <article class="kpi"><div class="kpi-top"><div class="kpi-icon" style="color:#15916a;background:#ebf8f3">◎</div></div><b id="kpiAbove">0</b><span>Above threshold</span></article>
+      <article class="kpi"><div class="kpi-top"><div class="kpi-icon" style="color:#7650d5;background:#f2effc">✦</div></div><b id="kpiTop">0/100</b><span>Top match score · <b id="kpiTopName" style="font-weight:700"></b></span></article>
+      <article class="kpi"><div class="kpi-top"><div class="kpi-icon" style="color:#c88925;background:#fff7e9">✦</div></div><b id="kpiAvg">0/100</b><span>Avg match score across cohort</span></article>
+    </section>
+
+    <div class="topmatch-grid">
+      <div>
+        <div class="section-head tight"><div><h2>Top match</h2></div></div>
+        <div id="topMatchCard"></div>
+      </div>
+      <div class="why-panel" id="whyMatchedPanel"></div>
+    </div>
+
+    <div class="section-head">
+      <div><h2>Ranked candidates</h2><p>Scored by 6 transparent signals: readiness, role alignment, assessment fit, evidence strength, skill overlap, confidence.</p></div>
+    </div>
+    <section class="candidate-grid" id="candidateGrid"></section>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</section>
+</main>
+
+<div class="role-modal-backdrop" id="roleModalBackdrop">
+<div class="role-modal">
+<div class="role-modal-header"><div class="modal-title"><div class="modal-title-icon">▣</div><div><h2 id="modalHeading">Create a hiring role</h2><p id="modalSubheading">Once saved, this role is matched against the entire cohort and appears in your dashboard.</p></div></div><button class="modal-close" id="closeRoleModal">×</button></div>
+<form class="role-form" id="roleForm">
+<div class="form-grid"><div class="field"><label>Role title</label><input id="rfTitle" required placeholder="e.g. Senior Backend Engineer"></div><div class="field"><label>Engagement type</label><select id="rfEngagement"><option>Full-time</option><option>Internship</option><option>Contract</option></select></div></div>
+<div class="form-section field"><label>Description</label><textarea id="rfDesc" placeholder="What the role is, what the candidate will own, and why it's exciting"></textarea></div>
+<div class="form-section field"><label>Required skills (comma-separated)</label><input id="rfSkills" placeholder="e.g. Go, PostgreSQL, REST APIs, Distributed Systems"></div>
+<div class="form-section form-grid two"><div class="field"><label>Location</label><input id="rfLocation" placeholder="e.g. Bangalore, IN · Hybrid"></div><div class="field"><label>Compensation</label><input id="rfComp" placeholder="e.g. ₹18–24 LPA · ESOPs"></div></div>
+<div class="form-section field"><label>Preferred departments</label><div class="department-row"><button type="button" class="dept active">CSE</button><button type="button" class="dept">ECE</button><button type="button" class="dept">ME</button><button type="button" class="dept">EEE</button><button type="button" class="dept">MBA</button></div></div>
+<div class="form-section form-grid three"><div class="field"><label>Readiness threshold</label><div class="range-wrap"><input id="readinessRange" type="range" min="40" max="100" value="65"><span class="range-value" id="readinessValue">65</span></div></div><div class="field"><label>Hiring priority</label><select id="rfPriority"><option>Medium</option><option>Urgent</option><option>High</option></select></div><div class="field"><label>Experience pref.</label><select id="rfExperience"><option>Fresher</option><option>0–1 years</option><option>Any</option></select></div></div>
+<div class="modal-note"><b>✦</b><span id="modalNote">After creating this role, you can invite candidates, set rounds and evaluation criteria.</span></div>
+<div class="modal-footer"><button type="button" class="modal-cancel" id="cancelRole">Cancel</button><button type="submit" class="modal-create" id="submitRole">＋ &nbsp; Create role</button></div>
+</form></div></div>
+
+<button class="chat">◔</button>
+</div>
+
+<script>
+const filters=document.querySelectorAll('.filter'), cards=document.querySelectorAll('.role-card');
+filters.forEach(btn=>btn.addEventListener('click',()=>{
+  filters.forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+  const type=btn.dataset.filter;
+  cards.forEach((card,i)=>{
+    const show=type==='all'||card.dataset.type===type;
+    card.style.display=show?'block':'none';
+    if(show){card.style.animation='none';void card.offsetWidth;card.style.animation=`cardIn .35s ease ${i*.04}s both`}
+  })
+}));
+const create=document.getElementById('createRole'), modalBackdrop=document.getElementById('roleModalBackdrop'), closeRoleModal=document.getElementById('closeRoleModal'), cancelRole=document.getElementById('cancelRole'), roleForm=document.getElementById('roleForm'), readinessRange=document.getElementById('readinessRange'), readinessValue=document.getElementById('readinessValue');
+const modalHeading=document.getElementById('modalHeading'), modalSubheading=document.getElementById('modalSubheading'), modalNote=document.getElementById('modalNote'), submitRole=document.getElementById('submitRole');
+let editingRoleId = null;
+const roleExtras = {}; // holds fields not shown on the card (e.g. experience pref) per role id, across the session
+
+function openRoleModal(){modalBackdrop.classList.add('open');document.body.style.overflow='hidden';setTimeout(()=>modalBackdrop.querySelector('input').focus(),100)}
+function closeModal(){modalBackdrop.classList.remove('open');document.body.style.overflow='';editingRoleId=null}
+
+function resetFormDefaults(){
+  roleForm.reset();
+  document.querySelectorAll('.dept').forEach((b,i)=>b.classList.toggle('active', i===0));
+  readinessRange.value=65; readinessValue.textContent=65;
+}
+function parseMeta(metaEl){
+  const parts = metaEl.textContent.split('·').map(s=>s.trim());
+  return { location: (parts[0]||'').replace(/^\W+/,'').trim(), engagement: parts[1]||'', comp: parts[2]||'' };
+}
+function fillFormFromCard(card, id){
+  const meta = parseMeta(card.querySelector('.meta'));
+  document.getElementById('rfTitle').value = card.querySelector('h3').childNodes[0].textContent.trim();
+  document.getElementById('rfEngagement').value = meta.engagement;
+  document.getElementById('rfDesc').value = card.querySelector('.desc').textContent.trim();
+  document.getElementById('rfSkills').value = Array.from(card.querySelectorAll('.skill')).map(s=>s.textContent.trim()).join(', ');
+  document.getElementById('rfLocation').value = meta.location;
+  document.getElementById('rfComp').value = meta.comp;
+
+  const readinessText = card.querySelector('.readiness').textContent;
+  const thresholdMatch = readinessText.match(/≥\s*(\d+)/);
+  readinessRange.value = thresholdMatch ? thresholdMatch[1] : 65;
+  readinessValue.textContent = readinessRange.value;
+  const deptsText = readinessText.split('◌')[1] || '';
+  const depts = deptsText.split(',').map(s=>s.trim()).filter(Boolean);
+  document.querySelectorAll('.dept').forEach(b=>b.classList.toggle('active', depts.includes(b.textContent.trim())));
+
+  const badge = card.querySelector('.priority');
+  const priorityText = badge ? badge.textContent.trim() : 'Medium';
+  const priority = priorityText.charAt(0) + priorityText.slice(1).toLowerCase();
+  document.getElementById('rfPriority').value = ['Urgent','High','Medium'].includes(priority) ? priority : 'Medium';
+  document.getElementById('rfExperience').value = (roleExtras[id] && roleExtras[id].experience) || 'Fresher';
+}
+function openCreateModal(){
+  editingRoleId = null;
+  modalHeading.textContent = 'Create a hiring role';
+  modalSubheading.textContent = 'Once saved, this role is matched against the entire cohort and appears in your dashboard.';
+  modalNote.textContent = 'After creating this role, you can invite candidates, set rounds and evaluation criteria.';
+  submitRole.innerHTML = '＋ &nbsp; Create role';
+  resetFormDefaults();
+  openRoleModal();
+}
+function openEditModal(id){
+  const card = document.querySelector(`.role-card[data-role="${id}"]`);
+  if(!card) return;
+  editingRoleId = id;
+  modalHeading.textContent = 'Edit hiring role';
+  modalSubheading.textContent = 'Changes are reflected across candidate matching, dashboard, and analytics immediately.';
+  modalNote.textContent = 'Saving updates this role everywhere it appears, including the matches page.';
+  submitRole.innerHTML = '⬒ &nbsp; Save changes';
+  fillFormFromCard(card, id);
+  openRoleModal();
+}
+function saveRoleEdits(id){
+  const card = document.querySelector(`.role-card[data-role="${id}"]`);
+  if(!card) return;
+  const title = document.getElementById('rfTitle').value.trim() || 'Untitled role';
+  const engagement = document.getElementById('rfEngagement').value;
+  const desc = document.getElementById('rfDesc').value.trim();
+  const skills = document.getElementById('rfSkills').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const location = document.getElementById('rfLocation').value.trim();
+  const comp = document.getElementById('rfComp').value.trim();
+  const depts = Array.from(document.querySelectorAll('.dept.active')).map(b=>b.textContent.trim());
+  const threshold = +readinessRange.value;
+  const priority = document.getElementById('rfPriority').value;
+  const experience = document.getElementById('rfExperience').value;
+  roleExtras[id] = { experience };
+
+  if(ROLES[id]){
+    Object.assign(ROLES[id], { title, location, engagement, comp, desc,
+      skills: skills.length ? skills : ROLES[id].skills, threshold, depts: depts.join(', '), priority, experience });
+  }
+
+  const badge = card.querySelector('.priority');
+  if(badge){
+    badge.className = 'priority' + (priority==='High' ? ' high' : priority==='Medium' ? ' medium' : '');
+    badge.textContent = priority.toUpperCase();
+  }
+  card.querySelector('h3').innerHTML = `${title} ${badge ? badge.outerHTML : ''}`;
+  card.querySelector('.meta').innerHTML = `⌾ ${location} &nbsp;·&nbsp; ${engagement} &nbsp;·&nbsp; <b>${comp}</b>`;
+  card.querySelector('.desc').textContent = desc;
+  card.querySelector('.skills').innerHTML = skills.map(s=>`<span class="skill">${s}</span>`).join('');
+  card.querySelector('.readiness').innerHTML = `◎ Readiness ≥ ${threshold}${depts.length ? ' &nbsp; ◌ ' + depts.join(', ') : ' &nbsp; ◌'}`;
+
+  if(currentRoleKey === id) openRoleDetails(id);
+}
+
+create.addEventListener('click',openCreateModal);closeRoleModal.addEventListener('click',closeModal);cancelRole.addEventListener('click',closeModal);
+modalBackdrop.addEventListener('click',e=>{if(e.target===modalBackdrop)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+readinessRange.addEventListener('input',()=>readinessValue.textContent=readinessRange.value);document.querySelectorAll('.dept').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('active')));
+roleForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const b = submitRole;
+  if(editingRoleId){
+    const id = editingRoleId;
+    saveRoleEdits(id);
+    b.classList.add('success'); b.innerHTML = '✓ &nbsp; Changes saved';
+    setTimeout(()=>{ closeModal(); b.classList.remove('success'); b.innerHTML = '⬒ &nbsp; Save changes'; }, 900);
+  } else {
+    b.classList.add('success');b.innerHTML='✓ &nbsp; Role created';
+    setTimeout(()=>{closeModal();b.classList.remove('success');b.innerHTML='＋ &nbsp; Create role';resetFormDefaults()},900);
+  }
+});
+
+/* ============================================================
+   ROLE DETAILS + RANKED CANDIDATES (with pagination)
+   ============================================================ */
+const ROLES = {
+  gameqa:{ title:'Game Test Engineer', icon:'▣', location:'Hyderabad', engagement:'Contract', comp:'4–6 LPA', posted:'21 Aug 2026',
+    desc:'Play-test unreleased builds, log reproducible bugs, and work directly with the studio\'s engineering team to verify fixes before ship.',
+    skills:['Bug reporting','Game mechanics','QA'], threshold:95, depts:'CSE, ECE', mult:0.9 },
+  fde:{ title:'Forward Deployed Engineer', icon:'▣', location:'Bangalore', engagement:'Full-time', comp:'₹18–24 LPA', posted:'19 Aug 2026',
+    desc:'Sit with customer teams to adapt the core product to real workflows — equal parts systems engineering and hands-on delivery.',
+    skills:['ReactJS','AI','C++','Python'], threshold:83, depts:'CSE, ECE, ME, EEE, MBA', mult:0.75 },
+  manualqa:{ title:'Manual QA', icon:'▣', location:'Bengaluru', engagement:'Fulltime', comp:'8–10 LPA', posted:'26 Aug 2026',
+    desc:'Own manual test coverage across the product surface — write test plans, execute regression passes, and partner with engineering to close the loop on every reported defect.',
+    skills:['QA','QC','Software testing'], threshold:54, depts:'CSE', mult:1.0 },
+  aiml:{ title:'AI/ML Intern', icon:'▣', location:'Bangalore', engagement:'Internship', comp:'8 LPA', posted:'14 Aug 2026',
+    desc:'Build and evaluate agentic AI workflows end to end — prompt design, retrieval, and eval harnesses for features already in production.',
+    skills:['PostgreSQL','LangGraph','LangChain'], threshold:80, depts:'CSE, ECE', mult:0.95 },
+};
+
+const CANDIDATES = [
+  {name:'Mahitha Reddy', id:'ECE021', type:'FT', cgpa:9.3, match:56, verified:true, role:'Marine / Naval Architect', status:null,
+   blurb:'Highly motivated toward QA process rigor and root-cause analysis.',
+   highlights:['Built a manual test suite for a 40-screen mobile app','ISTQB Foundation Level certified'],
+   signals:{readiness:82, alignment:20, evidence:92, overlap:30, confidence:50}},
+  {name:'Aisha Verma', id:'CSE22001', type:'CSE', cgpa:8.4, match:45, verified:true, role:'UI/UX Designer', status:'notpursuing',
+   blurb:'Second-year design-minded engineer with a sharp eye for usability.',
+   highlights:['Shipped a Figma-to-code design system','Google UX Design certified']},
+  {name:'Nikhil Sharma', id:'CSE22012', type:'ECE', cgpa:8.8, match:44, verified:true, role:'Data Analyst', status:'shortlisted',
+   blurb:'Fast at turning prototypes into deploy-ready, real-time product code.',
+   highlights:['Game QA internship at a mobile studio','Microsoft Azure Cloud Practitioner']},
+  {name:'LeapathStudent', id:'9999', type:'MRE', cgpa:9.1, match:35, verified:true, role:'QA / Test Engineer', status:null,
+   blurb:'Final-year Missile & Rocket Engineering student focused on propulsion and guidance systems.',
+   highlights:['Completed an AI systems research project','AWS Cloud Practitioner certified']},
+  {name:'Yash Malhotra', id:'CSE22009', type:'CSE', cgpa:8.9, match:26, verified:false, role:'Backend Engineer', status:'shortlisted', blurb:'Built two full-stack side projects with CI/CD pipelines.', highlights:['GSoC contributor 2025']},
+  {name:'Rahul Verma', id:'CSE22008', type:'CSE', cgpa:8.6, match:24, verified:false, role:'Data Analyst', status:'engaged', blurb:'Strong in SQL and dashboarding for product analytics.', highlights:['Built an analytics pipeline for a campus club']},
+  {name:'Farhan Ali', id:'ECE22007', type:'ECE', cgpa:7.8, match:22, verified:false, role:'Embedded Systems Engineer', status:'contacted', blurb:'Comfortable across firmware and hardware bring-up.', highlights:['Built a sensor-fusion drone controller']},
+  {name:'Rohan Singh', id:'CSE2202', type:'FT', cgpa:7.9, match:20, verified:false, role:'Data Analyst', status:'shortlisted', blurb:'Detail-oriented tester with a QA internship behind him.', highlights:['Regression-tested a payments checkout flow']},
+  {name:'Rohan Singh', id:'CSE22002', type:'CSE', cgpa:7.9, match:20, verified:false, role:'Data Analyst', status:'contacted', blurb:'Detail-oriented tester with a QA internship behind him.', highlights:['Regression-tested a payments checkout flow']},
+  {name:'Priyanka Das', id:'ECE22001', type:'ECE', cgpa:8.7, match:20, verified:false, role:'VLSI Design Engineer', status:'shortlisted', blurb:'Chip-design focused, with tape-out experience from a summer program.', highlights:['Taped out a student ASIC project']},
+  {name:'demoStudent', id:'ECE22021', type:'ECE', cgpa:7.8, match:20, verified:false, role:'Software Engineer', status:'joined', blurb:'Recently placed and onboarding with the hiring team.', highlights:['Full-stack capstone project, 4.8/5 review score']},
+  {name:'Aisha Kumar Verma', id:'CSE2200133', type:'CSE', cgpa:8.4, match:20, verified:false, role:'Software Engineer', status:'contacted', blurb:'Backend-leaning generalist, comfortable with Go and Postgres.', highlights:['Built a job queue service for a class project']},
+  {name:'Priyanka Das', id:'ECE2201', type:'ECE', cgpa:8.7, match:20, verified:false, role:'VLSI Design Engineer', status:'shortlisted', blurb:'Chip-design focused, with tape-out experience from a summer program.', highlights:['Taped out a student ASIC project']},
+  {name:'Arjun Mehta', id:'CSE22003', type:'CSE', cgpa:8.1, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Broad CS fundamentals, still narrowing target roles.', highlights:['Dean\'s list, 2 consecutive semesters']},
+  {name:'Simran Kaur', id:'CSE22004', type:'CSE', cgpa:8.8, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Strong academic record with a growing interest in ML.', highlights:['Kaggle competition, top 15%']},
+  {name:'Devika Rao', id:'6969', type:'CSE', cgpa:8.4, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Full-stack coursework with a couple of shipped hackathon builds.', highlights:['Hackathon finalist, campus-wide']},
+  {name:'Karan Patel', id:'ECE22002', type:'ECE', cgpa:7.6, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Hardware-adjacent coursework, open to software roles.', highlights:['Built an IoT air-quality monitor']},
+  {name:'Aditya Kumar', id:'ME22001', type:'ME', cgpa:7.4, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Mechanical background, pivoting toward software testing.', highlights:['Self-taught Python and SQL this year']},
+  {name:'Vivek Joshi', id:'CSE22005', type:'CSE', cgpa:9.2, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Top-of-class CGPA with strong DSA fundamentals.', highlights:['Codeforces specialist rating']},
+  {name:'Ananya Iyer', id:'343', type:'CSE', cgpa:8.4, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Early-stage profile, still building evidence.', highlights:['Completed intro ML coursework']},
+  {name:'Rohith', id:'B12', type:'MRE', cgpa:8.4, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Cross-disciplinary interest in test automation.', highlights:['TA for an undergrad systems course']},
+  {name:'Vamsi Das', id:'B14', type:'ECE', cgpa:7.2, match:20, verified:false, role:'Exploring roles', status:null, blurb:'Early-stage profile, still building evidence.', highlights:['Completed a signals-processing mini project']},
+  {name:'Sneha Nair', id:'CSE22006', type:'CSE', cgpa:8.0, match:18, verified:false, role:'Exploring roles', status:null, blurb:'New to the platform, evidence still coming in.', highlights:['Profile recently verified']},
+  {name:'Meera Pillai', id:'ME22002', type:'ME', cgpa:8.3, match:19, verified:false, role:'Exploring roles', status:null, blurb:'New to the platform, evidence still coming in.', highlights:['Profile recently verified']},
+  {name:'Divya Krishnan', id:'EEE22001', type:'EEE', cgpa:7.9, match:17, verified:false, role:'Exploring roles', status:null, blurb:'New to the platform, evidence still coming in.', highlights:['Profile recently verified']},
+];
+
+const STATUS_LABEL = {shortlisted:'Shortlisted', contacted:'Contacted', engaged:'Engaged', placed:'Placed', joined:'Joined', notpursuing:'Not pursuing'};
+const STATUS_COLOR = {shortlisted:'#e99b25', contacted:'#1c9b72', engaged:'#3d6ac5', placed:'#1c9b72', joined:'#1c9b72', notpursuing:'#e55457'};
+
+function initials(name){ return name.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function matchClass(score){ return score>=50?'hi':score>=25?'mid':'lo'; }
+function evidenceCount(c){ return Math.max(2, Math.round(c.match/6)); }
+function placeProb(c){ return c.match>=50 ? Math.round(c.match*0.4) : 0; }
+
+const PAGE_SIZE = 9;
+let currentRoleKey = null, currentPage = 1, currentRoster = [];
+
+function computeRoster(roleKey){
+  const cfg = ROLES[roleKey];
+  return CANDIDATES.map(c => ({...c, match: Math.max(0, Math.min(100, Math.round(c.match * cfg.mult)))}))
+                    .sort((a,b) => b.match - a.match);
+}
+
+function candCardHTML(c, threshold){
+  const readiness = c.match;
+  const ev = evidenceCount(c);
+  const pp = placeProb(c);
+  const statusHTML = c.status ? `<span class="cand-status ${c.status}">${STATUS_LABEL[c.status]}</span>` : '<span></span>';
+  const accent = c.status ? STATUS_COLOR[c.status] : '#d8d2e6';
+  let actionBtn;
+  if(c.status==='engaged') actionBtn = `<button class="cbtn-disabled" disabled>✓ &nbsp; Engaged</button>`;
+  else if(c.status==='placed'||c.status==='joined') actionBtn = `<button class="cbtn-disabled" disabled>✓ &nbsp; ${STATUS_LABEL[c.status]}</button>`;
+  else if(c.status==='contacted') actionBtn = `<button class="cbtn-outline">✉ &nbsp; Contact</button>`;
+  else actionBtn = `<button class="cbtn-fill">☆ &nbsp; Shortlist</button>`;
+  return `
+  <article class="cand-card" style="--status-color:${accent}">
+    <div class="cand-spot"></div>
+    <div class="cand-top">
+      <div class="cand-who">
+        <div class="cand-avatar">${initials(c.name)}</div>
+        <div style="min-width:0">
+          <div class="cand-name">${c.name}${c.verified?'<span class="ck">✓</span>':''}</div>
+          <div class="cand-sub">${c.id} &nbsp;·&nbsp; ${c.type} &nbsp;·&nbsp; CGPA ${c.cgpa}</div>
+        </div>
+      </div>
+      <div class="cand-match ${matchClass(c.match)}">${c.match}</div>
+    </div>
+    <div class="cand-blurb">${c.blurb}</div>
+    <div class="cand-stats">
+      <div class="cand-stat"><span class="lbl">READINESS</span><span class="val">${readiness}</span></div>
+      <div class="cand-stat"><span class="lbl">PLACE. PROB</span><span class="val">${pp}%</span></div>
+      <div class="cand-stat"><span class="lbl">EVIDENCE</span><span class="val">${ev} ✓</span></div>
+    </div>
+    <div class="cand-pills">
+      <span class="cand-role-pill">◎ ${c.role}</span>
+      ${statusHTML}
+    </div>
+    <div class="cand-actions">
+      <button class="cbtn-outline">◉ &nbsp; View profile</button>
+      ${actionBtn}
+    </div>
+  </article>`;
+}
+
+function renderPage(page){
+  currentPage = page;
+  const grid = document.getElementById('candidateGrid');
+  const total = currentRoster.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  currentPage = Math.min(Math.max(1, page), totalPages);
+  const start = (currentPage-1)*PAGE_SIZE;
+  const pageItems = currentRoster.slice(start, start+PAGE_SIZE);
+  const cfg = ROLES[currentRoleKey];
+  grid.innerHTML = pageItems.map((c,i) => candCardHTML(c, cfg.threshold).replace('<article class="cand-card"','<article class="cand-card" style="animation-delay:'+(i*0.05)+'s;--_d:1"')).join('');
+  // fix: merge the inline style properly (animation-delay + status-color)
+  document.querySelectorAll('#candidateGrid .cand-card').forEach((el,i)=>{
+    el.style.animationDelay = (i*0.05)+'s';
+  });
+  initSpotlight(grid);
+
+  // pagination controls
+  const pag = document.getElementById('pagination');
+  const from = total===0?0:start+1, to = Math.min(start+PAGE_SIZE, total);
+  let btns = '';
+  btns += `<button class="page-btn" ${currentPage===1?'disabled':''} data-goto="${currentPage-1}">‹</button>`;
+  const pages = [];
+  for(let p=1;p<=totalPages;p++){
+    if(p===1||p===totalPages||Math.abs(p-currentPage)<=1) pages.push(p);
+    else if(pages[pages.length-1]!=='…') pages.push('…');
+  }
+  pages.forEach(p=>{
+    if(p==='…') btns += `<span class="page-ellipsis">···</span>`;
+    else btns += `<button class="page-btn ${p===currentPage?'active':''}" data-goto="${p}">${p}</button>`;
+  });
+  btns += `<button class="page-btn" ${currentPage===totalPages?'disabled':''} data-goto="${currentPage+1}">›</button>`;
+  pag.innerHTML = `<div class="page-info">Showing <b>${from}–${to}</b> of <b>${total}</b> candidates</div><div class="page-controls">${btns}</div>`;
+  pag.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click', ()=>{
+    renderPage(parseInt(b.dataset.goto,10));
+    document.getElementById('candidateGrid').scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+}
+
+function initSpotlight(container){
+  container.querySelectorAll('.cand-card').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--sx', ((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--sy', ((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+}
+
+function countUp(el, target, suffix=''){
+  const start = performance.now(), dur = 800;
+  function tick(now){
+    const p = Math.min(1, (now-start)/dur), eased = 1-Math.pow(1-p,3);
+    el.textContent = Math.round(target*eased) + suffix;
+    if(p<1) requestAnimationFrame(tick); else el.textContent = target + suffix;
+  }
+  requestAnimationFrame(tick);
+}
+
+function openRoleDetails(roleKey){
+  const cfg = ROLES[roleKey];
+  if(!cfg) return;
+  currentRoleKey = roleKey;
+  currentRoster = computeRoster(roleKey);
+
+  document.getElementById('rolesListView').style.display = 'none';
+  document.getElementById('roleDetailsView').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  document.getElementById('rhTitle').textContent = cfg.title;
+  document.getElementById('rhMeta').innerHTML = `⌾ ${cfg.location} &nbsp;·&nbsp; ${cfg.engagement} &nbsp;·&nbsp; <b>${cfg.comp}</b> &nbsp;·&nbsp; 🗓 Posted ${cfg.posted}`;
+  document.getElementById('rhDesc').textContent = cfg.desc;
+  document.getElementById('rhSkills').innerHTML = cfg.skills.map(s=>`<span class="skill">${s}</span>`).join('');
+  document.getElementById('rhThreshold').textContent = cfg.threshold + '/100';
+  document.getElementById('rhDepts').textContent = cfg.depts;
+
+  const total = currentRoster.length;
+  const above = currentRoster.filter(c=>c.match>=cfg.threshold).length;
+  const top = currentRoster[0];
+  const avg = Math.round(currentRoster.reduce((s,c)=>s+c.match,0)/total);
+
+  countUp(document.getElementById('kpiTotal'), total);
+  countUp(document.getElementById('kpiAbove'), above);
+  countUp(document.getElementById('kpiTop'), top.match, '/100');
+  document.getElementById('kpiTopName').textContent = top.name;
+  countUp(document.getElementById('kpiAvg'), avg, '/100');
+
+  // top match card
+  const ev = evidenceCount(top), pp = placeProb(top);
+  document.getElementById('topMatchCard').innerHTML = `
+    <div class="tm-card">
+      <div class="tm-top">
+        <div class="tm-who">
+          <div class="tm-avatar">${initials(top.name)}</div>
+          <div>
+            <div class="tm-name">${top.name}${top.verified?'<span class="tm-verified">✓</span>':''}</div>
+            <div class="tm-sub">${top.id} &nbsp;·&nbsp; ${top.type} &nbsp;·&nbsp; CGPA ${top.cgpa}</div>
+          </div>
+        </div>
+        <div class="tm-match-badge"><span class="lbl">MATCH</span><span class="val">${top.match}</span></div>
+      </div>
+      <div class="tm-blurb">${top.blurb}</div>
+      <div class="tm-stats">
+        <div class="tm-stat"><div class="lbl">READINESS</div><div class="val">${top.match}</div></div>
+        <div class="tm-stat"><div class="lbl">PLACE. PROB</div><div class="val">${pp}%</div></div>
+        <div class="tm-stat"><div class="lbl">EVIDENCE</div><div class="val">${ev}<small>✓</small></div></div>
+      </div>
+      <div class="tm-role-pill">◎ ${top.role}</div>
+      <div class="tm-highlights">
+        <div class="rh-label">VERIFIED HIGHLIGHTS</div>
+        ${top.highlights.map(h=>`<div class="tm-highlight-row"><span class="ck">✓</span>${h}</div>`).join('')}
+      </div>
+      <div class="tm-actions">
+        <button class="btn-outline">◉ &nbsp; View profile</button>
+        <button class="btn-fill">☆ &nbsp; Shortlist</button>
+      </div>
+    </div>`;
+
+  // why matched panel
+  const sig = top.signals || {readiness:top.match, alignment:Math.max(10,100-top.match), evidence:Math.min(96,top.match+30), overlap:Math.max(15,top.match-10), confidence:Math.min(90,top.match+5)};
+  const checks = [
+    'Multiple pieces of verified evidence',
+    top.match>=cfg.threshold ? 'Strong readiness score above the role\'s threshold' : 'Readiness score below the role\'s threshold — worth a closer look',
+    sig.confidence>=60?'High confidence — ready now':'Moderate confidence — coachable',
+  ];
+  document.getElementById('whyMatchedPanel').innerHTML = `
+    <div class="why-head"><h3>WHY THEY MATCHED</h3><span style="font-size:16px">✦</span></div>
+    <div class="why-score-row"><div class="why-score">${top.match}</div><div class="why-score-sub">/100</div></div>
+    <div class="why-checks">${checks.map(c=>`<div class="why-check"><span class="ck">✓</span>${c}</div>`).join('')}</div>
+    <div class="why-signals">
+      ${[['Readiness',sig.readiness],['Role alignment',sig.alignment],['Evidence strength',sig.evidence],['Skill overlap',sig.overlap],['Confidence',sig.confidence]].map(([label,val])=>`
+        <div class="why-signal-row">
+          <div class="why-signal-label">${label}</div>
+          <div class="why-signal-track"><div class="why-signal-fill" data-w="${val}"></div></div>
+          <div class="why-signal-val">${val}</div>
+        </div>`).join('')}
+    </div>`;
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{
+      document.querySelectorAll('.why-signal-fill').forEach(el=>{ el.style.width = el.dataset.w+'%'; });
+    }, 60);
+  });
+
+  renderPage(1);
+}
+
+function backToRoles(){
+  document.getElementById('roleDetailsView').style.display = 'none';
+  document.getElementById('rolesListView').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.querySelectorAll('.role-card .match').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const card = btn.closest('.role-card');
+    openRoleDetails(card.dataset.role);
+  });
+});
+document.getElementById('backToRoles').addEventListener('click', backToRoles);
+document.getElementById('rhPauseBtn').addEventListener('click', function(){
+  const paused = this.classList.toggle('is-paused');
+  this.innerHTML = paused ? '▶ &nbsp; Resume role' : '◉ &nbsp; Pause role';
+});
+
+const roleMenu = document.getElementById('roleMenu');
+const roleMenuTitle = document.getElementById('roleMenuTitle');
+const menuPauseRole = document.getElementById('menuPauseRole');
+let menuCard = null;
+
+function setPauseLabel(card){
+  const paused = card.querySelector('.pause').classList.contains('is-paused');
+  menuPauseRole.innerHTML = paused ? '<span class="rmi-icon">▶</span> Resume role' : '<span class="rmi-icon">◉</span> Pause role';
+}
+function closeRoleMenu(){
+  roleMenu.classList.remove('open');
+  if(menuCard) menuCard.querySelector('.dots').classList.remove('active');
+  menuCard = null;
+}
+document.querySelectorAll('.role-card .dots').forEach(dotsBtn=>{
+  dotsBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    const card = this.closest('.role-card');
+    if(menuCard === card){ closeRoleMenu(); return; }
+    if(menuCard) menuCard.querySelector('.dots').classList.remove('active');
+    menuCard = card;
+    this.classList.add('active');
+    roleMenuTitle.textContent = card.querySelector('h3').childNodes[0].textContent.trim().toUpperCase();
+    setPauseLabel(card);
+    const r = this.getBoundingClientRect();
+    let left = r.right - 224;
+    left = Math.max(12, Math.min(left, window.innerWidth - 236));
+    roleMenu.style.left = left + 'px';
+    roleMenu.style.top = (r.bottom + 8) + 'px';
+    roleMenu.classList.add('open');
+  });
+});
+document.getElementById('menuEditRole').addEventListener('click', ()=>{
+  if(!menuCard) return;
+  const id = menuCard.dataset.role;
+  closeRoleMenu();
+  openEditModal(id);
+});
+menuPauseRole.addEventListener('click', ()=>{
+  if(!menuCard) return;
+  const pauseBtn = menuCard.querySelector('.pause');
+  const paused = pauseBtn.classList.toggle('is-paused');
+  pauseBtn.innerHTML = paused ? '▶ &nbsp; Resume' : '◉ &nbsp; Pause';
+  closeRoleMenu();
+});
+document.getElementById('menuDeleteRole').addEventListener('click', ()=>{
+  if(!menuCard) return;
+  const card = menuCard;
+  card.style.transition = 'opacity .2s ease, transform .2s ease';
+  card.style.opacity = '0';
+  card.style.transform = 'scale(.97)';
+  setTimeout(()=>card.remove(), 200);
+  closeRoleMenu();
+});
+document.addEventListener('click', e=>{
+  if(roleMenu.classList.contains('open') && !roleMenu.contains(e.target)) closeRoleMenu();
+});
+window.addEventListener('scroll', closeRoleMenu, true);
+window.addEventListener('resize', closeRoleMenu);
+
+</script>
+<style>@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
+</body></html>
