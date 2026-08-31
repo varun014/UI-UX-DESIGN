@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Leapath · Candidate Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0E0820;
+    --deep:#1B1038;
+    --plum:#2C1A55;
+    --plum-2:#4A2C8F;
+    --lilac:#C9B8FF;
+    --lilac-soft:#EFE9FF;
+    --gold:#F0B93B;
+    --gold-soft:#FCF1D9;
+    --mint:#5FE3B3;
+    --mint-soft:#E4FBF3;
+    --blue:#5B8DEF;
+    --blue-soft:#EAF0FE;
+    --rose:#F2536B;
+    --rose-soft:#FDE9EC;
+    --ink:#181229;
+    --muted:#6E6785;
+    --line:#E7E2F5;
+    --paper:#F8F6FC;
+    --white:#FFFFFF;
+    --r-lg:20px;
+    --r-md:14px;
+    --r-sm:10px;
+    --shadow-xs:0 1px 2px rgba(24,18,41,0.04);
+    --shadow-sm:0 2px 8px -2px rgba(44,26,85,0.10);
+    --shadow-md:0 14px 32px -18px rgba(44,26,85,0.30);
+    --shadow-lg:0 24px 48px -20px rgba(44,26,85,0.34);
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  ::selection{background:var(--lilac);color:var(--void);}
+  :focus-visible{outline:2px solid var(--plum-2);outline-offset:2px;border-radius:6px;}
+  .app{display:flex;min-height:100vh;}
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    width:248px;flex-shrink:0;background:var(--void);color:#fff;
+    padding:28px 16px;display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;
+    border-right:1px solid rgba(255,255,255,0.06);
+  }
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:30px;padding:2px 8px 20px;border-bottom:1px solid rgba(255,255,255,0.07);}
+  .brand-mark{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg,#8B6BFF,#4A2C8F);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Sora';font-weight:700;font-size:16px;
+    box-shadow:0 6px 16px -4px rgba(139,107,255,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .brand-text{font-family:'Sora';font-weight:700;font-size:17px;letter-spacing:-0.01em;}
+  .brand-tag{
+    display:inline-block;margin-top:2px;font-family:'IBM Plex Mono';font-size:9.5px;
+    letter-spacing:0.08em;color:var(--lilac);background:rgba(139,107,255,0.14);
+    padding:2px 7px;border-radius:5px;
+  }
+  .nav-label{
+    font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.14em;font-weight:600;
+    color:rgba(255,255,255,0.30);margin:22px 12px 9px;
+  }
+  .nav-item{
+    position:relative;
+    display:flex;align-items:center;gap:11px;padding:9.5px 12px;border-radius:9px;
+    color:rgba(255,255,255,0.60);text-decoration:none;font-size:13.5px;font-weight:500;
+    margin-bottom:2px;transition:background .18s var(--ease),color .18s var(--ease),padding-left .18s var(--ease);
+  }
+  .nav-item svg{opacity:0.75;flex-shrink:0;transition:opacity .18s var(--ease);}
+  .nav-item:hover{background:rgba(255,255,255,0.055);color:#fff;}
+  .nav-item:hover svg{opacity:0.95;}
+  .nav-item.active{
+    background:rgba(139,107,255,0.16);color:#fff;
+    box-shadow:inset 0 0 0 1px rgba(139,107,255,0.30);
+    padding-left:15px;
+  }
+  .nav-item.active svg{opacity:1;color:var(--lilac);}
+  .nav-item.active::before{
+    content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+    width:3px;height:16px;border-radius:0 3px 3px 0;
+    background:linear-gradient(180deg,var(--lilac),#8B6BFF);
+  }
+  .sidebar-footer{
+    margin-top:auto;display:flex;align-items:center;gap:10px;
+    padding:13px 10px;border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .avatar-sm{
+    width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#8B6BFF,#4A2C8F);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Sora';
+  }
+  .sidebar-footer .who{font-size:13px;font-weight:600;}
+  .sidebar-footer .role{font-size:11px;color:rgba(255,255,255,0.45);}
+  .sidebar-footer a{margin-left:auto;color:rgba(255,255,255,0.4);display:flex;}
+  .sidebar-footer a:hover{color:#fff;}
+
+  /* ---------- MAIN ---------- */
+  .main{flex:1;min-width:0;}
+
+  .page-topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:20px 40px 4px;background:var(--paper);
+  }
+  .page-title h1{font-family:'Sora';font-weight:700;font-size:22px;letter-spacing:-0.01em;margin:0 0 3px;}
+  .page-title p{font-size:13px;color:var(--muted);margin:0;}
+  .school-chip{
+    display:flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);color:var(--ink);
+    padding:8px 14px 8px 11px;border-radius:10px;
+    font-size:12.5px;font-weight:600;box-shadow:var(--shadow-xs);
+    transition:box-shadow .18s var(--ease),border-color .18s var(--ease);
+  }
+  .school-chip:hover{box-shadow:var(--shadow-sm);border-color:#DAD1F7;}
+  .school-chip svg{opacity:0.7;color:var(--plum-2);}
+  .top-icons{display:flex;align-items:center;gap:14px;}
+  .icon-btn{
+    width:34px;height:34px;border-radius:10px;
+    background:#fff;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);cursor:pointer;box-shadow:var(--shadow-xs);
+    transition:box-shadow .18s var(--ease),border-color .18s var(--ease),transform .12s var(--ease);
+  }
+  .icon-btn:hover{box-shadow:var(--shadow-sm);border-color:#DAD1F7;transform:translateY(-1px);}
+  .icon-btn:active{transform:translateY(0);}
+  .user-chip{display:flex;align-items:center;gap:9px;}
+  .user-chip .who{font-size:13px;font-weight:600;color:var(--ink);}
+  .user-chip .role{font-size:11px;color:var(--muted);}
+
+  /* ---------- ACTION BAR ---------- */
+  .action-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 40px 20px;flex-wrap:wrap;gap:12px;
+  }
+  .btn-back{
+    display:inline-flex;align-items:center;gap:8px;
+    background:transparent;border:none;color:var(--ink);
+    font-family:'Sora';font-weight:700;font-size:14.5px;cursor:pointer;
+    padding:8px 4px;border-radius:8px;transition:color .18s var(--ease);
+  }
+  .btn-back:hover{color:var(--plum-2);}
+  .btn-back svg{transition:transform .18s var(--ease);}
+  .btn-back:hover svg{transform:translateX(-3px);}
+  .action-bar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .btn-outline{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);color:var(--ink);
+    padding:11px 17px;border-radius:11px;font-weight:600;font-size:13.5px;
+    cursor:pointer;box-shadow:var(--shadow-xs);
+    transition:box-shadow .18s var(--ease),border-color .18s var(--ease),transform .12s var(--ease);
+  }
+  .btn-outline:hover{box-shadow:var(--shadow-sm);border-color:#DAD1F7;transform:translateY(-1px);}
+  .btn-send{
+    display:inline-flex;align-items:center;gap:8px;
+    background:linear-gradient(135deg,#8B6BFF,#4A2C8F);color:#fff;border:none;
+    padding:12px 20px;border-radius:11px;font-weight:700;font-size:13.5px;cursor:pointer;
+    box-shadow:0 14px 28px -10px rgba(74,44,143,0.55);
+    transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+  }
+  .btn-send:hover{transform:translateY(-1px);box-shadow:0 18px 34px -10px rgba(74,44,143,0.65);}
+  .btn-send:active{transform:translateY(0);}
+
+  /* ---------- PROFILE HERO CARD ---------- */
+  .p-wrap{padding:0 40px 60px;}
+  .p-hero{
+    position:relative;overflow:hidden;isolation:isolate;
+    border-radius:24px;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(139,92,246,0.28) 0%, rgba(139,92,246,0) 45%),
+      linear-gradient(150deg, var(--void) 0%, var(--plum) 55%, var(--plum-2) 100%);
+    box-shadow:0 34px 64px -30px rgba(30,15,70,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+    color:#fff;
+  }
+  .p-hero::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.09;
+    background-image:radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1.25px);
+    background-size:26px 26px;
+    mask-image:radial-gradient(ellipse 700px 400px at 20% 20%, black, transparent 72%);
+  }
+  .p-hero-top{
+    position:relative;z-index:2;
+    display:flex;justify-content:space-between;align-items:flex-start;gap:32px;
+    padding:36px 40px 30px;
+  }
+  .p-id{display:flex;gap:20px;align-items:flex-start;}
+  .p-avatar{
+    width:76px;height:76px;border-radius:20px;flex-shrink:0;
+    background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.04));
+    border:1px solid rgba(255,255,255,0.16);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Sora';font-weight:700;font-size:26px;letter-spacing:-0.02em;
+    box-shadow:0 16px 30px -10px rgba(9,3,28,.5), inset 0 1px 0 rgba(255,255,255,.14);
+  }
+  .p-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .p-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:5px 11px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:0.01em;
+  }
+  .p-tag.critical{background:rgba(242,83,107,.16);color:#ff97a8;border:1px solid rgba(242,83,107,.35);}
+  .p-tag.critical .dot{width:6px;height:6px;border-radius:50%;background:#ff97a8;flex-shrink:0;}
+  .p-tag.verified{background:rgba(255,255,255,.08);color:#e9e0ff;border:1px solid rgba(201,184,255,.28);}
+  h1.p-name{font-family:'Sora';font-weight:800;font-size:32px;letter-spacing:-0.02em;margin:0 0 8px;}
+  .p-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:rgba(255,255,255,0.62);font-size:13.5px;}
+  .p-meta span{display:inline-flex;align-items:center;gap:6px;}
+  .p-meta svg{opacity:0.7;}
+
+  /* readiness ring */
+  .p-readiness{display:flex;align-items:center;gap:18px;flex-shrink:0;}
+  .ring-progress{
+    --pct:0;
+    width:104px;height:104px;border-radius:50%;position:relative;flex-shrink:0;
+    background:conic-gradient(var(--gold) calc(var(--pct)*3.6deg), rgba(255,255,255,.12) 0deg);
+    display:grid;place-items:center;
+    box-shadow:0 0 0 1px rgba(255,255,255,.08) inset;
+  }
+  .ring-progress::before{
+    content:"";position:absolute;inset:9px;border-radius:50%;
+    background:linear-gradient(160deg, rgba(44,26,85,.96), rgba(74,44,143,.92));
+  }
+  .ring-progress .ring-value{position:relative;z-index:1;text-align:center;line-height:1;}
+  .ring-progress .ring-value b{font-family:'Sora';font-weight:800;font-size:26px;color:var(--gold);display:block;}
+  .ring-progress .ring-value span{font-size:10.5px;color:rgba(255,255,255,.55);font-weight:600;}
+  .p-readiness-copy{font-size:12.5px;}
+  .p-readiness-copy .label{font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:.12em;color:rgba(255,255,255,.5);font-weight:600;margin-bottom:6px;}
+  .p-readiness-copy .cohort{color:var(--mint);font-weight:700;font-size:13px;margin-bottom:3px;}
+  .p-readiness-copy .prob{color:rgba(255,255,255,.55);}
+
+  /* stats band */
+  .p-stats{
+    position:relative;z-index:2;
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border-top:1px solid rgba(255,255,255,0.10);
+    background:rgba(255,255,255,0.04);
+  }
+  .p-stat{
+    padding:18px 24px;border-right:1px solid rgba(255,255,255,0.08);
+  }
+  .p-stat:last-child{border-right:none;}
+  .p-stat .l{
+    display:flex;align-items:center;gap:7px;
+    font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.1em;font-weight:600;
+    color:rgba(255,255,255,.48);margin-bottom:7px;
+  }
+  .p-stat .l svg{color:rgba(255,255,255,.4);}
+  .p-stat .v{font-family:'Sora';font-weight:700;font-size:16px;color:#fff;}
+  .p-stat .v.pending{font-family:'Inter';font-weight:500;font-size:13px;color:rgba(255,255,255,.4);}
+
+  /* tabs */
+  .p-tabs{
+    position:relative;z-index:2;
+    display:flex;align-items:center;gap:4px;
+    padding:0 40px;background:rgba(9,3,28,0.18);
+    border-top:1px solid rgba(255,255,255,0.06);
+  }
+  .p-tab{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:14px 6px;margin-right:22px;
+    background:none;border:none;cursor:pointer;
+    font-family:'Inter';font-weight:600;font-size:13.5px;
+    color:rgba(255,255,255,.5);position:relative;
+    transition:color .18s var(--ease);
+  }
+  .p-tab:hover{color:rgba(255,255,255,.8);}
+  .p-tab.active{color:#fff;}
+  .p-tab.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+    background:linear-gradient(90deg,var(--gold),transparent);border-radius:2px;
+  }
+
+  /* ---------- CONTENT GRID ---------- */
+  .p-grid{
+    display:grid;grid-template-columns:minmax(0,1fr) 340px;
+    gap:24px;margin-top:24px;align-items:start;
+  }
+  .p-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:24px;box-shadow:var(--shadow-xs);
+  }
+  .p-card + .p-card{margin-top:18px;}
+
+  .empty-summary{
+    border:1.5px dashed var(--line);border-radius:var(--r-md);
+    background:var(--paper);
+    padding:24px;display:flex;gap:16px;align-items:flex-start;
+  }
+  .empty-summary .icon{
+    width:38px;height:38px;border-radius:11px;flex-shrink:0;
+    background:var(--lilac-soft);color:#6E45E0;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 0 0 1px rgba(110,69,224,0.12);
+  }
+  .empty-summary h3{font-family:'Sora';font-size:15.5px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;}
+  .empty-summary p{font-size:13.5px;color:var(--muted);line-height:1.6;margin:0;max-width:520px;}
+
+  .trust-card{display:flex;gap:14px;align-items:flex-start;}
+  .trust-card .icon{
+    width:38px;height:38px;border-radius:11px;flex-shrink:0;
+    background:var(--mint-soft);color:#1FA57C;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .trust-card h3{font-family:'Sora';font-size:14.5px;font-weight:700;margin:0 0 4px;}
+  .trust-card p{font-size:13px;color:var(--muted);line-height:1.55;margin:0;}
+
+  /* ---------- ENGAGEMENT SIDE RAIL ---------- */
+  .p-side{position:sticky;top:20px;display:flex;flex-direction:column;gap:18px;}
+  .eng-head .l{
+    font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);margin-bottom:5px;
+  }
+  .eng-head .d{font-size:12.5px;color:var(--muted);}
+  .eng-head .d b{color:var(--ink);font-weight:600;}
+
+  .status-label{
+    font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);margin:18px 0 10px;display:flex;align-items:center;gap:6px;
+  }
+  .status-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .status-btn{
+    display:flex;align-items:center;gap:8px;
+    padding:11px 12px;border-radius:11px;border:1px solid var(--line);
+    background:#fff;color:var(--ink);font-size:12.5px;font-weight:600;
+    cursor:pointer;position:relative;
+    transition:border-color .16s var(--ease),background .16s var(--ease),transform .12s var(--ease),box-shadow .16s var(--ease);
+  }
+  .status-btn:hover{border-color:#DAD1F7;box-shadow:var(--shadow-xs);}
+  .status-btn:active{transform:scale(0.98);}
+  .status-btn svg{flex-shrink:0;}
+  .status-btn .chk{
+    margin-left:auto;width:15px;height:15px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.25);opacity:0;transform:scale(.6);
+    transition:opacity .16s var(--ease),transform .16s var(--ease);
+  }
+  .status-btn.selected .chk{opacity:1;transform:scale(1);}
+  .status-btn[data-status="bookmark"]{color:#4A2C8F;}
+  .status-btn[data-status="bookmark"] svg{color:#6E45E0;}
+  .status-btn[data-status="interested"]{color:#3E63C4;}
+  .status-btn[data-status="interested"] svg{color:var(--blue);}
+  .status-btn[data-status="shortlist"]{color:#9A6B00;}
+  .status-btn[data-status="shortlist"] svg{color:#B8860B;}
+  .status-btn[data-status="contacted"]{color:#1B8C68;}
+  .status-btn[data-status="contacted"] svg{color:#1FA57C;}
+  .status-btn[data-status="interview"]{color:#5A35C8;}
+  .status-btn[data-status="interview"] svg{color:#8B6BFF;}
+  .status-btn[data-status="offered"]{color:#9A6B00;}
+  .status-btn[data-status="offered"] svg{color:#B8860B;}
+  .status-btn[data-status="joined"]{color:#1B8C68;}
+  .status-btn[data-status="joined"] svg{color:#1FA57C;}
+  .status-btn[data-status="not-pursuing"]{color:#C23A50;}
+  .status-btn[data-status="not-pursuing"] svg{color:var(--rose);}
+  .status-btn.selected{
+    background:linear-gradient(135deg,#8B6BFF,#4A2C8F);color:#fff !important;border-color:transparent;
+    box-shadow:0 10px 22px -8px rgba(74,44,143,0.55);
+  }
+  .status-btn.selected svg{color:#fff !important;}
+
+  .tag-list{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 12px;}
+  .tag-chip{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--lilac-soft);color:#4A2C8F;
+    padding:6px 6px 6px 11px;border-radius:999px;font-size:12px;font-weight:600;
+  }
+  .tag-chip button{
+    background:rgba(74,44,143,0.12);border:none;color:#4A2C8F;
+    width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;flex-shrink:0;
+  }
+  .tag-hint{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:10px;line-height:1.5;}
+  .tag-input-row{display:flex;gap:8px;}
+  .tag-input-row input{
+    flex:1;padding:10px 13px;border-radius:10px;border:1px solid var(--line);
+    font-size:13px;font-family:'Inter';color:var(--ink);background:var(--paper);
+    transition:border-color .16s var(--ease);
+  }
+  .tag-input-row input:focus{outline:none;border-color:var(--plum-2);background:#fff;}
+  .tag-add{
+    width:38px;height:38px;border-radius:10px;flex-shrink:0;
+    background:var(--plum-2);color:#fff;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .16s var(--ease);
+  }
+  .tag-add:hover{background:#3d2277;}
+
+  .notes-label{
+    font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.12em;font-weight:700;
+    color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;gap:6px;
+  }
+  textarea.notes-box{
+    width:100%;min-height:92px;resize:vertical;
+    padding:12px 14px;border-radius:12px;border:1px solid var(--line);
+    font-size:13px;font-family:'Inter';color:var(--ink);background:var(--paper);
+    line-height:1.55;transition:border-color .16s var(--ease);
+  }
+  textarea.notes-box:focus{outline:none;border-color:var(--plum-2);background:#fff;}
+  textarea.notes-box::placeholder{color:#A79FC2;}
+
+  .activity-log{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+  .activity-log div{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin-bottom:6px;}
+  .activity-log div:last-child{margin-bottom:0;}
+  .activity-log svg{color:#A79FC2;flex-shrink:0;}
+
+  /* chat bubble */
+  .chat-fab{
+    position:fixed;bottom:26px;right:28px;width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,#8B6BFF,#4A2C8F);color:#fff;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    box-shadow:0 16px 30px -10px rgba(74,44,143,0.6);
+    border:1px solid rgba(255,255,255,0.16);
+    transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+    z-index:20;
+  }
+  .chat-fab:hover{transform:translateY(-2px);box-shadow:0 20px 36px -10px rgba(74,44,143,0.7);}
+
+  @media (max-width:1150px){
+    .p-grid{grid-template-columns:1fr;}
+    .p-side{position:static;}
+  }
+  @media (max-width:900px){
+    .p-hero-top{flex-direction:column;}
+    .p-stats{grid-template-columns:repeat(2,1fr);}
+    .p-stat:nth-child(2){border-right:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">L</div>
+      <div>
+        <div class="brand-text">Leapath</div>
+        <span class="brand-tag">RECRUITER</span>
+      </div>
+    </div>
+
+    <div class="nav-label">OVERVIEW</div>
+    <a class="nav-item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a>
+
+    <div class="nav-label">TALENT</div>
+    <a class="nav-item active" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Candidates</a>
+    <a class="nav-item" href="leapath-shortlist.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.6L22 9.3l-5 4.8L18.2 21 12 17.3 5.8 21 7 14.1l-5-4.8 7.1-.7z"/></svg>Shortlisted</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Hiring Roles</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v3M16 3v3"/></svg>Drives</a>
+
+    <div class="nav-label">INSIGHTS</div>
+    <a class="nav-item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>Analytics</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.9 2.9l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.9-2.9l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.6-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.9-2.9l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.6V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.6 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.9 2.9l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.6 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.6 1z"/></svg>Settings</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 2-3 4M12 17h.01"/></svg>Support</a>
+
+    <div class="sidebar-footer">
+      <div class="avatar-sm">K</div>
+      <div>
+        <div class="who">Kiran</div>
+        <div class="role">Recruiter</div>
+      </div>
+      <a href="#" title="Sign out"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- PAGE TOPBAR -->
+    <div class="page-topbar">
+      <div class="page-title">
+        <h1>Candidate Profile</h1>
+        <p>Full verified profile for this candidate</p>
+      </div>
+      <div class="top-icons">
+        <div class="school-chip">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg>
+          IIIT Hyderabad
+        </div>
+        <div class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></div>
+        <div class="user-chip">
+          <div class="avatar-sm" style="width:30px;height:30px;font-size:11px;">K</div>
+          <div>
+            <div class="who">Kiran</div>
+            <div class="role">Recruiter</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <button class="btn-back" onclick="window.location.href='leapath-shortlist.html'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back
+      </button>
+      <div class="action-bar-right">
+        <button class="btn-outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+          Open public profile
+        </button>
+        <button class="btn-outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          ATS resume
+        </button>
+        <button class="btn-send">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+          Send interest
+        </button>
+      </div>
+    </div>
+
+    <div class="p-wrap">
+
+      <!-- PROFILE HERO -->
+      <section class="p-hero">
+        <div class="p-hero-top">
+          <div class="p-id">
+            <div class="p-avatar">PD</div>
+            <div>
+              <div class="p-tags">
+                <span class="p-tag critical"><span class="dot"></span>Critical</span>
+                <span class="p-tag verified"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Verified by IIIT Hyderabad</span>
+              </div>
+              <h1 class="p-name">Priyanka Das</h1>
+              <div class="p-meta">
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z"/><circle cx="12" cy="10" r="3"/></svg>IIIT Hyderabad</span>
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg>ECE · Year 4</span>
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.6L22 9.3l-5 4.8L18.2 21 12 17.3 5.8 21 7 14.1l-5-4.8 7.1-.7z"/></svg>CGPA 8.7</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-readiness">
+            <div class="p-readiness-copy">
+              <div class="label">READINESS</div>
+              <div class="cohort">Top 100% of cohort</div>
+              <div class="prob">0% placement prob.</div>
+            </div>
+            <div class="ring-progress" style="--pct:0;">
+              <div class="ring-value"><b>0</b><span>/ 100</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-stats">
+          <div class="p-stat">
+            <div class="l"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>TARGET ROLE</div>
+            <div class="v">VLSI Design Engineer</div>
+          </div>
+          <div class="p-stat">
+            <div class="l"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M6 9v6"/><path d="M6 18c6 0 6-6 12-6"/><circle cx="18" cy="12" r="3"/></svg>PROJECTS</div>
+            <div class="v pending">Not yet shared</div>
+          </div>
+          <div class="p-stat">
+            <div class="l"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/></svg>VERIFIED EVIDENCE</div>
+            <div class="v">0 items</div>
+          </div>
+          <div class="p-stat">
+            <div class="l"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>SKILLS</div>
+            <div class="v pending">Not yet shared</div>
+          </div>
+        </div>
+
+        <div class="p-tabs">
+          <button class="p-tab active"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l1.6 4.9L19 8l-4 3.3 1.3 5-4.3-2.9L7.7 16.3 9 11 5 8l5.4-1.1z"/></svg>About</button>
+          <button class="p-tab"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M6 9v6"/><path d="M6 18c6 0 6-6 12-6"/><circle cx="18" cy="12" r="3"/></svg>Projects</button>
+          <button class="p-tab"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Skills</button>
+        </div>
+      </section>
+
+      <!-- CONTENT GRID -->
+      <div class="p-grid">
+
+        <!-- LEFT: main content -->
+        <div class="p-main">
+          <div class="p-card">
+            <div class="empty-summary">
+              <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l1.6 4.9L19 8l-4 3.3 1.3 5-4.3-2.9L7.7 16.3 9 11 5 8l5.4-1.1z"/></svg></div>
+              <div>
+                <h3>Summary profile</h3>
+                <p>Full project details, experience timeline, and personal links appear once the student completes their Leapath profile. Readiness score and assessment data are accurate.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card trust-card">
+            <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <div>
+              <h3>Verified by Leapath</h3>
+              <p>Readiness score is backed by TPO-verified evidence and platform assessments.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: engagement rail -->
+        <aside class="p-side">
+          <div class="p-card">
+            <div class="eng-head">
+              <div class="l">YOUR ENGAGEMENT</div>
+              <div class="d">Private to you · the student doesn't see your notes</div>
+            </div>
+
+            <div class="status-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>UPDATE STATUS</div>
+            <div class="status-grid" id="statusGrid">
+              <button class="status-btn" data-status="bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Bookmark<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+              <button class="status-btn" data-status="interested"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l1.6 4.9L19 8l-4 3.3 1.3 5-4.3-2.9L7.7 16.3 9 11 5 8l5.4-1.1z"/></svg>Interested<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+              <button class="status-btn selected" data-status="shortlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.6L22 9.3l-5 4.8L18.2 21 12 17.3 5.8 21 7 14.1l-5-4.8 7.1-.7z"/></svg>Shortlist<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+              <button class="status-btn" data-status="contacted"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>Contacted<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+              <button class="status-btn" data-status="interview"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Interview<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+              <button class="status-btn" data-status="offered"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M17 5h3a2 2 0 010 4v0M7 5H4a2 2 0 000 4v0"/></svg>Offered<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+              <button class="status-btn" data-status="joined"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/></svg>Joined<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+              <button class="status-btn" data-status="not-pursuing"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Not pursuing<span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span></button>
+            </div>
+
+            <div class="status-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41L11 4H4v7l9.59 9.59a2 2 0 002.82 0l4.18-4.18a2 2 0 000-2.82z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>TAGS</div>
+            <div class="tag-list" id="tagList"></div>
+            <div class="tag-hint" id="tagHint">No tags yet — try "backend-strong" or "high-potential"</div>
+            <div class="tag-input-row">
+              <input type="text" id="tagInput" placeholder="Add a tag" maxlength="24">
+              <button class="tag-add" id="tagAddBtn" aria-label="Add tag">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
+
+            <div class="notes-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>NOTES</div>
+            <textarea class="notes-box" placeholder="Why are you interested? What stood out? What to follow up on?"></textarea>
+
+            <div class="activity-log">
+              <div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>First viewed: 21 Jul 2026</div>
+              <div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>Last activity: 27 Jul 2026</div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chat-fab" title="Ask Leapath">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+</div>
+
+<script>
+  // status selection
+  document.getElementById('statusGrid').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.status-btn');
+    if(!btn) return;
+    document.querySelectorAll('.status-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+
+  // tags
+  const tags = [];
+  const tagList = document.getElementById('tagList');
+  const tagHint = document.getElementById('tagHint');
+  const tagInput = document.getElementById('tagInput');
+
+  function renderTags(){
+    tagList.innerHTML = tags.map((t,i)=>`<span class="tag-chip">${t}<button onclick="removeTag(${i})" aria-label="Remove tag">&times;</button></span>`).join('');
+    tagHint.style.display = tags.length ? 'none' : 'block';
+  }
+  function addTag(){
+    const v = tagInput.value.trim();
+    if(!v) return;
+    tags.push(v);
+    tagInput.value = '';
+    renderTags();
+  }
+  window.removeTag = function(i){ tags.splice(i,1); renderTags(); };
+  document.getElementById('tagAddBtn').addEventListener('click', addTag);
+  tagInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter'){ e.preventDefault(); addTag(); } });
+
+  // tabs (visual only — no separate panels wired yet)
+  document.querySelectorAll('.p-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.p-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
