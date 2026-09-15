@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leapath — Student Profile</title>
+<style>
+:root{
+  --bg:#f6f5fb;--surface:#fff;--surface2:#faf9ff;--ink:#17142f;--muted:#7b7690;
+  --line:#e8e4f2;--purple:#5b35df;--purple2:#8338ec;--violet:#3a217f;--green:#0aa875;
+  --shadow:0 20px 60px rgba(40,23,93,.08);--shadow2:0 8px 28px rgba(40,23,93,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:
+  radial-gradient(circle at 8% 8%,rgba(111,71,232,.08),transparent 28%),
+  radial-gradient(circle at 94% 18%,rgba(157,67,239,.07),transparent 25%),
+  var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh}
+.shell{max-width:1280px;margin:auto;padding:30px 28px 90px}
+
+/* WOW PROFILE CANVAS — intentionally no traditional header */
+.profile-canvas{
+  position:relative;overflow:hidden;border:1px solid rgba(91,53,223,.12);
+  border-radius:32px;background:linear-gradient(135deg,#20104f 0%,#3a1c79 48%,#6b2ad4 100%);
+  color:#fff;padding:30px;box-shadow:0 28px 80px rgba(49,20,107,.22)
+}
+.profile-canvas:before,.profile-canvas:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.profile-canvas:before{width:540px;height:540px;right:-240px;top:-350px;border:1px solid rgba(255,255,255,.12);box-shadow:0 0 0 55px rgba(255,255,255,.025),0 0 0 110px rgba(255,255,255,.018)}
+.profile-canvas:after{width:280px;height:280px;left:-180px;bottom:-205px;background:rgba(143,81,242,.16);filter:blur(2px)}
+.canvas-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,.85fr);gap:22px;align-items:stretch}
+.story{display:flex;flex-direction:column;justify-content:space-between;min-height:270px}
+.story-kicker{display:flex;align-items:center;gap:8px;color:#d9d0fa;font-size:10px;font-weight:900;letter-spacing:1.7px;text-transform:uppercase}
+.story-kicker span{width:7px;height:7px;border-radius:50%;background:#74f0c0;box-shadow:0 0 0 5px rgba(116,240,192,.13)}
+.story h1{font-size:clamp(34px,4vw,58px);line-height:.98;letter-spacing:-3px;margin:16px 0 12px;max-width:760px}
+.story h1 em{font-style:normal;color:#c8b7ff}
+.story-copy{max-width:650px;color:#d9d2e8;font-size:14px;line-height:1.7;margin:0}
+.story-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.action{border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:11px 15px;background:rgba(255,255,255,.09);color:#fff;font-weight:850;font-size:11px;backdrop-filter:blur(8px)}
+.action.primary{background:#fff;color:#4f2dcc;border-color:#fff}
+.action:hover{transform:translateY(-1px)}
+.metric-stack{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.08);border-radius:18px;padding:17px;backdrop-filter:blur(10px)}
+.metric.wide{grid-column:1/-1}
+.metric-label{font-size:9px;letter-spacing:1.1px;text-transform:uppercase;color:#c9c0e0;font-weight:850}
+.metric-value{font-size:27px;font-weight:950;letter-spacing:-1px;margin-top:6px}
+.metric-note{font-size:10px;color:#cfc7df;margin-top:3px}
+.metric-bar{height:6px;background:rgba(255,255,255,.13);border-radius:10px;margin-top:13px;overflow:hidden}
+.metric-bar span{display:block;width:71%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#fff,#bda7ff)}
+.spark{height:52px;display:flex;align-items:flex-end;gap:5px;margin-top:11px}
+.spark i{display:block;flex:1;border-radius:5px 5px 2px 2px;background:rgba(255,255,255,.55)}
+.spark i:nth-child(1){height:28%}.spark i:nth-child(2){height:42%}.spark i:nth-child(3){height:36%}.spark i:nth-child(4){height:59%}.spark i:nth-child(5){height:48%}.spark i:nth-child(6){height:76%}.spark i:nth-child(7){height:94%}
+
+/* Navigation that never becomes a horizontal scroll */
+.section-nav{margin:0 0 20px;display:grid;grid-template-columns:repeat(9,1fr);gap:7px}
+.nav-btn{text-decoration:none;min-width:0;border:1px solid var(--line);background:rgba(255,255,255,.84);border-radius:14px;padding:11px 7px;color:#6f6982;font-size:10px;font-weight:850;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 15px rgba(36,23,75,.025)}
+.nav-btn span{font-size:12px}.nav-btn:hover,.nav-btn.active{color:#5430d1;background:#eee9ff;border-color:#d9cffb}
+
+/* Editorial section layout */
+.section{scroll-margin-top:24px;margin-bottom:18px}
+.section-card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:25px;box-shadow:var(--shadow2);overflow:hidden}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:22px 24px 16px}
+.section-title{display:flex;align-items:center;gap:12px}
+.section-number{font-size:10px;color:#a19aac;font-weight:900;letter-spacing:1px}
+.section-icon{width:40px;height:40px;border-radius:13px;background:#f0ebff;color:#5b35df;display:grid;place-items:center;font-weight:950;font-size:15px}
+.section h2{font-size:20px;letter-spacing:-.5px;margin:0}.section-sub{font-size:11px;color:#928ba0;margin:3px 0 0}
+.edit-btn,.add-btn{border:1px solid #ddd7ec;background:#fff;border-radius:11px;padding:9px 12px;color:#5630ce;font-size:11px;font-weight:900}
+.add-btn{background:#5b35df;color:#fff;border-color:#5b35df;box-shadow:0 7px 18px rgba(91,53,223,.18)}
+.section-body{padding:0 24px 24px}
+
+/* Personal */
+.personal-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
+.identity-card{position:relative;overflow:hidden;padding:22px;border-radius:21px;background:linear-gradient(145deg,#f4f0ff,#fbfaff);border:1px solid #e6defb}
+.identity-card:after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-70px;top:-70px;background:#e9e0ff}
+.identity-name{position:relative;z-index:1;font-size:25px;font-weight:950;letter-spacing:-1px}
+.identity-role{position:relative;z-index:1;color:#6540d1;font-size:11px;font-weight:850;margin-top:4px}
+.identity-summary{position:relative;z-index:1;color:#686176;font-size:11px;line-height:1.65;margin:15px 0 0;max-width:580px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.info{background:var(--surface2);border:1px solid #eeeaf5;border-radius:15px;padding:13px}
+.info label{display:block;text-transform:uppercase;letter-spacing:1px;color:#a29bad;font-size:8px;font-weight:900;margin-bottom:5px}
+.info strong{font-size:11px}.info p{margin:0;font-size:10px;color:#686176;line-height:1.5}
+
+/* Content cards */
+.stack{display:grid;gap:10px}
+.data-card{border:1px solid #ece8f4;border-radius:18px;padding:17px;background:#fff;transition:.18s}
+.data-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(48,29,91,.06)}
+.row{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.row strong{font-size:13px}.meta{font-size:10px;color:#898296;margin-top:4px}.muted{color:#797286;font-size:11px;line-height:1.65}
+.pill{display:inline-flex;white-space:nowrap;padding:5px 8px;border-radius:999px;background:#f0ebff;color:#5832cd;font-size:9px;font-weight:900}
+.verified{background:#e8faf3;color:#0b956c}
+.project-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.project-card{min-height:170px;display:flex;flex-direction:column;justify-content:space-between}
+.project-title{font-size:14px;font-weight:950;letter-spacing:-.2px}
+.project-desc{margin:10px 0 0}
+.chips,.skills{display:flex;flex-wrap:wrap;gap:6px}.chip{padding:5px 8px;border-radius:999px;background:#f5f2ff;color:#5630c8;font-size:9px;font-weight:850}
+.skill{padding:9px 11px;border:1px solid #e9e4f1;background:#faf9fd;border-radius:12px;font-size:10px;font-weight:800}.skill b{color:#5b35df;margin-left:4px}
+.evidence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.evidence{padding:16px;border:1px solid #ece8f4;border-radius:16px;background:#fff}.evidence .check{color:#0aa875;font-weight:950;font-size:10px}.evidence strong{display:block;font-size:12px;margin:6px 0 3px}.evidence span{font-size:10px;color:#8b8497}
+.quote{padding:20px;border-radius:18px;background:linear-gradient(135deg,#faf8ff,#f3efff);border:1px solid #e4dbfb}
+.quote p{font-size:13px;line-height:1.7;color:#5e576e;margin:0}.quote footer{margin-top:13px;font-size:10px;color:#8a8298;font-weight:800}
+.reflection-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.reflection{padding:17px;border:1px solid #ece8f4;border-radius:16px}.reflection b{font-size:11px}.reflection p{font-size:10px;line-height:1.6;color:#797286;margin:7px 0 0}
+
+/* Floating journey rail */
+.journey{position:fixed;right:22px;bottom:22px;z-index:40;background:#1f124a;color:#fff;border:1px solid rgba(255,255,255,.1);box-shadow:0 18px 50px rgba(27,13,68,.24);border-radius:18px;padding:10px 12px;display:flex;align-items:center;gap:9px}
+.journey small{color:#cfc6e6;font-size:9px;font-weight:800}.journey strong{font-size:11px}.journey-dot{width:8px;height:8px;border-radius:50%;background:#69e7b5;box-shadow:0 0 0 5px rgba(105,231,181,.1)}
+
+/* Modals */
+.hidden{display:none!important}
+.overlay{position:fixed;inset:0;background:rgba(18,10,40,.62);backdrop-filter:blur(12px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}.overlay.open{display:flex}
+.modal{width:min(900px,100%);height:min(91vh,810px);background:#fff;border-radius:25px;overflow:hidden;box-shadow:0 35px 100px rgba(18,7,51,.38);display:flex;flex-direction:column}
+.modal-head{background:linear-gradient(120deg,#4932d2,#7929e1);color:#fff;padding:22px 26px 18px}.modal-head-row{display:flex;justify-content:space-between;gap:15px}.modal h2{font-size:22px;margin:0}.modal-head p{margin:5px 0 0;color:#ddd5f2;font-size:12px}.close{width:38px;height:38px;border-radius:50%;border:1.5px solid #73e7ff;background:transparent;color:#fff;font-size:25px}
+.steps{display:grid;grid-template-columns:1fr 1fr;margin-top:18px;align-items:center}.step{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:850;color:#cfc7e8}.step.active{color:#fff}.dot{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16)}.step.active .dot{background:#fff;color:#5730d0}.step-line{height:1px;background:rgba(255,255,255,.22);flex:1;margin:0 14px}
+.modal-body{overflow:auto;padding:24px 28px}.form-section{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid #eae5f1}.form-section:last-child{border-bottom:0}.form-head{display:flex;align-items:center;gap:9px;margin-bottom:14px}.form-head b{font-size:14px}.form-head i{font-style:normal;color:#5d32d6;background:#f0ebff;width:25px;height:25px;border-radius:8px;display:grid;place-items:center;font-size:12px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field.full{grid-column:1/-1}.label{font-size:11px;font-weight:800;color:#37305d;display:block;margin-bottom:7px}.req{color:#ed3d3d}.input,.select,.textarea{width:100%;border:1px solid #ddd7eb;border-radius:11px;background:#fcfbfe;padding:11px 12px;color:#211b46;outline:0;font-size:12px}.textarea{min-height:95px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:#6940df;box-shadow:0 0 0 3px #6940df15}.counter{text-align:right;color:#938da1;font-size:9px;margin-top:4px}.check{display:flex;gap:7px;align-items:center;color:#777084;font-size:11px;margin-top:10px}.check input{accent-color:#5b35df}
+.tech-add{display:grid;grid-template-columns:1fr auto;gap:8px}.tech-add button{border:0;border-radius:10px;background:#351a82;color:#fff;font-weight:850;padding:0 17px}.common{padding:12px;border:1px solid #e5dfef;border-radius:14px;background:#fbfaff;margin-top:9px}.common small{color:#888196;font-size:10px;font-weight:800}.common button{border:1px solid #ddd6eb;background:#fff;color:#2c2351;border-radius:999px;padding:6px 9px;margin:4px 2px 0;font-size:10px}.chosen{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.chosen span{background:#eee9ff;color:#5731c6;padding:5px 8px;border-radius:999px;font-size:10px}
+.file{display:flex;align-items:center;gap:10px;font-size:10px;color:#777084}.file label{display:inline-flex;border:1px solid #d8d1e8;background:#f7f4fc;border-radius:9px;padding:8px 11px;color:#2d2453;font-weight:800}.note{font-size:9px;color:#928b9d;margin-top:6px}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 26px;border-top:1px solid #ebe6f2;background:#fff}.btn{border:1px solid #ddd7eb;background:#fff;border-radius:10px;padding:10px 15px;color:#2d2453;font-size:11px;font-weight:900}.btn.primary{background:#5b35df;color:#fff;border-color:#5b35df}.btn.success{background:#0aa875;color:#fff;border-color:#0aa875}
+.edit-btn:hover,.add-btn:hover,.btn:hover,.action:hover{filter:brightness(1.03)}
+@media(max-width:980px){
+  .canvas-grid{grid-template-columns:1fr}.story{min-height:auto}.metric-stack{grid-template-columns:repeat(3,1fr)}.metric.wide{grid-column:auto}
+  .section-nav{grid-template-columns:repeat(5,1fr)}
+  .personal-layout{grid-template-columns:1fr}.evidence-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:680px){
+  .shell{padding:16px 12px 80px}.profile-canvas{border-radius:24px;padding:22px 18px}.story h1{font-size:39px;letter-spacing:-2.1px}.story-copy{font-size:12px}
+  .metric-stack{grid-template-columns:1fr 1fr}.metric.wide{grid-column:1/-1}.metric-value{font-size:23px}
+  .section-nav{grid-template-columns:repeat(3,1fr);gap:6px}.nav-btn{padding:10px 5px;font-size:9px}
+  .section-head{padding:18px 16px 13px}.section-body{padding:0 16px 18px}.section h2{font-size:17px}.section-icon{width:35px;height:35px}
+  .personal-layout,.project-grid,.reflection-grid,.evidence-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr 1fr}
+  .row{flex-direction:column}.row .pill{align-self:flex-start}
+  .modal{height:94vh;border-radius:20px}.modal-head{padding:18px}.modal-body{padding:18px}.modal-footer{padding:12px 14px;flex-wrap:wrap}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.steps{grid-template-columns:1fr 1fr}.step-line{margin:0 6px}.step{font-size:10px}.dot{width:28px;height:28px}.journey{right:12px;bottom:12px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<main class="shell">
+
+<nav class="section-nav" aria-label="Profile sections">
+  <a class="nav-btn active" href="#personal" data-target="personal"><span>♙</span>Personal</a>
+  <a class="nav-btn" href="#education" data-target="education"><span>⌂</span>Education</a>
+  <a class="nav-btn" href="#experience" data-target="experience"><span>▣</span>Experience</a>
+  <a class="nav-btn" href="#projects" data-target="projects"><span>▤</span>Projects</a>
+  <a class="nav-btn" href="#skills" data-target="skills"><span>✦</span>Skills</a>
+  <a class="nav-btn" href="#evidence" data-target="evidence"><span>✓</span>Evidence</a>
+  <a class="nav-btn" href="#achievements" data-target="achievements"><span>♢</span>Achievements</a>
+  <a class="nav-btn" href="#reflections" data-target="reflections"><span>☼</span>Reflections</a>
+  <a class="nav-btn" href="#testimonials" data-target="testimonials"><span>❝</span>Testimonials</a>
+</nav>
+
+<section class="section" id="personal">
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-title"><div class="section-icon">♙</div><div><div class="section-number">01 · ABOUT YOU</div><h2>Personal</h2><p class="section-sub">The first impression of your professional story</p></div></div>
+    <button class="edit-btn" id="editPersonal2">Edit</button>
+  </div>
+  <div class="section-body">
+    <div class="personal-layout">
+      <div class="identity-card">
+        <div class="identity-name">Aisha Verma</div>
+        <div class="identity-role">Software Enthusiast</div>
+        <p class="identity-summary">I am a student building practical experience through software projects, academic work and hands-on learning.</p>
+      </div>
+      <div class="info-grid">
+        <div class="info"><label>Email</label><strong>43i1a@web-library.net</strong></div>
+        <div class="info"><label>Phone</label><strong>+91 8938238522</strong></div>
+        <div class="info"><label>Location</label><strong>Chandigarh</strong></div>
+        <div class="info"><label>Date of Birth</label><strong>01 Sep 2011</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="education">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">⌂</div><div><div class="section-number">02 · ACADEMICS</div><h2>Education</h2><p class="section-sub">Academic journey and performance</p></div></div><button class="add-btn" id="addEducation2">+ Add Education</button></div>
+  <div class="section-body"><div class="stack"><div class="data-card"><div class="row"><div><strong>Bachelor's · BTECH</strong><div class="meta">Demo University · Chandigarh · 2022 — 2026</div></div><span class="pill verified">✓ Verified</span></div><div class="meta">Overall Performance · CGPA 8.2</div></div></div></div>
+</div>
+</section>
+
+<section class="section" id="experience">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">▣</div><div><div class="section-number">03 · EXPERIENCE</div><h2>Experience</h2><p class="section-sub">Internships, work and practical exposure</p></div></div><button class="add-btn">+ Add Experience</button></div>
+  <div class="section-body"><div class="data-card"><div class="row"><div><strong>Software Development Intern</strong><div class="meta">Tech Company · Jun 2025 — Aug 2025</div></div><span class="pill">Internship</span></div><p class="muted">Built product features, worked with APIs and collaborated with the engineering team.</p></div></div>
+</div>
+</section>
+
+<section class="section" id="projects">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">▤</div><div><div class="section-number">04 · SHOW YOUR WORK</div><h2>Projects</h2><p class="section-sub">Show what you can build</p></div></div><button class="add-btn" id="addProject2">+ Add project</button></div>
+  <div class="section-body"><div class="project-grid">
+    <div class="data-card project-card"><div><div class="row"><div><div class="project-title">Student Career Portfolio</div><div class="meta">Personal Project · Active</div></div><span class="pill verified">Public</span></div><p class="muted project-desc">A platform that helps students present their skills, projects and verified credentials.</p></div><div class="chips"><span class="chip">React</span><span class="chip">Node.js</span><span class="chip">PostgreSQL</span><span class="chip">JavaScript</span></div></div>
+    <div class="data-card project-card"><div><div class="row"><div><div class="project-title">AI Resume Assistant</div><div class="meta">Academic Project · Completed</div></div><span class="pill">View</span></div><p class="muted project-desc">Resume analysis and enhancement workflow designed for early-career students.</p></div><div class="chips"><span class="chip">Python</span><span class="chip">AI</span><span class="chip">FastAPI</span></div></div>
+  </div></div>
+</div>
+</section>
+
+<section class="section" id="skills">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">✦</div><div><div class="section-number">05 · CAPABILITIES</div><h2>Skills</h2><p class="section-sub">Capabilities you want employers to notice</p></div></div><button class="edit-btn">Edit</button></div>
+  <div class="section-body"><div class="skills"><span class="skill">JavaScript <b>Advanced</b></span><span class="skill">React <b>Advanced</b></span><span class="skill">Node.js <b>Intermediate</b></span><span class="skill">Python <b>Intermediate</b></span><span class="skill">SQL <b>Intermediate</b></span><span class="skill">Git <b>Advanced</b></span><span class="skill">Communication <b>Strong</b></span></div></div>
+</div>
+</section>
+
+<section class="section" id="evidence">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">✓</div><div><div class="section-number">06 · PROOF</div><h2>Evidence</h2><p class="section-sub">Proof behind your profile</p></div></div><button class="add-btn">+ Add Evidence</button></div>
+  <div class="section-body"><div class="evidence-grid"><div class="evidence"><div class="check">✓ Verified</div><strong>Education document</strong><span>Uploaded credential</span></div><div class="evidence"><div class="check">✓ Verified</div><strong>Project credential</strong><span>Repository evidence</span></div><div class="evidence"><div class="check">✓ Verified</div><strong>Internship proof</strong><span>Experience evidence</span></div></div></div>
+</div>
+</section>
+
+<section class="section" id="achievements">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">♢</div><div><div class="section-number">07 · MILESTONES</div><h2>Achievements</h2><p class="section-sub">Milestones worth highlighting</p></div></div><button class="add-btn">+ Add Achievement</button></div>
+  <div class="section-body"><div class="data-card"><strong>Hackathon Finalist</strong><div class="meta">National Student Hackathon · 2025</div><p class="muted">Reached the final round with a student-focused technology solution.</p></div></div>
+</div>
+</section>
+
+<section class="section" id="reflections">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">☼</div><div><div class="section-number">08 · LEARNING</div><h2>Reflections</h2><p class="section-sub">What you learned along the way</p></div></div><button class="edit-btn">Edit</button></div>
+  <div class="section-body"><div class="reflection-grid"><div class="reflection"><b>What I learned</b><p>I learned how to turn ideas into usable products and communicate technical decisions clearly.</p></div><div class="reflection"><b>What challenged me</b><p>Balancing product thinking with implementation helped me become more deliberate in my decisions.</p></div><div class="reflection"><b>What comes next</b><p>I want to keep building real products and strengthen my engineering fundamentals.</p></div></div></div>
+</div>
+</section>
+
+<section class="section" id="testimonials">
+<div class="section-card">
+  <div class="section-head"><div class="section-title"><div class="section-icon">❝</div><div><div class="section-number">09 · TRUST</div><h2>Testimonials</h2><p class="section-sub">What mentors and collaborators say</p></div></div><button class="add-btn">+ Request Testimonial</button></div>
+  <div class="section-body"><div class="quote"><p>No testimonials yet. Ask a mentor, teammate or project collaborator to add one.</p><footer>Build social proof from people who have seen your work.</footer></div></div>
+</div>
+</section>
+
+</main>
+</div>
+
+
+<!-- PERSONAL MODAL -->
+<div class="overlay" id="personalModal">
+<div class="modal">
+ <div class="modal-head"><div class="modal-head-row"><div><h2>Edit Personal Information</h2><p>Keep your profile details current and recruiter-ready.</p></div><button class="close" data-close>×</button></div></div>
+ <div class="modal-body"><div class="form-section"><div class="form-head"><i>♙</i><b>Personal Information</b></div><div class="form-grid">
+ <div><label class="label">Full Name <span class="req">*</span></label><input class="input" value="Aisha Verma"></div>
+ <div><label class="label">Email <span class="req">*</span></label><input class="input" value="43i1a@web-library.net"></div>
+ <div><label class="label">Phone Number</label><input class="input" value="+91 8938238522"></div>
+ <div><label class="label">Date of Birth</label><input class="input" type="date" value="2011-09-01"></div>
+ <div><label class="label">Professional Title</label><input class="input" value="Software Enthusiast"></div>
+ <div><label class="label">Location</label><input class="input" value="Chandigarh"></div>
+ <div class="field full"><label class="label">Professional Summary</label><textarea class="textarea">I am a student building practical experience through software projects, academic work and hands-on learning.</textarea></div>
+ </div></div></div>
+ <div class="modal-footer"><button class="btn" data-close>Cancel</button><button class="btn primary" data-save="Personal information saved.">Save Changes</button></div>
+</div></div>
+
+<!-- PROJECT MODAL -->
+<div class="overlay" id="projectModal">
+<div class="modal">
+ <div class="modal-head"><div class="modal-head-row"><div><h2>Add New Project ⓘ</h2><p>A few details now, verified credentials later.</p></div><button class="close" data-close>×</button></div>
+ <div class="steps"><div class="step active" id="pStep1"><span class="dot">▣</span>Project Basics <span class="step-line"></span></div><div class="step" id="pStep2"><span class="dot">↗</span>Links &amp; Details</div></div></div>
+ <div class="modal-body">
+  <div id="projectOne">
+   <div class="form-section"><div class="form-head"><i>▣</i><b>Project Overview</b></div><div class="form-grid">
+    <div class="field full"><label class="label">Project Title <span class="req">*</span></label><input class="input" maxlength="128" placeholder="Enter project title"><div class="counter">0 / 128 characters</div></div>
+    <div class="field full"><label class="label">Description <span class="req">*</span></label><textarea class="textarea" maxlength="2000" placeholder="Describe the project"></textarea><div class="counter">0 / 2000 characters</div></div>
+   </div></div>
+   <div class="form-section"><div class="form-head"><i>☷</i><b>Status &amp; Type</b></div><div class="form-grid"><div><label class="label">Status</label><select class="select"><option>Active</option><option>Completed</option><option>On Hold</option><option>Archived</option></select></div><div><label class="label">Project Type <span class="req">*</span></label><select class="select"><option>Select Project Type</option><option>Personal Project</option><option>Academic Project</option><option>Hackathon</option><option>Freelance / Client Work</option><option>Open Source Contribution</option><option>Capstone / Thesis</option><option>Team Project</option></select></div></div></div>
+   <div class="form-section"><div class="form-head"><i>⌕</i><b>Technologies Used</b></div><label class="label">Technologies <span class="req">*</span></label><div class="tech-add"><input class="input" id="techInput" placeholder="Type technology and press Enter or click Add"><button id="techAdd">+ Add</button></div><div class="chosen" id="chosen"></div><div class="common"><small>Common Technologies:</small><div>
+    <button data-tech="React">React</button><button data-tech="Vue">Vue</button><button data-tech="Angular">Angular</button><button data-tech="Node.js">Node.js</button><button data-tech="Python">Python</button><button data-tech="Java">Java</button><button data-tech="MongoDB">MongoDB</button><button data-tech="PostgreSQL">PostgreSQL</button><button data-tech="MySQL">MySQL</button><button data-tech="AWS">AWS</button><button data-tech="Docker">Docker</button><button data-tech="Kubernetes">Kubernetes</button><button data-tech="TypeScript">TypeScript</button><button data-tech="JavaScript">JavaScript</button><button data-tech="GraphQL">GraphQL</button>
+   </div></div></div>
+  </div>
+  <div id="projectTwo" class="hidden">
+   <div class="form-section"><div class="form-head"><i>☆</i><b>Key Features</b></div><input class="input" placeholder="Feature 1, Feature 2"><div class="counter">0 / 2000 characters</div></div>
+   <div class="form-section"><div class="form-head"><i>↗</i><b>Link to your work</b></div><div class="form-grid"><div><label class="label">Project Link <span class="req">*</span></label><input class="input" placeholder="https://project-link.com"></div><div><label class="label">Social Media Link (e.g., GitHub)</label><input class="input" placeholder="https://github.com/user/repo"></div></div></div>
+   <div class="form-section"><div class="form-head"><i>▤</i><b>Media &amp; Timeline</b></div><div class="form-grid"><div class="field full"><label class="label">Screenshots/Demo Video</label><div class="file"><label>Choose File<input hidden type="file" id="projectFile"></label><span id="projectFileName">No file chosen</span></div><div class="note">Max 2MB — JPG, PNG, GIF, MP4, MOV, AVI</div></div><div><label class="label">Start Date</label><input class="input" type="date"></div><div><label class="label">End Date</label><input class="input" type="date"></div></div></div>
+   <div class="form-section"><div class="form-head"><i>◎</i><b>Objective &amp; Outcome</b></div><div class="form-grid"><div class="field full"><label class="label">Objective</label><textarea class="textarea" placeholder="What did this project aim to achieve?"></textarea></div><div class="field full"><label class="label">Outcome</label><textarea class="textarea" placeholder="What value did this project deliver?"></textarea></div></div><label class="check"><input type="checkbox" checked>Show this project publicly</label></div>
+  </div>
+ </div>
+ <div class="modal-footer"><button class="btn hidden" id="projectBack">← Back</button><button class="btn primary" id="projectNext">Next: Links &amp; Details →</button><button class="btn primary hidden" id="projectSave">Save Project</button><button class="btn success hidden" id="projectVerify">Save &amp; Submit for Verification</button></div>
+</div></div>
+
+<!-- EDUCATION MODAL -->
+<div class="overlay" id="educationModal">
+<div class="modal">
+ <div class="modal-head"><div class="modal-head-row"><div><h2>Add Education Details</h2><p>A few details now, verified credentials later.</p></div><button class="close" data-close>×</button></div>
+ <div class="steps"><div class="step active" id="eStep1"><span class="dot">⌂</span>Basic Info <span class="step-line"></span></div><div class="step" id="eStep2"><span class="dot">▤</span>Documents &amp; Details</div></div></div>
+ <div class="modal-body">
+  <div id="educationOne">
+   <div class="form-section"><div class="form-head"><i>⌂</i><b>Basic Information</b></div><div class="form-grid">
+    <div><label class="label">Degree Type</label><select class="select"><option>Bachelor's</option><option>Master's</option><option>Diploma</option><option>PhD</option><option>Certificate</option></select></div><div><label class="label">Degree Name <span class="req">*</span></label><input class="input" placeholder="e.g. BTECH"></div>
+    <div><label class="label">Institution <span class="req">*</span></label><input class="input" placeholder="e.g. Demo University"></div><div><label class="label">University</label><input class="input" placeholder="e.g., XYZ University / State Board"></div>
+    <div><label class="label">Duration</label><div class="two"><input class="input" placeholder="2022"><input class="input" placeholder="2026"></div><label class="check"><input type="checkbox">Ongoing</label></div><div><label class="label">Location</label><input class="input" placeholder="e.g., Bengaluru, India"></div>
+   </div><label class="check"><input type="checkbox">Save as draft</label></div>
+   <div class="form-section"><div class="form-head"><i>☷</i><b>Academic Performance Configuration</b></div><div class="form-grid"><div><label class="label">Assessment Type</label><select class="select"><option>Semester-wise</option><option>Year-wise</option><option>Course-wise</option></select></div><div><label class="label">Grading Scale</label><select class="select"><option>CGPA</option><option>Percentage</option><option>GPA</option><option>Grade</option></select></div></div></div>
+   <div class="form-section"><div style="display:flex;justify-content:space-between;align-items:center"><div class="form-head" style="margin:0"><i>+</i><b>Subject / Semester Details</b></div><button class="edit-btn" id="addSemester">+ Add Semester</button></div><p class="muted" id="semesterEmpty">No entries yet — optional, add a per-semester score if you want it on record.</p><div id="semesterList"></div></div>
+   <div class="form-section"><div class="form-head"><i>♢</i><b>Overall Performance</b></div><label class="label">Overall Score (CGPA)</label><input class="input" placeholder="e.g. 8.2"></div>
+  </div>
+  <div id="educationTwo" class="hidden">
+   <div class="form-section"><div class="form-head"><i>▤</i><b>Upload Documents</b></div><div class="note" style="font-size:11px;margin-bottom:10px">Supported formats: PDF, JPG, PNG (Max 5MB)</div><div class="file"><label>Choose File<input hidden type="file" id="educationFile"></label><span id="educationFileName">No file chosen</span></div></div>
+   <div class="form-section"><div class="form-head"><i>ⓘ</i><b>Additional Information</b></div><div class="form-grid"><div class="field full"><label class="label">Additional Links</label><input class="input" placeholder="https://drive.google.com/, https://credential-url.com"></div><div class="field full"><label class="label">Description</label><textarea class="textarea" maxlength="500" placeholder="Achievements, honors, projects, certifications, etc."></textarea><div class="counter">0 / 500 characters</div></div></div></div>
+  </div>
+ </div>
+ <div class="modal-footer"><button class="btn hidden" id="educationBack">← Back</button><button class="btn primary" id="educationNext">Next: Documents &amp; Details →</button><button class="btn primary hidden" id="educationSave">Save Education Record</button><button class="btn success hidden" id="educationVerify">Save &amp; Submit for Verification</button></div>
+</div></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+function openModal(id){$(id).classList.add('open');document.body.style.overflow='hidden'}
+function closeModal(el){el.closest('.overlay').classList.remove('open');document.body.style.overflow=''}
+$$('[data-close]').forEach(b=>b.onclick=()=>closeModal(b));
+$$('.overlay').forEach(o=>o.onclick=e=>{if(e.target===o)closeModal(o)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.overlay.open').forEach(closeModal)});
+
+$('#editPersonal').onclick=()=>openModal('#personalModal');
+$('#editPersonal2').onclick=()=>openModal('#personalModal');
+$('#addProject').onclick=()=>{setProject(1);openModal('#projectModal')};
+$('#addProject2').onclick=()=>{setProject(1);openModal('#projectModal')};
+$('#addEducation').onclick=()=>{setEducation(1);openModal('#educationModal')};
+$('#addEducation2').onclick=()=>{setEducation(1);openModal('#educationModal')};
+
+function setProject(n){
+  $('#projectOne').classList.toggle('hidden',n!==1);$('#projectTwo').classList.toggle('hidden',n===1);
+  $('#pStep1').classList.toggle('active',n===1);$('#pStep2').classList.toggle('active',n===2);
+  $('#projectNext').classList.toggle('hidden',n!==1);$('#projectBack').classList.toggle('hidden',n===1);
+  $('#projectSave').classList.toggle('hidden',n===1);$('#projectVerify').classList.toggle('hidden',n===1);
+  $('#projectModal .modal-body').scrollTop=0;
+}
+$('#projectNext').onclick=()=>setProject(2);$('#projectBack').onclick=()=>setProject(1);
+$('#projectSave').onclick=()=>{alert('Project saved.');closeModal($('#projectModal'))};
+$('#projectVerify').onclick=()=>{alert('Project saved and submitted for verification.');closeModal($('#projectModal'))};
+
+let techs=[];
+function addTech(v){v=v.trim();if(!v||techs.includes(v))return;techs.push(v);renderTechs();$('#techInput').value=''}
+function renderTechs(){$('#chosen').innerHTML=techs.map(t=>`<span>${t} ×</span>`).join('');$$('#chosen span').forEach((s,i)=>s.onclick=()=>{techs.splice(i,1);renderTechs()})}
+$('#techAdd').onclick=()=>addTech($('#techInput').value);
+$('#techInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addTech(e.target.value)}});
+$$('.common button').forEach(b=>b.onclick=()=>addTech(b.dataset.tech));
+
+function setEducation(n){
+  $('#educationOne').classList.toggle('hidden',n!==1);$('#educationTwo').classList.toggle('hidden',n===1);
+  $('#eStep1').classList.toggle('active',n===1);$('#eStep2').classList.toggle('active',n===2);
+  $('#educationNext').classList.toggle('hidden',n!==1);$('#educationBack').classList.toggle('hidden',n===1);
+  $('#educationSave').classList.toggle('hidden',n===1);$('#educationVerify').classList.toggle('hidden',n===1);
+  $('#educationModal .modal-body').scrollTop=0;
+}
+$('#educationNext').onclick=()=>setEducation(2);$('#educationBack').onclick=()=>setEducation(1);
+$('#educationSave').onclick=()=>{alert('Education record saved.');closeModal($('#educationModal'))};
+$('#educationVerify').onclick=()=>{alert('Education record saved and submitted for verification.');closeModal($('#educationModal'))};
+
+$('#addSemester').onclick=()=>{
+  const list=$('#semesterList'), n=list.children.length+1;
+  $('#semesterEmpty').classList.add('hidden');
+  const row=document.createElement('div');
+  row.className='data-card';row.style.marginTop='9px';
+  row.innerHTML=`<div class="form-grid"><div><label class="label">Semester</label><input class="input" value="Semester ${n}"></div><div><label class="label">Score</label><input class="input" placeholder="e.g. 8.4"></div></div>`;
+  list.appendChild(row);
+};
+
+['projectFile','educationFile'].forEach(id=>{
+  const input=$('#'+id);
+  input?.addEventListener('change',e=>{
+    const name=e.target.files?.[0]?.name||'No file chosen';
+    const outId=id==='projectFile'?'projectFileName':'educationFileName';
+    $('#'+outId).textContent=name;
+  });
+});
+
+const sections=$$('.section');
+const navs=$$('.nav-btn');
+
+// Section navigation: real #hash links + explicit scroll fallback.
+// This makes every section jump immediately into view on desktop and mobile.
+navs.forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    const targetId=btn.dataset.target;
+    const el=document.getElementById(targetId);
+    if(!el) return;
+
+    e.preventDefault();
+    navs.forEach(n=>n.classList.toggle('active',n===btn));
+
+    const top=el.getBoundingClientRect().top + window.scrollY - 24;
+    window.scrollTo({top:Math.max(0,top),left:0,behavior:'auto'});
+    history.replaceState(null,'','#'+targetId);
+  });
+});
+
+const journey=null;
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navs.forEach(n=>n.classList.toggle('active',n.dataset.target===entry.target.id));
+      
+    }
+  });
+},{rootMargin:'-28% 0px -58% 0px',threshold:0});
+sections.forEach(s=>io.observe(s));
+
+$$('[data-save]').forEach(btn=>btn.onclick=()=>{alert(btn.dataset.save);closeModal(btn)});
+</script>
+</body>
+</html>
