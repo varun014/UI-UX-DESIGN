@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leapath — Career Intent</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+:root{--p:#21104f;--v:#6d3de8;--v2:#8b5cf6;--soft:#f1edff;--bg:#f8f7fc;--text:#211943;--muted:#817a91;--line:#e5e0ef;--green:#18a874;--amber:#e99a20;--shadow:0 14px 40px rgba(38,20,85,.055)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif}button{font:inherit;cursor:pointer}.app{min-height:100vh;display:flex}
+.sidebar{position:fixed;inset:0 auto 0 0;width:276px;color:#fff;display:flex;flex-direction:column;padding:0 12px;background:radial-gradient(circle at 100% 0,#7646ea38,transparent 28%),linear-gradient(180deg,#21104f,#190b3d);z-index:20}.brand{height:92px;padding:0 13px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #ffffff12}.logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;border:1px solid #ffffff29;font:800 25px Manrope;background:#ffffff0c}.brand-name{font:800 20px Manrope}.brand-pill{display:inline-block;margin-top:3px;padding:3px 8px;border-radius:99px;background:#43216d;color:#c9b8ff;font-size:8px;font-weight:800;letter-spacing:.8px}.nav{padding-top:16px}.nav-label{padding:11px;color:#827795;font-size:9px;font-weight:800;letter-spacing:1.6px}.nav-item{height:45px;margin:3px 0;border-radius:10px;padding:0 11px;display:flex;align-items:center;gap:12px;color:#bdb4cc;text-decoration:none;font-size:13px;font-weight:600;position:relative}.nav-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7}.nav-item:hover{background:#ffffff0e;color:#fff}.nav-item.active{color:#fff;background:linear-gradient(90deg,#703de875,#703de826);box-shadow:inset 0 0 0 1px #9b78ff40}.nav-item.active:before{content:"";position:absolute;left:-1px;top:9px;bottom:9px;width:3px;border-radius:0 4px 4px 0;background:#a576ff}.profile{margin-top:auto;border-top:1px solid #ffffff12;padding:17px 7px;display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:50%;background:linear-gradient(135deg,#8255ee,#5d35ca);display:grid;place-items:center;font-size:11px;font-weight:800}.profile-name{font-size:12px;font-weight:700}.profile-role{font-size:10px;color:#89819b}.logout{margin-left:auto;color:#9188a2}
+.main{margin-left:276px;width:calc(100% - 276px);min-width:0}.topbar{height:77px;background:#ffffffef;border-bottom:1px solid var(--line);padding:0 30px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}.page-title{font:800 18px Manrope}.page-sub{font-size:11px;color:#817a91;margin-top:2px}.top-right{display:flex;align-items:center;gap:15px}.bell{border:0;background:transparent;color:#756e83;width:35px;height:35px;position:relative}.bell svg{width:19px}.bell-dot{position:absolute;right:4px;top:4px;width:6px;height:6px;border-radius:50%;background:#f25d76;border:2px solid #fff}.top-admin{border-left:1px solid var(--line);padding-left:15px;display:flex;align-items:center;gap:9px}.top-avatar{width:35px;height:35px;border-radius:50%;background:#f0ebff;color:#6037c9;display:grid;place-items:center;font-size:11px;font-weight:800}.top-name{font-size:11px;font-weight:700}.top-role{font-size:9px;color:#938da0}
+.content{padding:30px 36px 50px;max-width:1600px;margin:auto}.hero{min-height:218px;border-radius:23px;overflow:hidden;position:relative;color:#fff;padding:29px 34px;background:radial-gradient(circle at 84% 45%,#915dffc9,transparent 28%),radial-gradient(circle at 58% 0,#6135cd8c,transparent 38%),linear-gradient(110deg,#160832,#2d116e 62%,#5630bd);box-shadow:0 20px 55px #2f136f2e}.hero:after{content:"";position:absolute;right:-80px;bottom:-120px;width:390px;height:390px;border:1px solid #ffffff29;border-radius:50%;box-shadow:0 0 0 45px #ffffff08,0 0 0 90px #ffffff06}.hero-content{position:relative;z-index:2;max-width:760px}.kicker{display:inline-flex;align-items:center;gap:7px;border:1px solid #ffffff33;background:#ffffff12;padding:7px 11px;border-radius:99px;font-size:9px;font-weight:700}.dot{width:6px;height:6px;border-radius:50%;background:#55e5ad}.live{color:#68f0bd}.hero h1{font:800 39px/1.02 Manrope;letter-spacing:-1.8px;margin:17px 0 10px}.hero h1 span{color:#c5a9ff}.hero p{font-size:12px;line-height:1.7;color:#d2c7e7;max-width:660px;margin:0}.hero-actions{display:flex;gap:10px;margin-top:18px}.hero-btn{height:38px;border-radius:10px;padding:0 15px;border:1px solid #ffffff38;background:#ffffff12;color:#fff;font-size:10px;font-weight:750}.hero-btn.primary{background:#fff;color:#2c155f}.hero-stats{display:flex;gap:24px;margin-top:17px;font-size:9px;color:#aaa0c1}.hero-stats b{color:#fff;font-size:11px;margin-left:4px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 286px;gap:18px;margin-top:18px}.right{display:flex;flex-direction:column;gap:14px}.tabs{background:#fff;border:1px solid var(--line);border-radius:13px;padding:5px;display:flex;gap:4px;margin-bottom:14px}.tab{height:37px;border:0;background:transparent;border-radius:9px;padding:0 14px;color:#81798f;font-size:10px;font-weight:700;display:flex;align-items:center;gap:7px}.tab svg{width:15px;stroke:currentColor;fill:none;stroke-width:1.7}.tab.active{background:var(--soft);color:#5d35c8}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.readiness{padding:18px}.rh{display:flex;justify-content:space-between;align-items:center}.title{font:800 14px Manrope}.sub{font-size:9px;color:#8a8395;margin-top:4px}.score{display:flex;align-items:center;gap:12px}.ring{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--v) 0 62%,#e9e5ef 62%);position:relative}.ring:after{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}.ring b{position:relative;z-index:1;font:800 17px Manrope}.score-label{font-size:9px;color:#8b8495}.score-value{font:800 16px Manrope;margin-top:2px}.bar{height:6px;background:#eeeaf4;border-radius:10px;margin-top:16px;overflow:hidden}.bar span{display:block;width:62%;height:100%;background:linear-gradient(90deg,#6937df,#9466ff)}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.role{padding:15px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:var(--shadow)}.role-top{display:flex;justify-content:space-between;align-items:center;min-height:28px}.badge{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      min-height:28px;
+      padding:4px 10px 4px 5px;
+      border-radius:999px;
+      font-size:8px;
+      font-weight:800;
+      letter-spacing:.7px;
+      border:1px solid transparent;
+      text-transform:uppercase;
+      box-shadow:0 3px 10px rgba(40,20,90,.05)
+    }
+    .badge .role-num{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font:800 8px Manrope;
+      color:#fff
+    }
+    .primary{background:linear-gradient(135deg,#f2edff,#ebe3ff);color:#5930c2;border-color:#dfd3ff}
+    .primary .role-num{background:linear-gradient(135deg,#7544ed,#5d31cb);box-shadow:0 3px 8px rgba(104,57,220,.25)}
+    .secondary{background:linear-gradient(135deg,#eef6ff,#e8f1ff);color:#3472bf;border-color:#dceaff}
+    .secondary .role-num{background:linear-gradient(135deg,#4e91e6,#3475c7)}
+    .tertiary{background:linear-gradient(135deg,#edfbf5,#e4f7ef);color:#16805b;border-color:#d4f0e4}
+    .tertiary .role-num{background:linear-gradient(135deg,#28b985,#159264)}.edit{border:0;background:transparent;color:#9b93a5}.edit svg{width:15px;stroke:currentColor;fill:none;stroke-width:1.7}.role:before{content:'';display:block;height:2px;width:38px;border-radius:4px;margin-bottom:11px;background:linear-gradient(90deg,var(--v),transparent)}.role h3{font:800 16px Manrope;margin:12px 0 4px;letter-spacing:-.4px}.desc{font-size:9px;line-height:1.5;color:#817a91;min-height:28px}.role-score{display:flex;align-items:center;gap:10px;margin:13px 0}.small-ring{width:51px;height:51px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--v) 0 85%,#e9e5ef 85%)}.role:nth-child(2) .small-ring{background:conic-gradient(var(--v) 0 62%,#e9e5ef 62%)}.role:nth-child(3) .small-ring{background:conic-gradient(var(--v) 0 40%,#e9e5ef 40%)}.small-ring:after{content:"";position:absolute;inset:6px;border-radius:50%;background:#fff}.small-ring b{position:relative;z-index:1;font-size:11px}.readiness-label{font-size:8px;color:#8d8698}.status{font-size:10px;font-weight:800;margin-top:2px}.good{color:var(--green)}.purple{color:#6841d5}
+.skill-block{border-top:1px solid #eeeaf2;padding-top:12px;margin-top:11px}.skill-head{display:flex;justify-content:space-between;margin-bottom:9px}.skill-head strong{font-size:9px}.count{font-size:8px;color:#8b8494;font-weight:700}.skills{display:flex;flex-wrap:wrap;gap:7px}.skill{position:relative;display:flex;align-items:center;gap:5px;border:1px solid #e7e2ef;border-radius:9px;padding:6px 7px;background:#fbfaff}.skill img{width:21px;height:21px;object-fit:contain}.skill-name{font-size:8px;font-weight:700;color:#403650}.verify{position:absolute;right:-4px;top:-4px;width:13px;height:13px;border-radius:50%;background:#18b47b;color:#fff;border:2px solid #fff;display:grid;place-items:center;font-size:7px;font-weight:900}.verify.no{background:#d4cfdb;color:#fff}.note{margin-top:10px;background:#e8faf3;border:1px solid #d7f2e7;color:#258061;padding:7px 8px;border-radius:8px;font-size:8px;line-height:1.45}
+.side{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow)}.side-title{font:800 12px Manrope}.metric{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eeeaf2;font-size:10px;color:#81798d}.metric:last-child{border:0}.metric b{color:#2b2146;font-size:11px}.verified-box{background:linear-gradient(135deg,#f6f1ff,#fff)}.verified-flex{display:flex;gap:11px}.shield{width:34px;height:34px;border-radius:10px;background:#dff8ed;color:#129467;display:grid;place-items:center;flex:none}.shield svg{width:19px;stroke:currentColor;fill:none;stroke-width:1.8}.verified-flex strong{font-size:11px}.verified-flex p{font-size:9px;line-height:1.5;color:#817a91;margin:5px 0 0}.action{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eeeaf2}.action:last-child{border:0}.action-icon{width:31px;height:31px;border-radius:9px;background:var(--soft);color:var(--v);display:grid;place-items:center}.action-icon svg{width:15px;stroke:currentColor;fill:none;stroke-width:1.7}.action b{font-size:9px}.action span{display:block;font-size:8px;color:#8d8696;margin-top:2px}.chev{margin-left:auto;color:#9b94a6}.next{margin-top:14px;padding:17px 19px}.next-head{display:flex;justify-content:space-between;align-items:center}.next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.step{display:flex;gap:9px;align-items:center}.num{width:31px;height:31px;border-radius:50%;background:var(--soft);color:#6038cc;display:grid;place-items:center;font:800 11px Manrope}.step b{font-size:9px}.step span{display:block;font-size:8px;color:#8a8393;margin-top:2px}.next-btn{height:34px;border:0;border-radius:9px;background:#6c3ce6;color:#fff;padding:0 12px;font-size:9px;font-weight:750}
+
+
+/* Role editing */
+.edit{width:30px!important;height:30px!important;border:1px solid #e4def1!important;border-radius:9px!important;background:#faf8ff!important;display:grid!important;place-items:center!important;color:#6740d0!important;transition:.18s}.edit:hover{background:#eee8ff!important;border-color:#cdbcf7!important;transform:translateY(-1px)}.edit:active{transform:scale(.96)}
+.formula{margin-top:13px;padding-top:11px;border-top:1px solid #eeeaf2;display:flex;justify-content:space-between;gap:15px;font-size:8px;color:#8a8394}.formula b{color:#5d38c5}.metric.first{margin-top:9px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(22,11,48,.45);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}.modal-backdrop.open{display:flex}.modal{width:min(520px,100%);background:#fff;border:1px solid #e4deef;border-radius:18px;box-shadow:0 30px 90px rgba(26,10,65,.25);overflow:hidden}.modal-head{padding:19px 21px;border-bottom:1px solid #eeeaf2;display:flex;justify-content:space-between;align-items:center}.modal-head h2{font:800 16px Manrope;margin:0}.modal-head p{font-size:9px;color:#8b8495;margin:4px 0 0}.modal-close{width:30px;height:30px;border:1px solid #e5dfed;background:#faf9fc;border-radius:8px;color:#777083}.modal-body{padding:20px 21px}.modal-label{display:block;font-size:9px;font-weight:800;color:#413752;margin:0 0 7px}.modal-select,.modal-input{width:100%;height:43px;border:1px solid #ddd7e7;border-radius:9px;background:#fff;padding:0 12px;color:#302548;font-size:10px;outline:0}.modal-group{margin-bottom:16px}.modal-hint{font-size:8px;color:#8b8494;line-height:1.5;margin-top:6px}.modal-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.modal-skill{padding:6px 8px;border-radius:8px;background:#f6f3fb;border:1px solid #e8e2f0;font-size:8px;font-weight:700;color:#514766}.modal-footer{padding:15px 21px;border-top:1px solid #eeeaf2;display:flex;justify-content:flex-end;gap:8px}.btn-secondary,.btn-primary{height:37px;padding:0 14px;border-radius:9px;font-size:9px;font-weight:750}.btn-secondary{border:1px solid #ddd7e7;background:#fff;color:#625a70}.btn-primary{border:0;background:#6c3ce6;color:#fff;box-shadow:0 8px 18px #6c3ce632}
+
+
+
+/* Career Intent readiness — polished layout */
+.readiness{padding:22px 24px 20px}
+.readiness .rh{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:28px}
+.readiness .title{font-size:16px;letter-spacing:-.25px}
+.readiness .sub{font-size:9.5px;line-height:1.55;max-width:700px}
+.readiness .score{padding-left:22px;border-left:1px solid #eeeaf4;min-width:175px}
+.readiness .ring{width:72px;height:72px;background:conic-gradient(var(--v) 0 67%,#ebe7f1 67%)}
+.readiness .ring:after{inset:8px}
+.readiness .ring b{font-size:18px}
+.readiness .score-label{font-size:8.5px}
+.readiness .score-value{font-size:15px}
+.readiness .bar{height:7px;margin-top:18px}
+.readiness .bar span{width:67%}
+.readiness-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,.92fr);gap:18px;margin-top:18px}
+.readiness-left{border:1px solid #ebe6f2;background:#fcfbfe;border-radius:13px;padding:15px 16px}
+.readiness-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.readiness-section-head strong{font:800 10px Manrope;color:#30264a}
+.readiness-section-head span{font-size:7.5px;color:#92899f}
+.role-score-row{display:grid;grid-template-columns:105px 1fr 34px;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #eeeaf3}
+.role-score-row:last-child{border-bottom:0;padding-bottom:1px}
+.role-score-name{font-size:8px;font-weight:800;color:#514867}
+.role-score-track{height:6px;background:#ebe7f1;border-radius:99px;overflow:hidden}
+.role-score-track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6336db,#9363fa)}
+.role-score-value{text-align:right;font:800 8px Manrope;color:#453660}
+.role-score-row.secondary .role-score-track i{background:linear-gradient(90deg,#4285ef,#72a6f8)}
+.role-score-row.tertiary .role-score-track i{background:linear-gradient(90deg,#20a878,#55c99d)}
+.readiness-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:13px}
+.readiness-foot .formula{margin:0;padding:0;border:0;font-size:7.5px;display:block}
+.role-meta-line{display:flex;gap:6px;flex-wrap:wrap}
+.role-chip{font-size:7px;font-weight:800;padding:5px 7px;border-radius:7px;background:#f3f0f8;color:#746b81}
+.role-chip.green{background:#e8f9f2;color:#158960}
+.role-chip.orange{background:#fff5e6;color:#99631b}
+.readiness-breakdown{background:linear-gradient(145deg,#fff,#faf8ff);border:1px solid #e2daf2;border-radius:13px;padding:15px 16px}
+.breakdown-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.breakdown-head strong{font:800 11px Manrope;color:#302548}
+.breakdown-head span{font-size:7.5px;color:#8c8397}
+.break-row{margin-top:10px}
+.break-label{display:flex;justify-content:space-between;font-size:7.8px;font-weight:750;color:#514866;margin-bottom:6px}
+.break-track{height:6px;border-radius:99px;background:#ebe7f1;overflow:hidden}
+.break-track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6c3ce6,#9a73ff)}
+.break-row.key .break-track i{background:linear-gradient(90deg,#3b82f6,#72a8ff)}
+.break-row.gap .break-track i{background:linear-gradient(90deg,#18a874,#56c89c)}
+.break-foot{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.mini-chip{padding:5px 7px;border-radius:7px;background:#f3f0f8;color:#6d647d;font-size:7px;font-weight:800}
+.mini-chip.green{background:#e9faf3;color:#168a61}
+.tabbar{display:flex;gap:6px;margin:16px 0 12px;padding:4px;background:#f3f0f8;border:1px solid #e7e2ef;border-radius:11px;width:max-content}
+.tab-btn{border:0;background:transparent;padding:8px 13px;border-radius:8px;font-size:9px;font-weight:800;color:#81798d;cursor:pointer}
+.tab-btn.active{background:#fff;color:#5e36cb;box-shadow:0 3px 12px rgba(39,20,88,.08)}
+.tab-view{display:none}.tab-view.active{display:block}
+.skill-detail{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid #e9e4f0;border-radius:11px;background:#fff}
+.skill-detail + .skill-detail{margin-top:8px}
+.skill-detail-logo{width:31px;height:31px;border-radius:8px;border:1px solid #eeeaf2;display:grid;place-items:center;flex:none;background:#fff}
+.skill-detail-logo img{width:20px;height:20px;object-fit:contain}
+.skill-detail-main{min-width:0;flex:1}.skill-detail-name{font-size:9px;font-weight:800;color:#33294b}.skill-detail-meta{font-size:7.5px;color:#8a8393;margin-top:3px}
+.level{font-size:7px;font-weight:800;padding:4px 6px;border-radius:6px;background:#f0ebff;color:#5f36cb;white-space:nowrap}
+.assessed{font-size:7px;color:#168b62;font-weight:800;white-space:nowrap}
+.assessed.pending{color:#80798a}
+.assess-btn{border:1px solid #d9cdf7;background:#faf8ff;color:#6338cf;border-radius:7px;padding:6px 8px;font-size:7px;font-weight:800;cursor:pointer;white-space:nowrap}
+.gap-banner{margin-top:11px;padding:10px 11px;border-radius:10px;background:#fff8ed;border:1px solid #f4e3c7;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.gap-banner strong{font-size:8px;color:#78531f}.gap-banner span{font-size:7px;color:#967244;margin-top:2px;display:block}
+.assessed-line{font-size:7px;color:#8b8494;margin-top:7px}
+@media(max-width:980px){.readiness-grid{grid-template-columns:1fr}.readiness .score{min-width:160px}}
+@media(max-width:760px){.readiness{padding:18px}.readiness .rh{grid-template-columns:1fr}.readiness .score{border-left:0;border-top:1px solid #eeeaf4;padding:14px 0 0;justify-content:flex-start}.readiness-grid{grid-template-columns:1fr}.readiness-foot{align-items:flex-start;flex-direction:column}.tabbar{width:100%}.tab-btn{flex:1}.gap-banner{align-items:flex-start;flex-direction:column}}
+
+/* Role Skills view */
+.role-skills-view{display:none}
+.role-skills-view.show{display:block}
+.skills-panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.skills-panel-head{padding:20px 20px 17px;border-bottom:1px solid #eeeaf2;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.skills-panel-title{font:800 15px Manrope;letter-spacing:-.3px}
+.skills-panel-sub{font-size:9px;color:#858092;margin-top:4px;line-height:1.5}
+.role-switcher{display:flex;gap:5px;background:#f7f5fa;border:1px solid #ebe7f1;padding:4px;border-radius:11px}
+.role-switch{border:0;background:transparent;border-radius:8px;padding:8px 11px;font-size:9px;font-weight:800;color:#827b8d}
+.role-switch.active{background:#fff;color:#5d35c8;box-shadow:0 3px 10px rgba(39,20,88,.08)}
+.skill-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 20px;border-bottom:1px solid #eeeaf2;background:linear-gradient(180deg,#fff,#fbfaff)}
+.summary-box{border:1px solid #e9e4f1;border-radius:11px;padding:11px 12px;background:#fff}
+.summary-label{font-size:8px;color:#8b8494;font-weight:700}
+.summary-value{font:800 17px Manrope;margin-top:3px}
+.summary-value.green{color:#159467}.summary-value.purple{color:#6338cf}.summary-value.gray{color:#777083}
+.skill-columns{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.skill-column{padding:18px 20px}
+.skill-column + .skill-column{border-left:1px solid #eeeaf2}
+.column-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.column-title{display:flex;align-items:center;gap:7px;font:800 11px Manrope}
+.column-title .status-dot{width:8px;height:8px;border-radius:50%;background:#19b47b;box-shadow:0 0 0 4px #e8faf3}
+.column-title.unverified .status-dot{background:#b7b1c0;box-shadow:0 0 0 4px #f0edf3}
+.column-count{font-size:8px;color:#8b8494;font-weight:700}
+.all-skills{display:flex;flex-direction:column;gap:8px}
+.full-skill{display:flex;align-items:center;gap:10px;border:1px solid #e9e4f0;border-radius:11px;padding:9px 10px;background:#fcfbfe}
+.full-skill:hover{border-color:#d9cdf8;background:#faf8ff}
+.full-skill-logo{width:30px;height:30px;border-radius:8px;background:#fff;border:1px solid #eeeaf2;display:grid;place-items:center;flex:none}
+.full-skill-logo img{width:20px;height:20px;object-fit:contain}
+.full-skill-info{min-width:0;flex:1}
+.full-skill-name{font-size:9px;font-weight:800;color:#33294b}
+.full-skill-meta{font-size:8px;color:#8b8494;margin-top:2px}
+.skill-tag{font-size:7px;font-weight:800;padding:4px 6px;border-radius:6px;white-space:nowrap}
+.skill-tag.mandatory{background:#eee8ff;color:#5d35c8}.skill-tag.key{background:#f1f0f5;color:#746d7e}
+.verified-pill{display:flex;align-items:center;gap:4px;font-size:7px;font-weight:800;color:#148a61;background:#e8faf3;border:1px solid #d6f2e7;padding:4px 6px;border-radius:999px}
+.verified-pill.pending{color:#777083;background:#f3f1f5;border-color:#e8e4eb}
+.verification-info{margin:0 20px 18px;padding:11px 12px;border-radius:10px;background:#f7f3ff;border:1px solid #e7ddfb;color:#6d5b91;font-size:8px;line-height:1.5}
+@media(max-width:760px){
+  .skills-panel-head{align-items:flex-start;flex-direction:column}
+  .role-switcher{width:100%;overflow:auto}
+  .role-switch{flex:1;white-space:nowrap}
+  .skill-summary{grid-template-columns:1fr}
+  .skill-columns{grid-template-columns:1fr}
+  .skill-column + .skill-column{border-left:0;border-top:1px solid #eeeaf2}
+}
+
+.toast{position:fixed;right:24px;bottom:24px;background:#26134f;color:#fff;padding:11px 14px;border-radius:10px;font-size:10px;opacity:0;transform:translateY(15px);transition:.2s;z-index:50}
+@media(max-width:1200px){.grid{grid-template-columns:1fr}.right{display:grid;grid-template-columns:repeat(3,1fr)}.roles{grid-template-columns:1fr}.role{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.role-top,.role h3,.desc{grid-column:1/-1}.role-score{grid-column:2;grid-row:2;justify-content:flex-end}.skill-block{grid-column:1}.next-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.sidebar{position:relative;width:100%;height:auto;padding-bottom:10px}.nav,.profile{display:none}.brand{height:68px}.main{margin:0;width:100%}.topbar{height:64px;padding:0 15px}.top-admin div:last-child{display:none}.content{padding:18px 12px}.hero{padding:24px 20px;min-height:300px}.hero h1{font-size:30px}.grid{display:block}.right{display:flex;margin-top:14px}.roles{display:flex;flex-direction:column}.role{display:block}.tabs{overflow:auto}.tab{white-space:nowrap}.next-grid{grid-template-columns:1fr}}
+</style>
+
+<style>
+/* Full Career Intent redesign */
+.ci-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:22px}
+.ci-head>div>span,.ci-section-title>small{font:900 8px Manrope;letter-spacing:.14em;color:#826bb5}
+.ci-head h1{margin:5px 0;font:800 27px/1.1 Manrope;color:#26184f;letter-spacing:-.7px}
+.ci-head p,.ci-section-title p{margin:0;color:#8a8196;font-size:9px;line-height:1.55}
+.ci-edit{border:1px solid #ddd3f3;background:#fff;color:#5e37c9;border-radius:10px;padding:10px 14px;font:800 8px Manrope;box-shadow:0 4px 14px #2d185b0b}
+.ci-readiness{background:linear-gradient(115deg,#24134f,#3b207c 55%,#5431a5);color:#fff;border-radius:18px;padding:22px 23px 18px;box-shadow:0 14px 35px #341c6828}
+.ci-readiness-top{display:flex;justify-content:space-between;align-items:center;gap:25px}
+.ci-readiness-top small{font:900 7.5px Manrope;letter-spacing:.13em;color:#cdbff0}
+.ci-readiness h2{margin:7px 0;font:800 19px Manrope;letter-spacing:-.35px}
+.ci-readiness p{margin:0;max-width:650px;color:#d9cff0;font-size:9.5px;line-height:1.6}
+.ci-score{display:flex;align-items:center;gap:12px;min-width:170px;padding-left:22px;border-left:1px solid #ffffff2e}
+.ci-ring{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#aa8dff 0 67%,#ffffff20 67%);position:relative}
+.ci-ring:after{content:"";position:absolute;inset:7px;background:#392078;border-radius:50%}
+.ci-ring b{position:relative;z-index:1;font:800 20px Manrope}.ci-ring em{font-style:normal;font-size:10px}
+.ci-score small{display:block;color:#cfc4e6;font-size:8px;margin-bottom:4px}.ci-score strong{font:800 12px Manrope}
+.ci-progress{height:6px;background:#ffffff20;border-radius:99px;overflow:hidden;margin-top:20px}.ci-progress i{display:block;width:67%;height:100%;background:linear-gradient(90deg,#a98bff,#d0bfff);border-radius:99px}
+.ci-stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:16px;padding-top:14px;border-top:1px solid #ffffff1f}
+.ci-stats div{padding:0 16px;border-right:1px solid #ffffff1f}.ci-stats div:first-child{padding-left:0}.ci-stats div:last-child{border:0}
+.ci-stats span{display:block;color:#cfc4e6;font-size:7.5px;margin-bottom:4px}.ci-stats b{font:800 12px Manrope}
+.ci-roles{margin-top:25px}.ci-section-title{margin-bottom:13px}.ci-section-title h2{margin:5px 0 4px;font:800 17px Manrope;color:#2e2348}.ci-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:13px}
+.ci-tab{display:grid;grid-template-columns:31px 1fr auto;align-items:center;gap:9px;text-align:left;background:#fff;border:1px solid #e8e3f0;border-radius:13px;padding:12px;cursor:pointer;box-shadow:0 3px 12px #2a165b09}
+.ci-tab:hover{border-color:#d4c5ee;transform:translateY(-1px)}.ci-tab.active{border-color:#bca8eb;background:#fbf9ff;box-shadow:0 8px 22px #512e9616}
+.ci-tab i{width:31px;height:31px;border-radius:8px;background:#f1edfa;color:#79649e;display:grid;place-items:center;font:800 8px Manrope;font-style:normal}.ci-tab.active i{background:#6d3de8;color:#fff}
+.ci-tab b{display:block;font:800 10px Manrope;color:#352a4f}.ci-tab small{display:block;margin-top:3px;color:#93899e;font-size:7px}.ci-tab>strong{font:800 11px Manrope;color:#6a40d4}
+.ci-panel{background:#fff;border:1px solid #e8e3f0;border-radius:16px;overflow:hidden;box-shadow:0 8px 25px #2a165b0b}
+.ci-panel-head{display:flex;justify-content:space-between;gap:20px;padding:19px 20px;border-bottom:1px solid #eeeaf3}
+.ci-panel-title{display:flex;gap:10px}.ci-dot{width:9px;height:9px;margin-top:4px;border-radius:50%;background:#6d3de8;box-shadow:0 0 0 5px #f1edff}
+.ci-panel h3{margin:0;font:800 15px Manrope;color:#2e2348}.ci-panel-head p{margin:5px 0 0;font-size:8px;color:#8b8297;line-height:1.5}
+.ci-role-edit{border:1px solid #ded5ef;background:#faf8ff;color:#6338cf;border-radius:8px;padding:8px 11px;font:800 7.5px Manrope;height:max-content}
+.ci-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr)}
+.ci-skills{padding:18px 20px;border-right:1px solid #eeeaf3}.ci-skills-top{display:flex;justify-content:space-between;align-items:center}.ci-skills-top h4,.ci-assess h4{margin:0;font:800 10px Manrope;color:#44385d}.ci-skills-top span{font-size:7px;color:#948a9e}
+.ci-group{margin:14px 0 7px;font:800 7.5px Manrope;letter-spacing:.08em;color:#6f657e;text-transform:uppercase}.ci-group:before{content:"";display:inline-block;width:5px;height:5px;background:#6d3de8;border-radius:50%;margin:0 7px 1px 0}
+.ci-skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ci-skill{display:flex;align-items:center;gap:8px;border:1px solid #eeeaf3;border-radius:9px;padding:8px}
+.ci-logo{width:27px;height:27px;border:1px solid #eeeaf3;border-radius:7px;display:grid;place-items:center;flex:none}.ci-logo img{width:17px;height:17px;object-fit:contain}
+.ci-skill-main{min-width:0;flex:1}.ci-skill-name{font-size:8px;font-weight:800;color:#3b304f}.ci-skill-meta{font-size:6.8px;color:#958b9f;margin-top:2px}.ci-status{font-size:6.5px;font-weight:800;padding:4px 5px;border-radius:5px;white-space:nowrap}.ci-status.v{background:#eaf9f3;color:#14845d}.ci-status.p{background:#f3f0f6;color:#81788d}
+.ci-assess{padding:18px;background:#fcfbfe}.ci-card{background:#fff;border:1px solid #e9e3f1;border-radius:12px;padding:14px}.ci-card p{font-size:7.5px;line-height:1.55;color:#8a8195;margin:6px 0 13px}
+.ci-rhead{display:flex;justify-content:space-between;font-size:7.5px;color:#777087;font-weight:700;margin-bottom:7px}.ci-rhead b{font:800 10px Manrope;color:#5f35ca}.ci-rbar{height:7px;background:#ece8f2;border-radius:99px;overflow:hidden}.ci-rbar i{display:block;height:100%;background:linear-gradient(90deg,#6c3ce6,#9b74fa);border-radius:99px}
+.ci-explain{display:grid;gap:7px;margin-top:12px}.ci-explain div{display:flex;justify-content:space-between;font-size:7px;color:#81778e}.ci-explain b{color:#4e4163}
+.ci-gap{margin-top:10px;background:#fff5e7;border:1px solid #f1dfc3;border-radius:10px;padding:11px}.ci-gap strong{display:block;font-size:8px;color:#79501b}.ci-gap span{display:block;margin-top:3px;font-size:7px;line-height:1.45;color:#99764a}.ci-gap button{margin-top:8px;border:1px solid #ead3ae;background:#fff;color:#8a5a1d;border-radius:7px;padding:6px 8px;font:800 7px Manrope}
+.ci-note{margin-top:10px;background:#f3f0fa;border-radius:8px;padding:8px 9px;font-size:7px;line-height:1.5;color:#756b82}
+@media(max-width:900px){.ci-body{grid-template-columns:1fr}.ci-skills{border-right:0;border-bottom:1px solid #eeeaf3}.ci-tabs{grid-template-columns:1fr}}
+@media(max-width:650px){.ci-head,.ci-readiness-top,.ci-panel-head{align-items:flex-start;flex-direction:column}.ci-score{border-left:0;border-top:1px solid #ffffff2e;padding:14px 0 0;width:100%}.ci-stats{grid-template-columns:1fr 1fr;gap:12px}.ci-stats div{padding:0;border:0}.ci-skill-grid{grid-template-columns:1fr}}
+</style>
+
+<style>
+/* ===== Final visual correction: desktop-first, readable SaaS layout ===== */
+body{font-size:14px}
+.main{padding:28px 34px 50px!important}
+.ci-head{margin-bottom:26px!important}
+.ci-head>div>span,.ci-section-title>small{font-size:10px!important;letter-spacing:.12em!important}
+.ci-head h1{font-size:32px!important;line-height:1.15!important;margin:6px 0 8px!important}
+.ci-head p,.ci-section-title p{font-size:13px!important;line-height:1.55!important}
+.ci-edit{font-size:12px!important;padding:11px 16px!important}
+
+.ci-readiness{padding:27px 30px 21px!important;border-radius:20px!important}
+.ci-readiness-top{gap:40px!important}
+.ci-readiness-top small{font-size:10px!important}
+.ci-readiness h2{font-size:23px!important;margin:8px 0!important}
+.ci-readiness p{font-size:12px!important;max-width:760px!important}
+.ci-score{min-width:205px!important;padding-left:28px!important}
+.ci-ring{width:86px!important;height:86px!important}
+.ci-ring b{font-size:23px!important}.ci-ring em{font-size:11px!important}
+.ci-score small{font-size:10px!important}.ci-score strong{font-size:14px!important}
+.ci-progress{height:8px!important;margin-top:23px!important}
+.ci-stats{margin-top:18px!important;padding-top:16px!important}
+.ci-stats span{font-size:10px!important;margin-bottom:6px!important}
+.ci-stats b{font-size:15px!important}
+
+.ci-roles{margin-top:32px!important}
+.ci-section-title{margin-bottom:17px!important}
+.ci-section-title h2{font-size:22px!important;margin:7px 0 5px!important}
+.ci-tabs{gap:13px!important;margin-bottom:16px!important}
+.ci-tab{min-height:76px!important;padding:14px 16px!important;border-radius:14px!important;grid-template-columns:38px 1fr auto!important;gap:12px!important}
+.ci-tab i{width:38px!important;height:38px!important;font-size:10px!important;border-radius:10px!important}
+.ci-tab b{font-size:13px!important}.ci-tab small{font-size:9px!important;margin-top:4px!important}
+.ci-tab>strong{font-size:14px!important}
+
+.ci-panel{border-radius:18px!important}
+.ci-panel-head{padding:21px 23px!important}
+.ci-dot{margin-top:5px!important}
+.ci-panel h3{font-size:18px!important}
+.ci-panel-head p{font-size:10px!important;margin-top:6px!important}
+.ci-role-edit{font-size:10px!important;padding:9px 13px!important}
+
+.ci-body{grid-template-columns:minmax(0,1.4fr) minmax(330px,.6fr)!important}
+.ci-skills{padding:21px 23px!important}
+.ci-skills-top h4,.ci-assess h4{font-size:12px!important}
+.ci-skills-top span{font-size:9px!important}
+.ci-group{font-size:9px!important;margin:17px 0 9px!important}
+.ci-group:before{width:6px!important;height:6px!important}
+.ci-skill-grid{gap:9px!important}
+.ci-skill{padding:10px!important;border-radius:10px!important;min-height:56px!important}
+.ci-logo{width:32px!important;height:32px!important;border-radius:8px!important}
+.ci-logo img{width:19px!important;height:19px!important}
+.ci-skill-name{font-size:10px!important}
+.ci-skill-meta{font-size:8px!important;margin-top:3px!important}
+.ci-status{font-size:8px!important;padding:5px 7px!important}
+
+.ci-assess{padding:21px!important}
+.ci-card{padding:17px!important;border-radius:13px!important}
+.ci-card p{font-size:9px!important;line-height:1.55!important;margin:7px 0 15px!important}
+.ci-rhead{font-size:9px!important;margin-bottom:8px!important}
+.ci-rhead b{font-size:12px!important}
+.ci-rbar{height:8px!important}
+.ci-explain{gap:9px!important;margin-top:14px!important}
+.ci-explain div{font-size:8.5px!important}
+.ci-gap{padding:13px!important;margin-top:12px!important}
+.ci-gap strong{font-size:10px!important}.ci-gap span{font-size:8.5px!important;line-height:1.5!important}
+.ci-gap button{font-size:8.5px!important;padding:7px 10px!important}
+.ci-note{font-size:8.5px!important;padding:10px!important;line-height:1.55!important}
+
+@media(max-width:1100px){
+  .main{padding:24px 24px 40px!important}
+  .ci-body{grid-template-columns:1fr!important}
+  .ci-skills{border-right:0!important;border-bottom:1px solid #eeeaf3!important}
+}
+@media(max-width:700px){
+  .main{padding:20px 16px 35px!important}
+  .ci-head h1{font-size:27px!important}
+  .ci-readiness{padding:21px!important}
+  .ci-readiness-top{align-items:flex-start!important;flex-direction:column!important}
+  .ci-score{border-left:0!important;border-top:1px solid #ffffff2e!important;padding:15px 0 0!important;width:100%!important}
+  .ci-stats{grid-template-columns:1fr 1fr!important;gap:14px!important}
+  .ci-stats div{border:0!important;padding:0!important}
+  .ci-skill-grid{grid-template-columns:1fr!important}
+}
+</style>
+
+<style>
+.ci-head-actions{display:flex;align-items:center}
+.ci-intent-status{font-size:10px;font-weight:700;color:#7d728d;background:#f5f2fa;border:1px solid #e8e3f0;padding:8px 11px;border-radius:8px}
+.ci-tab{position:relative;padding-right:62px!important}
+.ci-tab-edit{position:absolute;right:10px;top:50%;transform:translateY(-50%);font:800 8px Manrope;font-style:normal;color:#7250c9;background:#f3effd;border:1px solid #e1d7f5;border-radius:6px;padding:5px 7px;opacity:.75;transition:.18s}
+.ci-tab:hover .ci-tab-edit,.ci-tab.active .ci-tab-edit{opacity:1}
+.ci-tab-edit:hover{background:#6d3de8;color:#fff;border-color:#6d3de8}
+.ci-tab.active .ci-tab-edit{color:#5d35c4}
+@media(max-width:700px){
+ .ci-head-actions{width:100%}
+ .ci-tab{padding-right:58px!important}
+ .ci-tab-edit{right:9px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">L</div><div><div class="brand-name">Leapath.</div><span class="brand-pill">STUDENT</span></div></div>
+<nav class="nav">
+<div class="nav-label">OVERVIEW</div><a class="nav-item" href="#"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>Announcements</a>
+<div class="nav-label">PORTFOLIO</div><a class="nav-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 21c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg>My Profile Details</a><a class="nav-item" href="#"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6M9 7h3"/></svg>Resume</a><a class="nav-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Portfolio</a>
+<div class="nav-label">READINESS</div><a class="nav-item active" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="m12 8 1.5 3 3 .5-2.2 2.2.5 3.1-2.8-1.5-2.8 1.5.5-3.1-2.2-2.2 3-.5L12 8Z"/></svg>Career Intent</a><a class="nav-item" href="#"><svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Assessment</a>
+<div class="nav-label">ACCOUNT</div><a class="nav-item" href="#"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg>Settings</a><a class="nav-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4.4 1.7c-.9 1-1.9 1.2-1.9 2.8M12 17h.01"/></svg>Support</a>
+</nav>
+<div class="profile"><div class="avatar">AV</div><div><div class="profile-name">Aisha Verma</div><div class="profile-role">Student</div></div><div class="logout">↪</div></div>
+</aside>
+
+<main class="main">
+<div class="ci-head">
+  <div><span>CAREER PLANNING</span><h1>Career Intent</h1><p>Choose the roles you want to pursue and understand the skills behind each direction.</p></div>
+  <div class="ci-head-actions">
+    <span class="ci-intent-status">3 roles selected</span>
+  </div>
+</div>
+
+<section class="ci-readiness">
+  <div class="ci-readiness-top">
+    <div><small>YOUR CAREER READINESS</small><h2>You're building toward your goals.</h2><p>Your readiness reflects skills aligned to your selected roles and skills verified through Leapath assessments.</p></div>
+    <div class="ci-score"><div class="ci-ring"><b>67<em>%</em></b></div><div><small>Overall readiness</small><strong>Across 3 roles</strong></div></div>
+  </div>
+  <div class="ci-progress"><i></i></div>
+  <div class="ci-stats"><div><span>Verified skills</span><b>9</b></div><div><span>Mandatory gaps</span><b>3</b></div><div><span>Target roles</span><b>3</b></div><div><span>Assessment coverage</span><b>69%</b></div></div>
+</section>
+
+<section class="ci-roles">
+  <div class="ci-section-title"><small>YOUR TARGET ROLES</small><h2>Choose a role to explore</h2><p>Primary, secondary and tertiary roles have separate skill requirements and readiness.</p></div>
+  <div class="ci-tabs">
+    <button class="ci-tab active" onclick="selectRole('primary',this)">
+  <i>01</i><span><b>Primary</b><small>Main career target</small></span><strong>74%</strong>
+  <em class="ci-tab-edit" onclick="event.stopPropagation(); editRole('primary')">Edit</em>
+</button>
+    <button class="ci-tab" onclick="selectRole('secondary',this)">
+  <i>02</i><span><b>Secondary</b><small>Alternative direction</small></span><strong>68%</strong>
+  <em class="ci-tab-edit" onclick="event.stopPropagation(); editRole('secondary')">Edit</em>
+</button>
+    <button class="ci-tab" onclick="selectRole('tertiary',this)">
+  <i>03</i><span><b>Tertiary</b><small>Exploration path</small></span><strong>59%</strong>
+  <em class="ci-tab-edit" onclick="event.stopPropagation(); editRole('tertiary')">Edit</em>
+</button>
+  </div>
+  <div id="rolePanel"></div>
+</section>
+</main>
+</div>
+<div class="modal-backdrop" id="editModal" onclick="backdropClose(event)">
+<div class="modal">
+<div class="modal-head"><div><h2 id="modalTitle">Edit role</h2><p>Update the role while keeping this position in your career intent.</p></div><button class="modal-close" onclick="closeEdit()">×</button></div>
+<div class="modal-body">
+<div class="modal-group"><label class="modal-label">Role title</label><input class="modal-input" id="roleInput" value=""></div>
+<div class="modal-group"><label class="modal-label">Career field</label><select class="modal-select"><option>Software & Technology</option><option>Business & Finance</option><option>People & HR</option><option>Design & Product</option><option>Data & Analytics</option></select></div>
+<div class="modal-group"><label class="modal-label">Assessment-verified skills currently matched</label><div class="modal-skills"><span class="modal-skill">✓ Python</span><span class="modal-skill">✓ SQL</span><span class="modal-skill">✓ Git</span><span class="modal-skill">+ View all</span></div><div class="modal-hint">Role readiness will update automatically from verified assessment evidence after you save.</div></div>
+</div>
+<div class="modal-footer"><button class="btn-secondary" onclick="closeEdit()">Cancel</button><button class="btn-primary" onclick="saveEdit()">Save changes</button></div>
+</div></div><div id="toast" class="toast"></div>
+<script>
+const toast=document.getElementById('toast'), modal=document.getElementById('editModal'), roleInput=document.getElementById('roleInput'), modalTitle=document.getElementById('modalTitle');
+let editingSlot='';
+function notify(t){toast.textContent=t;toast.style.opacity=1;toast.style.transform='translateY(0)';clearTimeout(window.tt);window.tt=setTimeout(()=>{toast.style.opacity=0;toast.style.transform='translateY(15px)'},2200)}
+function openEdit(slot,role){editingSlot=slot;modalTitle.textContent='Edit '+slot;roleInput.value=role;modal.classList.add('open');setTimeout(()=>roleInput.focus(),80)}
+function closeEdit(){modal.classList.remove('open')}
+function backdropClose(e){if(e.target===modal)closeEdit()}
+function saveEdit(){const role=roleInput.value.trim();if(!role)return;notify(editingSlot+' updated to '+role);closeEdit()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeEdit()});
+function showTab(tab){
+  document.getElementById('rolesView').classList.toggle('active',tab==='roles');
+  document.getElementById('roleSkillsView').classList.toggle('active',tab==='roleSkills');
+  document.getElementById('rolesTab').classList.toggle('active',tab==='roles');
+  document.getElementById('skillsTab').classList.toggle('active',tab==='roleSkills');
+  if(tab==='roleSkills') renderRoleSkills('primary');
+}
+const roleSkillsData={
+primary:{
+  name:'QA / Test Engineer',
+  skills:[
+    ['Python','https://cdn.simpleicons.org/python/3776AB','Mandatory','Advanced','86%','18 Sep 2026',true],
+    ['Selenium','https://cdn.simpleicons.org/selenium/43B02A','Mandatory','Advanced','84%','18 Sep 2026',true],
+    ['SQL','https://cdn.simpleicons.org/mysql/4479A1','Mandatory','Intermediate','82%','18 Sep 2026',true],
+    ['Git','https://cdn.simpleicons.org/git/F05032','Mandatory','Advanced','91%','18 Sep 2026',true],
+    ['TestNG','https://cdn.simpleicons.org/testng/FF7A00','Mandatory','Intermediate','78%','17 Sep 2026',true],
+    ['Jenkins','https://cdn.simpleicons.org/jenkins/D24939','Key','Intermediate','80%','15 Sep 2026',true],
+    ['Docker','https://cdn.simpleicons.org/docker/2496ED','Key','Intermediate','76%','15 Sep 2026',true],
+    ['Linux','https://cdn.simpleicons.org/linux/FCC624','Key','Advanced','88%','15 Sep 2026',true],
+    ['Jira','https://cdn.simpleicons.org/jira/0052CC','Key','—','—','Not assessed',false]
+  ]},
+secondary:{
+  name:'Business Analyst',
+  skills:[
+    ['Excel','https://cdn.simpleicons.org/microsoftexcel/217346','Mandatory','Advanced','88%','16 Sep 2026',true],
+    ['SQL','https://cdn.simpleicons.org/mysql/4479A1','Mandatory','Intermediate','79%','16 Sep 2026',true],
+    ['Power BI','https://cdn.simpleicons.org/powerbi/F2C811','Mandatory','—','—','Not assessed',false],
+    ['Communication','https://cdn.simpleicons.org/microsoftteams/6264A7','Mandatory','Advanced','84%','16 Sep 2026',true],
+    ['Tableau','https://cdn.simpleicons.org/tableau/E97627','Key','Intermediate','81%','14 Sep 2026',true],
+    ['Python','https://cdn.simpleicons.org/python/3776AB','Key','Intermediate','77%','14 Sep 2026',true],
+    ['Figma','https://cdn.simpleicons.org/figma/F24E1E','Key','—','—','Not assessed',false],
+    ['Presentation','https://cdn.simpleicons.org/microsoftpowerpoint/B7472A','Key','—','—','Not assessed',false]
+  ]},
+tertiary:{
+  name:'Talent Acquisition Specialist',
+  skills:[
+    ['Communication','https://cdn.simpleicons.org/microsoftteams/6264A7','Mandatory','Advanced','84%','12 Sep 2026',true],
+    ['Excel','https://cdn.simpleicons.org/microsoftexcel/217346','Mandatory','Intermediate','76%','12 Sep 2026',true],
+    ['LinkedIn','https://cdn.simpleicons.org/linkedin/0A66C2','Mandatory','—','—','Not assessed',false],
+    ['People Management','https://cdn.simpleicons.org/hubspot/FF7A59','Mandatory','—','—','Not assessed',false],
+    ['HR Tools','https://cdn.simpleicons.org/google/4285F4','Key','Intermediate','73%','10 Sep 2026',true],
+    ['Recruiting','https://cdn.simpleicons.org/indeed/2164F3','Key','—','—','Not assessed',false],
+    ['Data Analysis','https://cdn.simpleicons.org/databricks/FF3621','Key','—','—','Not assessed',false]
+  ]}
+};
+function renderRoleSkills(key){
+  const d=roleSkillsData[key];
+  const verified=d.skills.filter(s=>s[6]), pending=d.skills.filter(s=>!s[6]);
+  const mandatory=d.skills.filter(s=>s[2]==='Mandatory'), verifiedMandatory=mandatory.filter(s=>s[6]);
+  const keySkills=d.skills.filter(s=>s[2]==='Key'), verifiedKey=keySkills.filter(s=>s[6]);
+  const pct=Math.round((verifiedMandatory.length/mandatory.length*.7 + verifiedKey.length/keySkills.length*.3)*100);
+  const row=s=>`<div class="skill-detail">
+    <div class="skill-detail-logo"><img src="${s[1]}" alt="${s[0]}"></div>
+    <div class="skill-detail-main"><div class="skill-detail-name">${s[0]}</div><div class="skill-detail-meta">${s[2]} skill · ${s[6]?'Assessed '+s[5]:'Aligned from profile'}</div></div>
+    <span class="level">${s[3]==='—'?'Unverified':s[3]}</span>
+    ${s[6]?`<span class="assessed">${s[4]} · ✓</span>`:`<button class="assess-btn" onclick="notify('Assessment opened for ${s[0]}')">Take assessment</button>`}
+  </div>`;
+  document.getElementById('roleSkillContent').innerHTML=`
+    <div class="skill-summary">
+      <div class="summary-box"><div class="summary-label">Aligned to ${d.name}</div><div class="summary-value purple">${d.skills.length}</div></div>
+      <div class="summary-box"><div class="summary-label">Verified</div><div class="summary-value green">${verified.length}</div></div>
+      <div class="summary-box"><div class="summary-label">Unverified</div><div class="summary-value gray">${pending.length}</div></div>
+    </div>
+    <div class="skill-columns">
+      <div class="skill-column"><div class="column-heading"><div class="column-title"><span class="status-dot"></span> Verified skills</div><span class="column-count">${verified.length} skills</span></div><div class="all-skills">${verified.map(row).join('')}</div></div>
+      <div class="skill-column"><div class="column-heading"><div class="column-title unverified"><span class="status-dot"></span> Unverified skills</div><span class="column-count">${pending.length} skills</span></div><div class="all-skills">${pending.map(row).join('')}</div></div>
+    </div>
+    <div class="verification-info"><b>Readiness for this role: ${pct}%.</b> A profile skill can be aligned without being verified. It contributes to readiness only after the corresponding Leapath assessment provides evidence.</div>`;
+}
+function switchRoleSkills(key,btn){
+  document.querySelectorAll('.role-switch').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active'); renderRoleSkills(key);
+}
+
+renderRoleSkills('primary');
+</script>
+
+<script>
+const roles={
+primary:{name:"QA / Test Engineer",label:"01 · Primary role",score:74,desc:"Your main career target. Strongest alignment comes from testing, automation and engineering workflow skills.",
+mandatory:[["Python","https://cdn.simpleicons.org/python/3776AB","Advanced","86%","v"],["Selenium","https://cdn.simpleicons.org/selenium/43B02A","Advanced","84%","v"],["SQL","https://cdn.simpleicons.org/mysql/4479A1","Intermediate","82%","v"],["Git","https://cdn.simpleicons.org/git/F05032","Advanced","91%","v"],["TestNG","https://cdn.simpleicons.org/testng/FF7A00","Intermediate","78%","v"],["Jira","https://cdn.simpleicons.org/jira/0052CC","—","Not assessed","p"]],
+key:[["Jenkins","https://cdn.simpleicons.org/jenkins/D24939","Intermediate","80%","v"],["Docker","https://cdn.simpleicons.org/docker/2496ED","Intermediate","76%","v"],["Linux","https://cdn.simpleicons.org/linux/FCC624","Advanced","88%","v"],["Postman","https://cdn.simpleicons.org/postman/FF6C37","—","Not assessed","p"]],gap:"Jira is aligned to this role but has not been verified yet."},
+secondary:{name:"Business Analyst",label:"02 · Secondary role",score:68,desc:"Your alternative direction. Current evidence sits across analysis, data and communication skills.",
+mandatory:[["Excel","https://cdn.simpleicons.org/microsoftexcel/217346","Advanced","88%","v"],["SQL","https://cdn.simpleicons.org/mysql/4479A1","Intermediate","79%","v"],["Power BI","https://cdn.simpleicons.org/powerbi/F2C811","—","Not assessed","p"],["Communication","https://cdn.simpleicons.org/microsoftteams/6264A7","Advanced","84%","v"]],
+key:[["Tableau","https://cdn.simpleicons.org/tableau/E97627","Intermediate","81%","v"],["Python","https://cdn.simpleicons.org/python/3776AB","Intermediate","77%","v"],["Figma","https://cdn.simpleicons.org/figma/F24E1E","—","Not assessed","p"],["Presentation","https://cdn.simpleicons.org/microsoftpowerpoint/B7472A","—","Not assessed","p"]],gap:"Power BI is mandatory for this role and is currently unverified."},
+tertiary:{name:"Talent Acquisition Specialist",label:"03 · Tertiary role",score:59,desc:"Your exploration path. Communication and business skills currently provide the strongest evidence.",
+mandatory:[["Communication","https://cdn.simpleicons.org/microsoftteams/6264A7","Advanced","84%","v"],["Excel","https://cdn.simpleicons.org/microsoftexcel/217346","Intermediate","76%","v"],["LinkedIn","https://cdn.simpleicons.org/linkedin/0A66C2","—","Not assessed","p"],["People Management","https://cdn.simpleicons.org/hubspot/FF7A59","—","Not assessed","p"]],
+key:[["HR Tools","https://cdn.simpleicons.org/google/4285F4","Intermediate","73%","v"],["Recruiting","https://cdn.simpleicons.org/indeed/2164F3","—","Not assessed","p"],["Data Analysis","https://cdn.simpleicons.org/databricks/FF3621","—","Not assessed","p"]],gap:"Three aligned skills still need assessment evidence for this role."}
+};
+function skill(s){return `<div class="ci-skill"><div class="ci-logo"><img src="${s[1]}" alt="${s[0]}"></div><div class="ci-skill-main"><div class="ci-skill-name">${s[0]}</div><div class="ci-skill-meta">${s[2]} · ${s[3]}</div></div><span class="ci-status ${s[4]}">${s[4]==="v"?"✓ Verified":"Unverified"}</span></div>`}
+function selectRole(k,b){document.querySelectorAll(".ci-tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderRole(k)}
+function renderRole(k){
+ const r=roles[k],all=[...r.mandatory,...r.key],v=all.filter(x=>x[4]=="v").length,p=all.length-v,mv=r.mandatory.filter(x=>x[4]=="v").length,kv=r.key.filter(x=>x[4]=="v").length;
+ document.getElementById("rolePanel").innerHTML=`<div class="ci-panel">
+ <div class="ci-panel-head"><div class="ci-panel-title"><i class="ci-dot"></i><div><h3>${r.name}</h3><p>${r.label} · ${r.desc}</p></div></div><button class="ci-role-edit" onclick="editRole('${k}')">Edit role</button></div>
+ <div class="ci-body"><div class="ci-skills"><div class="ci-skills-top"><h4>Skills aligned to this role</h4><span>${all.length} total · ${v} verified · ${p} unverified</span></div>
+ <div class="ci-group">Mandatory skills</div><div class="ci-skill-grid">${r.mandatory.map(skill).join("")}</div>
+ <div class="ci-group">Key skills</div><div class="ci-skill-grid">${r.key.map(skill).join("")}</div></div>
+ <div class="ci-assess"><div class="ci-card"><h4>Role readiness</h4><p>Only assessment-verified skills contribute to this role score.</p><div class="ci-rhead"><span>Current readiness</span><b>${r.score}%</b></div><div class="ci-rbar"><i style="width:${r.score}%"></i></div><div class="ci-explain"><div><span>Mandatory verified</span><b>${mv} / ${r.mandatory.length}</b></div><div><span>Key verified</span><b>${kv} / ${r.key.length}</b></div><div><span>Assessment evidence</span><b>${v} verified</b></div></div></div>
+ <div class="ci-gap"><strong>${p} skill${p!==1?"s":""} need verification</strong><span>${r.gap}</span><button onclick="notify('Assessment center opened')">View assessments →</button></div>
+ <div class="ci-note">✓ Profile skills can be aligned without being verified. Verification happens after the relevant Leapath assessment.</div></div></div></div>`;
+}
+renderRole("primary");
+</script>
+
+<script>
+function editRole(role){
+  const labels={primary:"Primary",secondary:"Secondary",tertiary:"Tertiary"};
+  notify("Edit " + labels[role] + " career intent");
+}
+</script>
+</body>
+</html>
